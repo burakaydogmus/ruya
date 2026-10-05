@@ -22,7 +22,13 @@ flutter pub get
 flutter test
 flutter build apk --release
 ```
-`app/android/app/key.properties` yoksa release APK yerel kurulum için debug anahtarıyla imzalanır.
+Yayın imzası `app/android/app/key.properties` dosyasından okunur (gitignore'lu; anahtar repo dışında tutulur).
+Dosya yoksa release APK yerel deneme için debug anahtarıyla imzalanır.
+
+```bash
+flutter build apk --release --split-per-abi
+```
+ABI'ye özel küçük APK'lar üretir (arm64-v8a ≈ 30 MB).
 
 ## Lisans ve atıf
 RUYA, [J-shw/Menstrudel](https://github.com/J-shw/Menstrudel) projesinin bir çatallamasıdır ve **GPL-3.0** ile lisanslanmıştır (bkz. `LICENSE`).
