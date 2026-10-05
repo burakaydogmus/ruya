@@ -87,13 +87,13 @@ void main() {
     await logs.updateLogPeriodIds(mapping);
   }
 
-  Future<void> launch(WidgetTester tester, {String? pin, bool seed = true}) async {
+  Future<void> launch(WidgetTester tester, {String? pin, bool seed = true, Map<String, Object> initialPrefs = const {}}) async {
     tester.view.physicalSize = const Size(1080, 2340);
     tester.view.devicePixelRatio = 2.75;
     addTearDown(tester.view.reset);
 
     await tester.runAsync(() async {
-      SharedPreferences.setMockInitialValues({'language': 'tr'});
+      SharedPreferences.setMockInitialValues({'language': 'tr', ...initialPrefs});
       PackageInfo.setMockInitialValues(
         appName: 'RUYA', packageName: 'com.burakaydogmus.ruya', version: '1.0.0',
         buildNumber: '1', buildSignature: '',
@@ -310,6 +310,26 @@ void main() {
     await tester.scrollUntilVisible(find.text('şu anki'), 200, scrollable: outer);
     expect(find.text('şu anki'), findsOneWidget);
     expect(find.text('28 gün'), findsWidgets);
+  });
+
+  testWidgets('kid mode hides sex and libido in the log sheet and calendar', (tester) async {
+    await launch(tester, initialPrefs: {'kid_mode': true, 'sex_activity_nav_enabled': true});
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Takvim')));
+    await settle(tester);
+    expect(find.text('Cinsel ilişki'), findsNothing);
+    expect(find.text('Doğum kontrolü'), findsOneWidget);
+
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Kayıt')));
+    await settle(tester);
+    // The sexual activity tracker is hidden even though its toggle is on.
+    expect(find.text('Cinsel Aktivite'), findsNothing);
+    await tester.tap(find.byType(FloatingActionButton));
+    await settle(tester);
+    final sheetList = find.descendant(of: find.byType(BottomSheet), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Notlar'), 300, scrollable: sheetList);
+    expect(find.text('Doğum kontrolü'), findsOneWidget);
+    expect(find.text('Cinsel ilişki'), findsNothing);
+    expect(find.text('Libido'), findsNothing);
   });
 
   testWidgets('privacy settings are reachable from settings', (tester) async {

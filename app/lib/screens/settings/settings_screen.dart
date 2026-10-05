@@ -13,6 +13,7 @@ import 'package:ruya/screens/settings/sections/preferences_settings_screen.dart'
 import 'package:ruya/screens/settings/sections/about_screen.dart';
 import 'package:ruya/screens/settings/sections/user_settings_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:ruya/services/settings_service.dart';
 
 
 class SettingsScreen extends StatelessWidget {
@@ -111,7 +112,11 @@ class SettingsScreen extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ClinicalReportScreen()),
+              MaterialPageRoute(
+                builder: (context) => ClinicalReportScreen(
+                  allowIntimateFields: context.read<SettingsService>().showIntimateFields,
+                ),
+              ),
             );
           },
         ),

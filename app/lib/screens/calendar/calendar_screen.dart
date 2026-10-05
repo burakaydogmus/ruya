@@ -115,12 +115,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final phasesOn = settings.isNaturalCycle && settings.arePhasePredictionsEnabled;
     final showFertile = phasesOn && settings.displayFertileWindowOnCalendar;
     final showPms = phasesOn && settings.showPmsWindow;
+    final showSex = settings.showIntimateFields;
     final controller = _controllerFor(logService.earliestLogDate, settings);
     final todayMs = DateUtils.dateOnly(DateTime.now()).millisecondsSinceEpoch;
 
     return Column(
       children: [
-        _Legend(colors: colors, showFertile: showFertile, showPms: showPms),
+        _Legend(colors: colors, showFertile: showFertile, showPms: showPms, showSex: showSex),
         const Divider(height: 1),
         Expanded(
           child: ScrollableCleanCalendar(
@@ -140,6 +141,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 showFertile: showFertile,
                 showPms: showPms,
                 hasSexLog: _sexLogDates.contains(day),
+                showSex: showSex,
                 colors: colors,
                 onTap: () => _onDayTapped(day),
               );
@@ -161,6 +163,7 @@ class _DayCell extends StatelessWidget {
     required this.showFertile,
     required this.showPms,
     required this.hasSexLog,
+    required this.showSex,
     required this.colors,
     required this.onTap,
   });
@@ -173,6 +176,9 @@ class _DayCell extends StatelessWidget {
   final bool showFertile;
   final bool showPms;
   final bool hasSexLog;
+
+  /// False in kid mode.
+  final bool showSex;
   final _CalendarColors colors;
   final VoidCallback onTap;
 
@@ -185,7 +191,7 @@ class _DayCell extends StatelessWidget {
     final ovulation = showFertile && !recordedPeriod && forecast.ovulation;
     final pms = showPms && !recordedPeriod && forecast.pms;
 
-    final hadSex = hasSexLog || (log?.sexActivity?.hadSex ?? false);
+    final hadSex = showSex && (hasSexLog || (log?.sexActivity?.hadSex ?? false));
     final contraception = log?.contraception.isNotEmpty ?? false;
     final otherContent = log != null &&
         (log!.symptoms.isNotEmpty ||
@@ -269,11 +275,12 @@ class _DayCell extends StatelessWidget {
 }
 
 class _Legend extends StatelessWidget {
-  const _Legend({required this.colors, required this.showFertile, required this.showPms});
+  const _Legend({required this.colors, required this.showFertile, required this.showPms, required this.showSex});
 
   final _CalendarColors colors;
   final bool showFertile;
   final bool showPms;
+  final bool showSex;
 
   @override
   Widget build(BuildContext context) {
@@ -309,7 +316,7 @@ class _Legend extends StatelessWidget {
           ],
           if (showPms)
             item(Container(width: 14, height: 3, color: colors.pms), l10n.calendar_legendPms),
-          item(Icon(Icons.favorite, size: 12, color: colors.sex), l10n.calendar_legendSex),
+          if (showSex) item(Icon(Icons.favorite, size: 12, color: colors.sex), l10n.calendar_legendSex),
           item(Icon(Icons.shield, size: 12, color: colors.contraception), l10n.calendar_legendContraception),
           item(circle(border: scheme.primary), l10n.today),
         ],

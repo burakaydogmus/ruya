@@ -44,6 +44,7 @@ class SettingsService extends ChangeNotifier {
   // Privacy
   int _pinTimeoutSeconds = kDefaultPinTimeoutSeconds;
   bool _discreteMode = kDefaultDiscreteMode;
+  bool _kidMode = kDefaultKidMode;
 
   // Notifications
   bool _periodDueNotificationsEnabled = kDefaultPeriodDueNotificationsEnabled;
@@ -92,7 +93,7 @@ class SettingsService extends ChangeNotifier {
   /// Sanitary Products navigation enabled
   bool get isSanitaryNavEnabled => _sanitaryNavEnabled;
   /// Sex Activity navigation enabled
-  bool get isSexActivityNavEnabled => _sexActivityNavEnabled;
+  bool get isSexActivityNavEnabled => _sexActivityNavEnabled && !_kidMode;
 
   // User
 
@@ -122,6 +123,13 @@ class SettingsService extends ChangeNotifier {
 
   /// Neutral launcher name/icon, notifications and widget text.
   bool get isDiscreteModeEnabled => _discreteMode;
+
+  /// Kid mode hides sex and libido everywhere (log, calendar, sex tracker, PDF).
+  /// Stored data is kept untouched.
+  bool get isKidModeEnabled => _kidMode;
+
+  /// Whether sex/libido fields and the sexual activity tracker may be shown.
+  bool get showIntimateFields => !_kidMode;
 
 
   // Notifications
@@ -207,6 +215,7 @@ class SettingsService extends ChangeNotifier {
     // Privacy
     _pinTimeoutSeconds = _loadInt(pinTimeoutSecondsKey, kDefaultPinTimeoutSeconds);
     _discreteMode = _loadBool(discreteModeKey, kDefaultDiscreteMode);
+    _kidMode = _loadBool(kidModeKey, kDefaultKidMode);
 
     // Notifications
     _periodDueNotificationsEnabled = _loadBool(periodDueNotificationsEnabledKey, kDefaultPeriodDueNotificationsEnabled);
@@ -576,6 +585,12 @@ class SettingsService extends ChangeNotifier {
   Future<void> setDiscreteModeEnabled(bool enabled) async {
     _discreteMode = enabled;
     await _prefs.setBool(discreteModeKey, enabled);
+    notifyListeners();
+  }
+
+  Future<void> setKidModeEnabled(bool enabled) async {
+    _kidMode = enabled;
+    await _prefs.setBool(kidModeKey, enabled);
     notifyListeners();
   }
 }

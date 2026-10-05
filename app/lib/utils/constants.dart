@@ -77,6 +77,7 @@ const String showPmsWindowKey = "show_pms_window";
 // Privacy (RUYA). PIN hash lives in the secure store, not in shared preferences.
 const String pinTimeoutSecondsKey = "pin_timeout_seconds";
 const String discreteModeKey = "discrete_mode";
+const String kidModeKey = "kid_mode";
 
 
 // Notifications
@@ -140,6 +141,7 @@ const bool kDefaultShowPmsWindow = true;
 // Privacy
 const int kDefaultPinTimeoutSeconds = 60;
 const bool kDefaultDiscreteMode = false;
+const bool kDefaultKidMode = false;
 const List<int> kPinTimeoutOptionsSeconds = [0, 30, 60, 120, 300, 900];
 
 // Notifications

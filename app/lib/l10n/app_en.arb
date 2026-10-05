@@ -1984,5 +1984,13 @@
     "insights_moodByPhaseSubtitle": "Phases are estimated from your logged cycles",
     "@insights_moodByPhaseSubtitle": {
         "description": "Insights subtitle"
+    },
+    "kidMode_title": "Kid mode",
+    "@kidMode_title": {
+        "description": "Preference toggle"
+    },
+    "kidMode_subtitle": "Hides sex and libido everywhere, including the clinical report. Existing entries are kept.",
+    "@kidMode_subtitle": {
+        "description": "Preference toggle subtitle"
     }
 }

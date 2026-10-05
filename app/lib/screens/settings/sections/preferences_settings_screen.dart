@@ -68,6 +68,16 @@ class PreferencesSettingsScreen extends StatelessWidget {
             },
           ),
           SwitchListTile(
+            title: Text(l10n.kidMode_title),
+            subtitle: Text(l10n.kidMode_subtitle),
+            secondary: const Icon(Icons.child_care_outlined),
+            value: settingsService.isKidModeEnabled,
+            onChanged: (bool value) {
+              context.read<SettingsService>().setKidModeEnabled(value);
+            },
+          ),
+          if (!settingsService.isKidModeEnabled)
+          SwitchListTile(
             title: Text(l10n.preferencesScreen_enableSexActivityScreen),
             subtitle:
                 Text(l10n.preferencesScreen_enableSexActivityScreenSubtitle),

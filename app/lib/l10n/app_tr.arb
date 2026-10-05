@@ -618,5 +618,7 @@
     "insights_historyEmpty": "Döngü geçmişin için reglerini kaydet.",
     "insights_historyCurrent": "şu anki",
     "insights_moodByPhaseTitle": "Faza göre ruh hali",
-    "insights_moodByPhaseSubtitle": "Fazlar kayıtlı döngülerinden tahmin edilir"
+    "insights_moodByPhaseSubtitle": "Fazlar kayıtlı döngülerinden tahmin edilir",
+    "kidMode_title": "Çocuk modu",
+    "kidMode_subtitle": "Cinsel ilişki ve libidoyu klinik rapor dahil her yerde gizler. Mevcut kayıtlar silinmez."
 }

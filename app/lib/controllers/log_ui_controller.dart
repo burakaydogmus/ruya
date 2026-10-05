@@ -91,6 +91,7 @@ class LogUIController extends ChangeNotifier {
       symptomService: symptomService,
       age: age,
       medicationSuggestions: logService.recentMedications(),
+      showIntimateFields: context.read<SettingsService>().showIntimateFields,
     );
     if (result == null || !context.mounted) return;
     await _apply(context, result);
