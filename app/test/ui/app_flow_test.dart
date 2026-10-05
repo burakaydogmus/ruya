@@ -381,6 +381,7 @@ void main() {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
     await settle(tester);
+    expect(find.text('Hakkında'), findsNothing);
     await tester.tap(find.text('Gizlilik'));
     await settle(tester);
     expect(find.text('PIN kilidi'), findsOneWidget);
