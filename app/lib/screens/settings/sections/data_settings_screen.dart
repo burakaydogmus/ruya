@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
+import 'dart:convert';
 import 'widgets/step_action_selection.dart';
 import 'widgets/step_data_type_selection.dart';
 
@@ -129,7 +130,9 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
     } finally {
       if (mounted) setState(() => _isLoading = false);
       if (filePath.isNotEmpty) {
-        await File(filePath).delete().catchError((_) => null);
+        try {
+          await File(filePath).delete();
+        } catch (_) {}
       }
     }
   }
@@ -146,11 +149,12 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
               throw TimeoutException('File picking timed out.');
             },
           );
-      if (result == null || result.files.single.path == null || !mounted){
+      if (result.isEmpty || !mounted){
         return;
       }
 
-      final path = result.files.single.path!;
+      final content = utf8.decode(await result.first.readAsBytes());
+      if (!mounted) return;
 
       showDialog(
         context: context,
@@ -158,7 +162,7 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
           title: l10n.import,
           contentText: l10n.settingsScreen_importDataSubtitle,
           confirmButtonText: l10n.import,
-          onConfirm: () => _performImport(path, type),
+          onConfirm: () => _performImport(content, type),
         ),
       );
     } catch (e) {
@@ -170,12 +174,11 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
     }
   }
 
-  Future<void> _performImport(String path, DataType type) async {
+  Future<void> _performImport(String content, DataType type) async {
     setState(() => _isLoading = true);
     final coordinator = context.read<DataRefreshCoordinator>();
     final l10n = AppLocalizations.of(context)!;
     try {
-      final content = await File(path).readAsString();
       switch (type) {
         case DataType.logsAndPeriods:
           await periodsRepo.manager.importDataFromJson(content);

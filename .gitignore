@@ -3,3 +3,6 @@
 *.keystore
 key.properties
 /build/
+app/lib/l10n/app_localizations*.dart
+wear_app/lib/l10n/app_localizations*.dart
+.dart_tool/
