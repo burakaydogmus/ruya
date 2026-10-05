@@ -48,6 +48,33 @@ class DatabaseMigrator {
       await createSexualActivityTables(db);
       await createUserTables(db);
       }
+    // RUYA v1.0: extended daily log
+    if (oldVersion < 12) await applyDailyLogV12(db);
+  }
+
+  /// RUYA schema v12: extended daily log (mood, discharge, libido, sex,
+  /// contraception, medication, notes). Additive only, existing rows are untouched.
+  /// `notes` and `medications` hold AES-GCM encrypted values (see FieldCipher).
+  static Future<void> applyDailyLogV12(Database db) async {
+    await db.transaction((txn) async {
+      for (final column in const [
+        'notes TEXT',
+        'medications TEXT',
+        'discharge TEXT',
+        'libido TEXT',
+        'sex_activity TEXT',
+        'contraception TEXT',
+      ]) {
+        await txn.execute('ALTER TABLE period_logs ADD COLUMN $column');
+      }
+      await txn.execute('''
+        CREATE TABLE IF NOT EXISTS log_moods (
+          log_id_fk INTEGER NOT NULL,
+          mood TEXT NOT NULL,
+          PRIMARY KEY (log_id_fk, mood)
+        )
+        ''');
+    });
   }
 
   // --- Table Creation Methods ---

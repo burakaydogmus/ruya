@@ -6,6 +6,9 @@ class AppDatabase {
   static final AppDatabase instance = AppDatabase._init();
   static Database? _database;
 
+  /// Current schema version. v1-v11 are Menstrudel, v12+ are RUYA.
+  static const int schemaVersion = 12;
+
   AppDatabase._init();
 
   Future<Database> get database async {
@@ -27,7 +30,7 @@ class AppDatabase {
 
     _database = await openDatabase(
       path,
-      version: 11,
+      version: schemaVersion,
       onCreate: _createDB,
       onUpgrade: DatabaseMigrator.upgrade,
     );
@@ -48,6 +51,10 @@ class AppDatabase {
     await DatabaseMigrator.createSexualActivityTables(db);
 
     await DatabaseMigrator.createUserTables(db);
+
+    // RUYA additions are applied exactly like the upgrade path so a fresh
+    // install and a migrated database always end up with the same schema.
+    await DatabaseMigrator.applyDailyLogV12(db);
   }
 
   Future<void> close() async {

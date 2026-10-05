@@ -839,5 +839,141 @@
     "auth_unlockReason": "Authenticate to open RUYA",
     "@auth_unlockReason": {
         "description": "System biometric prompt reason."
+    },
+    "mood_energetic": "Energetic",
+    "@mood_energetic": {
+        "description": "Mood option"
+    },
+    "mood_calm": "Calm",
+    "@mood_calm": {
+        "description": "Mood option"
+    },
+    "mood_happy": "Happy",
+    "@mood_happy": {
+        "description": "Mood option"
+    },
+    "mood_confident": "Confident",
+    "@mood_confident": {
+        "description": "Mood option"
+    },
+    "mood_focused": "Focused",
+    "@mood_focused": {
+        "description": "Mood option"
+    },
+    "mood_tired": "Tired",
+    "@mood_tired": {
+        "description": "Mood option"
+    },
+    "mood_foggy": "Foggy",
+    "@mood_foggy": {
+        "description": "Mood option"
+    },
+    "mood_sad": "Sad",
+    "@mood_sad": {
+        "description": "Mood option"
+    },
+    "mood_anxious": "Anxious",
+    "@mood_anxious": {
+        "description": "Mood option"
+    },
+    "mood_irritable": "Irritable",
+    "@mood_irritable": {
+        "description": "Mood option"
+    },
+    "mood_moodSwings": "Mood swings",
+    "@mood_moodSwings": {
+        "description": "Mood option"
+    },
+    "mood_sensitive": "Sensitive",
+    "@mood_sensitive": {
+        "description": "Mood option"
+    },
+    "discharge_dry": "Dry",
+    "@discharge_dry": {
+        "description": "Discharge option"
+    },
+    "discharge_sticky": "Sticky",
+    "@discharge_sticky": {
+        "description": "Discharge option"
+    },
+    "discharge_creamy": "Creamy",
+    "@discharge_creamy": {
+        "description": "Discharge option"
+    },
+    "discharge_watery": "Watery",
+    "@discharge_watery": {
+        "description": "Discharge option"
+    },
+    "discharge_eggWhite": "Egg white",
+    "@discharge_eggWhite": {
+        "description": "Discharge option"
+    },
+    "discharge_unusual": "Unusual",
+    "@discharge_unusual": {
+        "description": "Discharge option"
+    },
+    "libido_low": "Low",
+    "@libido_low": {
+        "description": "Libido option"
+    },
+    "libido_medium": "Medium",
+    "@libido_medium": {
+        "description": "Libido option"
+    },
+    "libido_high": "High",
+    "@libido_high": {
+        "description": "Libido option"
+    },
+    "sexActivity_none": "No sex",
+    "@sexActivity_none": {
+        "description": "Daily sex option"
+    },
+    "sexActivity_protected": "Protected",
+    "@sexActivity_protected": {
+        "description": "Daily sex option"
+    },
+    "sexActivity_unprotected": "Unprotected",
+    "@sexActivity_unprotected": {
+        "description": "Daily sex option"
+    },
+    "contraception_pill": "Pill",
+    "@contraception_pill": {
+        "description": "Contraception method"
+    },
+    "contraception_condom": "Condom",
+    "@contraception_condom": {
+        "description": "Contraception method"
+    },
+    "contraception_iud": "IUD",
+    "@contraception_iud": {
+        "description": "Contraception method"
+    },
+    "contraception_implant": "Implant",
+    "@contraception_implant": {
+        "description": "Contraception method"
+    },
+    "contraception_injection": "Injection",
+    "@contraception_injection": {
+        "description": "Contraception method"
+    },
+    "contraception_patch": "Patch",
+    "@contraception_patch": {
+        "description": "Contraception method"
+    },
+    "contraception_ring": "Ring",
+    "@contraception_ring": {
+        "description": "Contraception method"
+    },
+    "contraception_emergency": "Emergency pill",
+    "@contraception_emergency": {
+        "description": "Contraception method"
+    },
+    "contraception_withdrawal": "Withdrawal",
+    "@contraception_withdrawal": {
+        "description": "Contraception method"
+    },
+    "contraception_other": "Other",
+    "@contraception_other": {
+        "description": "Contraception method"
     }
 }

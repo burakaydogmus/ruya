@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:ruya/database/app_database.dart';
+import 'package:ruya/database/log_row_codec.dart';
 import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/periods/period.dart';
 import 'package:ruya/models/flows/flow_data.dart';
@@ -179,9 +180,13 @@ class Manager {
   Future<String> exportDataAsJson() async {
     final db = await dbProvider.database;
 
-    final periodLogs = await db.query('period_logs');
+    // Export plaintext: encrypted columns are bound to this device's key.
+    final periodLogs = [
+      for (final row in await db.query('period_logs')) await LogRowCodec.decryptRow(row),
+    ];
     final periods = await db.query('periods');
     final logSymptoms = await db.query('log_symptoms');
+    final logMoods = await db.query('log_moods');
 
     final packageInfo = await PackageInfo.fromPlatform();
     final dbVersion = await db.getVersion();
@@ -190,6 +195,7 @@ class Manager {
       'periods': periods,
       'period_logs': periodLogs,
       'log_symptoms': logSymptoms,
+      'log_moods': logMoods,
       'exported_at': DateTime.now().toIso8601String(),
       'app_version': packageInfo.version,
       'db_version': dbVersion,
@@ -233,6 +239,7 @@ class Manager {
         await txn.delete('period_logs');
         await txn.delete('periods');
         await txn.delete('log_symptoms');
+        await txn.delete('log_moods');
 
         final List periods = importData['periods'] as List;
         for (final Map<String, dynamic> period
@@ -275,7 +282,7 @@ class Manager {
 
           final int newLogId = await txn.insert(
             'period_logs',
-            logToInsert,
+            await LogRowCodec.encryptRow(logToInsert),
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
 
@@ -296,6 +303,19 @@ class Manager {
             }, conflictAlgorithm: ConflictAlgorithm.replace);
           }
         }
+
+        // RUYA v12+ exports; Menstrudel exports simply have no moods.
+        final List logMoods = (importData['log_moods'] as List?) ?? const [];
+        for (final Map<String, dynamic> mood
+            in logMoods.cast<Map<String, dynamic>>()) {
+          final int? newLogIdFk = logIdMap[mood['log_id_fk'] as int?];
+          if (newLogIdFk != null && mood['mood'] is String) {
+            await txn.insert('log_moods', {
+              'log_id_fk': newLogIdFk,
+              'mood': mood['mood'],
+            }, conflictAlgorithm: ConflictAlgorithm.replace);
+          }
+        }
       });
     } on FormatException catch (_) {
       rethrow;
@@ -311,6 +331,7 @@ class Manager {
       await txn.delete('period_logs');
       await txn.delete('periods');
       await txn.delete('log_symptoms');
+      await txn.delete('log_moods');
     });
   }
 }

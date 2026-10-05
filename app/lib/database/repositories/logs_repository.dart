@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:ruya/database/app_database.dart';
+import 'package:ruya/database/log_row_codec.dart';
+import 'package:ruya/models/period_logs/daily_log_enums.dart';
 import 'package:ruya/database/validation/log_validator.dart';
 import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/period_logs/symptom.dart';
 import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:ruya/utils/exceptions.dart';
+import 'package:sqflite/sqflite.dart';
 
 class LogsRepository {
   final dbProvider = AppDatabase.instance;
@@ -17,6 +20,18 @@ class LogsRepository {
     debugPrint('Received request from watch! Logging entry now...');
 
     try {
+      final existing = await readLogForDate(DateTime.now());
+      if (existing != null) {
+        // Today may already hold a mood/notes-only log; mark it as a period day.
+        if (existing.flow == FlowRate.none) {
+          await upsertLog(existing.copyWith(flow: FlowRate.medium));
+          debugPrint('Watch log merged into the existing log for today.');
+        } else {
+          debugPrint('Watch log ignored: today is already logged as a period day.');
+        }
+        return;
+      }
+
       final newLog = LogDay(
         date: DateTime.now(),
         flow: FlowRate.medium,
@@ -45,6 +60,7 @@ class LogsRepository {
     await validator.validate(entry.date, idToExclude: entry.id);
 
     final db = await dbProvider.database;
+    final row = await LogRowCodec.toDbRow(entry);
 
     return await db.transaction((txn) async {
       int logId;
@@ -53,12 +69,12 @@ class LogsRepository {
         logId = entry.id!;
         await txn.update(
           'period_logs',
-          entry.toMap(),
+          row,
           where: 'id = ?',
           whereArgs: [logId],
         );
       } else {
-        logId = await txn.insert('period_logs', entry.toMap());
+        logId = await txn.insert('period_logs', row..remove('id'));
       }
 
       await txn.delete(
@@ -78,8 +94,71 @@ class LogsRepository {
         await batch.commit(noResult: true);
       }
 
+      await txn.delete('log_moods', where: 'log_id_fk = ?', whereArgs: [logId]);
+      if (entry.moods.isNotEmpty) {
+        final batch = txn.batch();
+        for (final mood in entry.moods.toSet()) {
+          batch.insert('log_moods', {'log_id_fk': logId, 'mood': mood.dbValue});
+        }
+        await batch.commit(noResult: true);
+      }
+
       return logId;
     });
+  }
+
+  Future<Map<int, List<Mood>>> _readMoodMap(DatabaseExecutor db) async {
+    final rows = await db.query('log_moods');
+    final Map<int, List<Mood>> moods = {};
+    for (final row in rows) {
+      final mood = Mood.fromDb(row['mood'] as String?);
+      if (mood == null) continue;
+      (moods[row['log_id_fk'] as int] ??= []).add(mood);
+    }
+    for (final list in moods.values) {
+      list.sort((a, b) => a.index.compareTo(b.index));
+    }
+    return moods;
+  }
+
+  Future<Map<int, List<Symptom>>> _readSymptomMap(DatabaseExecutor db) async {
+    final symptomsResult = await db.query('log_symptoms');
+    final Map<int, List<Symptom>> symptomMap = {};
+    for (final row in symptomsResult) {
+      final int logId = row['log_id_fk'] as int;
+      final String symptom = row['symptom'] as String;
+      (symptomMap[logId] ??= []).add(Symptom.fromDbString(symptom));
+    }
+    return symptomMap;
+  }
+
+  Future<List<LogDay>> _rowsToLogs(DatabaseExecutor db, List<Map<String, Object?>> rows) async {
+    final symptomMap = await _readSymptomMap(db);
+    final moodMap = await _readMoodMap(db);
+    final logs = <LogDay>[];
+    for (final row in rows) {
+      final int logId = row['id'] as int;
+      final decrypted = await LogRowCodec.decryptRow(row);
+      logs.add(LogDay.fromMap(
+        decrypted,
+        symptoms: symptomMap[logId] ?? [],
+        moods: moodMap[logId] ?? [],
+      ));
+    }
+    return logs;
+  }
+
+  /// Returns the log stored for the calendar day of [date], if any.
+  Future<LogDay?> readLogForDate(DateTime date) async {
+    final db = await dbProvider.database;
+    final result = await db.query(
+      'period_logs',
+      where: 'date(date) = date(?)',
+      whereArgs: [date.toIso8601String()],
+      limit: 1,
+    );
+    if (result.isEmpty) return null;
+    return (await _rowsToLogs(db, result)).first;
   }
 
   Future<List<LogDay>> readAllLogs() async {
@@ -88,20 +167,7 @@ class LogsRepository {
     const orderBy = 'date DESC';
     final logsResult = await db.query('period_logs', orderBy: orderBy);
 
-    final symptomsResult = await db.query('log_symptoms');
-
-    final Map<int, List<Symptom>> symptomMap = {};
-    for (final row in symptomsResult) {
-      final int logId = row['log_id_fk'] as int;
-      final String symptom = row['symptom'] as String;
-      (symptomMap[logId] ??= []).add(Symptom.fromDbString(symptom));
-    }
-
-    return logsResult.map((json) {
-      final int logId = json['id'] as int;
-      final List<Symptom> symptoms = symptomMap[logId] ?? [];
-      return LogDay.fromMap(json, symptoms: symptoms);
-    }).toList();
+    return _rowsToLogs(db, logsResult);
   }
 
   Future<LogDay> readLog(int id) async {
@@ -117,45 +183,22 @@ class LogsRepository {
       throw Exception('Log with id $id not found');
     }
 
-    final symptomsResult = await db.query(
-      'log_symptoms',
-      columns: ['symptom'],
-      where: 'log_id_fk = ?',
-      whereArgs: [id],
-    );
-
-    final List<Symptom> symptoms = symptomsResult
-        .map((row) => Symptom.fromDbString(row['symptom'] as String))
-        .toList();
-
-    return LogDay.fromMap(result.first, symptoms: symptoms);
+    return (await _rowsToLogs(db, result)).first;
   }
 
   /// Reads all logs since the given date, including their associated symptoms.
   Future<List<LogDay>> readLogsSince(DateTime date) async {
     final db = await dbProvider.database;
 
+    // `date` is ISO-8601 TEXT; Menstrudel compared it with an int, which matched everything.
     final logsResult = await db.query(
       'period_logs',
       where: 'date >= ?',
-      whereArgs: [date.millisecondsSinceEpoch],
+      whereArgs: [date.toIso8601String()],
       orderBy: 'date DESC',
     );
 
-    final symptomsResult = await db.query('log_symptoms');
-
-    final Map<int, List<Symptom>> symptomMap = {};
-    for (final row in symptomsResult) {
-      final int logId = row['log_id_fk'] as int;
-      final String symptom = row['symptom'] as String;
-      (symptomMap[logId] ??= []).add(Symptom.fromDbString(symptom));
-    }
-
-    return logsResult.map((json) {
-      final int logId = json['id'] as int;
-      final List<Symptom> symptoms = symptomMap[logId] ?? [];
-      return LogDay.fromMap(json, symptoms: symptoms);
-    }).toList();
+    return _rowsToLogs(db, logsResult);
   }
 
   Future<void> updateLogPeriodIds(Map<int, int> mapping) async {
@@ -178,11 +221,31 @@ class LogsRepository {
 
   Future<int> deleteLog(int id) async {
     final db = await dbProvider.database;
-    return await db.delete(
-      'period_logs',
-      where: 'id = ?',
-      whereArgs: [id],
+    // Foreign keys are not enabled (Menstrudel legacy), so remove children explicitly.
+    return await db.transaction((txn) async {
+      await txn.delete('log_symptoms', where: 'log_id_fk = ?', whereArgs: [id]);
+      await txn.delete('log_moods', where: 'log_id_fk = ?', whereArgs: [id]);
+      return txn.delete(
+        'period_logs',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    });
+  }
+
+  /// Mood counts for logs since [date], used for insights.
+  Future<Map<Mood, int>> getMoodFrequencySince(DateTime date) async {
+    final db = await dbProvider.database;
+    final result = await db.rawQuery(
+      'SELECT mood, COUNT(mood) as count FROM log_moods WHERE log_id_fk IN (SELECT id FROM period_logs WHERE date >= ?) GROUP BY mood',
+      [date.toIso8601String()],
     );
+    final Map<Mood, int> counts = {};
+    for (final row in result) {
+      final mood = Mood.fromDb(row['mood'] as String?);
+      if (mood != null) counts[mood] = row['count'] as int;
+    }
+    return counts;
   }
 
   Future<bool> existsOnDate(DateTime date, {int? excludeId}) async {

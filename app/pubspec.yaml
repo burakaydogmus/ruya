@@ -34,6 +34,8 @@ dependencies:
   home_widget: ^0.9.3
   scrollable_clean_calendar: ^1.5.0
   age_calculator: ^1.0.0
+  cryptography: ^2.9.0
+  flutter_secure_storage: ^11.2.0
 
 dev_dependencies:
   flutter_test:
