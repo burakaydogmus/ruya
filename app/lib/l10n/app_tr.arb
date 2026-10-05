@@ -532,5 +532,10 @@
     "backup_replaceAndRestore": "Değiştir ve geri yükle",
     "backup_restoring": "Geri yükleniyor…",
     "backup_restored": "Yedek geri yüklendi",
-    "backup_restoreFailed": "Geri yükleme başarısız. Verilerin değiştirilmedi."
+    "backup_restoreFailed": "Geri yükleme başarısız. Verilerin değiştirilmedi.",
+    "cycleSettings_showPms": "Beklenen PMS dönemini göster",
+    "cycleSettings_lutealLength": "Luteal faz süresi",
+    "cycleSettings_lutealLengthHint": "Yumurtlamadan sonraki regle kadar gün (genellikle 14)",
+    "cycleSettings_pmsDays": "PMS dönemi",
+    "cycleSettings_pmsDaysHint": "Beklenen regl öncesi gün sayısı"
 }

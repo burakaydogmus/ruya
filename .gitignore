@@ -6,3 +6,4 @@ key.properties
 app/lib/l10n/app_localizations*.dart
 wear_app/lib/l10n/app_localizations*.dart
 .dart_tool/
+/dist/

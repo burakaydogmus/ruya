@@ -1589,5 +1589,25 @@
     "backup_restoreFailed": "Restore failed. Your data was not changed.",
     "@backup_restoreFailed": {
         "description": "Snackbar"
+    },
+    "cycleSettings_showPms": "Show expected PMS window",
+    "@cycleSettings_showPms": {
+        "description": "Cycle setting"
+    },
+    "cycleSettings_lutealLength": "Luteal phase length",
+    "@cycleSettings_lutealLength": {
+        "description": "Cycle setting"
+    },
+    "cycleSettings_lutealLengthHint": "Days from ovulation to the next period (usually 14)",
+    "@cycleSettings_lutealLengthHint": {
+        "description": "Cycle setting hint"
+    },
+    "cycleSettings_pmsDays": "PMS window",
+    "@cycleSettings_pmsDays": {
+        "description": "Cycle setting"
+    },
+    "cycleSettings_pmsDaysHint": "Days before the expected period",
+    "@cycleSettings_pmsDaysHint": {
+        "description": "Cycle setting hint"
     }
 }

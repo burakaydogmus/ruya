@@ -1,3 +1,5 @@
+import 'package:ruya/utils/constants.dart';
+import 'package:ruya/coordinators/data_refresh_coordinator.dart';
 import 'package:flutter/material.dart';
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/services/settings_service.dart';
@@ -85,6 +87,37 @@ class CycleNotificationsAndPredictionsScreen extends StatelessWidget {
               value: settingsService.displayFertileWindowOnCalendar,
               onChanged: (val) => settingsService.setDisplayFertileWindowOnCalendar(val ?? false),
             ),
+            CheckboxListTile(
+              title: Text(l10n.cycleSettings_showPms),
+              value: settingsService.showPmsWindow,
+              onChanged: (val) async {
+                await settingsService.setShowPmsWindow(val ?? false);
+                if (context.mounted) _refreshPredictions(context);
+              },
+            ),
+            _StepperTile(
+              title: l10n.cycleSettings_lutealLength,
+              subtitle: l10n.cycleSettings_lutealLengthHint,
+              value: settingsService.lutealPhaseLength,
+              min: kMinLutealPhaseLength,
+              max: kMaxLutealPhaseLength,
+              onChanged: (v) async {
+                await settingsService.setLutealPhaseLength(v);
+                if (context.mounted) _refreshPredictions(context);
+              },
+            ),
+            if (settingsService.showPmsWindow)
+              _StepperTile(
+                title: l10n.cycleSettings_pmsDays,
+                subtitle: l10n.cycleSettings_pmsDaysHint,
+                value: settingsService.pmsDays,
+                min: kMinPmsDays,
+                max: kMaxPmsDays,
+                onChanged: (v) async {
+                  await settingsService.setPmsDays(v);
+                  if (context.mounted) _refreshPredictions(context);
+                },
+              ),
           ],
           const Divider(),
           SwitchListTile(
@@ -240,6 +273,52 @@ class CycleNotificationsAndPredictionsScreen extends StatelessWidget {
               onTap: () => _selectOvulationReminderTime(context),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Recomputes predictions after a cycle setting changed.
+void _refreshPredictions(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  context.read<DataRefreshCoordinator>().onLogsChanged(l10n);
+}
+
+class _StepperTile extends StatelessWidget {
+  const _StepperTile({
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.min,
+    required this.max,
+    required this.onChanged,
+  });
+
+  final String title;
+  final String subtitle;
+  final int value;
+  final int min;
+  final int max;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(subtitle),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.remove_circle_outline),
+            onPressed: value > min ? () => onChanged(value - 1) : null,
+          ),
+          SizedBox(width: 28, child: Text('$value', textAlign: TextAlign.center)),
+          IconButton(
+            icon: const Icon(Icons.add_circle_outline),
+            onPressed: value < max ? () => onChanged(value + 1) : null,
+          ),
         ],
       ),
     );

@@ -22,7 +22,7 @@ flutter pub get
 flutter test
 flutter build apk --release
 ```
-`app/android/key.properties` yoksa release APK yerel kurulum için debug anahtarıyla imzalanır.
+`app/android/app/key.properties` yoksa release APK yerel kurulum için debug anahtarıyla imzalanır.
 
 ## Lisans ve atıf
 RUYA, [J-shw/Menstrudel](https://github.com/J-shw/Menstrudel) projesinin bir çatallamasıdır ve **GPL-3.0** ile lisanslanmıştır (bkz. `LICENSE`).

@@ -52,7 +52,14 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            // Use your own keystore via android/key.properties for distribution.
+            // Without it the APK is signed with the debug key so it can still be
+            // installed locally (it cannot be updated by a differently signed build).
+            signingConfig = if (project.file("key.properties").exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }

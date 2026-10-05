@@ -2,7 +2,7 @@ name: ruya
 description: "RUYA - your private, offline cycle tracker."
 publish_to: 'none'
 
-version: 4.2.4+31
+version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1
