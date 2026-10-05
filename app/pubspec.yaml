@@ -36,6 +36,7 @@ dependencies:
   age_calculator: ^1.0.0
   cryptography: ^2.9.0
   flutter_secure_storage: ^11.2.0
+  pdf: ^3.13.1
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,8 @@ flutter:
   generate: true
   assets:
     - assets/icon/ruya.png
+    - assets/fonts/Roboto-Regular.ttf
+    - assets/fonts/Roboto-Bold.ttf
 
 flutter_launcher_icons:
   android: true

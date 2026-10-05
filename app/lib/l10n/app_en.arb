@@ -1707,5 +1707,185 @@
                 "type": "int"
             }
         }
+    },
+    "report_title": "Cycle report",
+    "@report_title": {
+        "description": "PDF title"
+    },
+    "report_range": "Period covered: {from} – {to}",
+    "@report_range": {
+        "description": "PDF range",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "report_person": "Person: {name}",
+    "@report_person": {
+        "description": "PDF person",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "report_anonymous": "Anonymous",
+    "@report_anonymous": {
+        "description": "PDF person"
+    },
+    "report_generated": "Created {date}",
+    "@report_generated": {
+        "description": "PDF generated",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "report_source": "Source: RUYA, generated on this device",
+    "@report_source": {
+        "description": "PDF source"
+    },
+    "report_summary": "Summary",
+    "@report_summary": {
+        "description": "PDF section"
+    },
+    "report_cycleCount": "Completed cycles",
+    "@report_cycleCount": {
+        "description": "PDF summary"
+    },
+    "report_shortestLongest": "Shortest / longest cycle",
+    "@report_shortestLongest": {
+        "description": "PDF summary"
+    },
+    "report_loggedDays": "Days with entries",
+    "@report_loggedDays": {
+        "description": "PDF summary"
+    },
+    "report_cycles": "Cycle history",
+    "@report_cycles": {
+        "description": "PDF section"
+    },
+    "report_noCycles": "No periods in this date range.",
+    "@report_noCycles": {
+        "description": "PDF empty"
+    },
+    "report_colStart": "Period start",
+    "@report_colStart": {
+        "description": "PDF column"
+    },
+    "report_colPeriod": "Period length",
+    "@report_colPeriod": {
+        "description": "PDF column"
+    },
+    "report_colCycle": "Cycle length",
+    "@report_colCycle": {
+        "description": "PDF column"
+    },
+    "report_ongoing": "ongoing (day {day})",
+    "@report_ongoing": {
+        "description": "PDF ongoing cycle",
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+    "report_daily": "Daily entries",
+    "@report_daily": {
+        "description": "PDF section"
+    },
+    "report_noLogs": "No entries in this date range.",
+    "@report_noLogs": {
+        "description": "PDF empty"
+    },
+    "report_colDate": "Date",
+    "@report_colDate": {
+        "description": "PDF column"
+    },
+    "report_colCycleDay": "Day",
+    "@report_colCycleDay": {
+        "description": "PDF column: cycle day"
+    },
+    "report_colMood": "Mood",
+    "@report_colMood": {
+        "description": "PDF column"
+    },
+    "report_colOther": "Other",
+    "@report_colOther": {
+        "description": "PDF column"
+    },
+    "report_discharge": "Discharge",
+    "@report_discharge": {
+        "description": "PDF label"
+    },
+    "report_disclaimer": "Created from the person's own logs. Contains no predictions and is not a medical diagnosis.",
+    "@report_disclaimer": {
+        "description": "PDF footer"
+    },
+    "report_page": "Page {page}/{total}",
+    "@report_page": {
+        "description": "PDF page",
+        "placeholders": {
+            "page": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "reportScreen_title": "Clinical report (PDF)",
+    "@reportScreen_title": {
+        "description": "Settings entry / screen title"
+    },
+    "reportScreen_intro": "Create a PDF of your cycles and logs to share with your doctor. It is generated on this device; nothing is uploaded.",
+    "@reportScreen_intro": {
+        "description": "Intro"
+    },
+    "reportScreen_range": "Date range",
+    "@reportScreen_range": {
+        "description": "Label"
+    },
+    "reportScreen_include": "Include",
+    "@reportScreen_include": {
+        "description": "Section"
+    },
+    "reportScreen_name": "My name (otherwise \"Anonymous\")",
+    "@reportScreen_name": {
+        "description": "Toggle"
+    },
+    "reportScreen_sexLibido": "Sex and libido",
+    "@reportScreen_sexLibido": {
+        "description": "Toggle"
+    },
+    "reportScreen_save": "Save PDF",
+    "@reportScreen_save": {
+        "description": "Button"
+    },
+    "reportScreen_share": "Share",
+    "@reportScreen_share": {
+        "description": "Button"
+    },
+    "reportScreen_saved": "Report saved",
+    "@reportScreen_saved": {
+        "description": "Snackbar"
+    },
+    "reportScreen_failed": "The report could not be created",
+    "@reportScreen_failed": {
+        "description": "Snackbar"
+    },
+    "report_gap": "{days} days (tracking gap, not averaged)",
+    "@report_gap": {
+        "description": "PDF gap cycle",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
     }
 }

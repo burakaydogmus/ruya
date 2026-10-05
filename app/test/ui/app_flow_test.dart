@@ -247,6 +247,17 @@ void main() {
     expect(find.text('Dışa aktarma dosyası seç'), findsOneWidget);
   });
 
+  testWidgets('clinical report screen is reachable from settings', (tester) async {
+    await launch(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    await tapVisible(tester, find.text('Klinik rapor (PDF)'));
+    await settle(tester);
+    expect(find.text('Tarih aralığı'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text("PDF'i kaydet"), 200);
+    expect(find.text("PDF'i kaydet"), findsOneWidget);
+  });
+
   testWidgets('privacy settings are reachable from settings', (tester) async {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
