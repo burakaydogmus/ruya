@@ -221,8 +221,29 @@ yazdığı uygulama adı çalışma zamanında değiştirilemez (RUYA kalır); b
 yeniler; uygulamadan son uygulamalar ekranına geçiş animasyonu anlık olarak canlı içeriği gösterebilir (kaydedilen
 küçük resim boştur). LARC hatırlatması bir sonraki LARC ekranı açılışında nötr metne geçer.
 
-## Sonraki milestone'lar
-* **M3:** Gebelik modu, doğum kontrolü modu (withdrawal bleeding etiketi), çocuk modu, SQLCipher ile tam DB şifreleme,
-  FLAG_SECURE / son uygulamalarda içeriği gizleme, Wear OS'tan gelen kaydın UI'ı anında yenilemesi.
-* **Teknik borç:** upstream `deprecated_member_use` uyarıları (Radio/RadioGroup, `year2023`), regl "due/overdue"
-  bildirimlerinin aynı ID'yi paylaşması, `setNotificationsEnabled(false)` hatası, 10 dildeki yeni anahtarların çevirisi.
+## Milestone 3 — durum (tamamlandı)
+
+| Özellik | Uygulama |
+|---|---|
+| Upstream hataları | Regl "yaklaşıyor"/"gecikti" bildirimleri ayrı ID; bildirim kapatma artık hap hatırlatmasını değil regl hatırlatmasını iptal ediyor; Wear OS kaydı UI'ı anında yeniliyor |
+| Son uygulamalar gizliliği | PIN açıkken de son uygulamalar küçük resmi boş |
+| Çocuk modu | Cinsel ilişki/libido günlük kayıt, takvim, cinsel aktivite takipçisi ve klinik rapordan tamamen gizli; veriler silinmez |
+| Doğum kontrolü modu | Tarih aralıklı; doğurgan dönem/yumurtlama gizli; bu dönemdeki kanamalar "çekilme kanaması", doğal ortalamalara katılmaz; mod açıkken "beklenen kanama" tahmini |
+| Gebelik modu | Tarih aralıklı (son adet tarihi); tahminler ve regl bildirimleri durur; Bugün'de hafta+gün ve tahmini doğum tarihi (SAT + 280); widget haftayı gösterir; gebelik döngüsü ortalamalara girmez |
+| Tam DB şifrelemesi | SQLCipher 4.10 (Android), Keystore'da rastgele 256-bit parola; düz veritabanından doğrulamalı tek seferlik migration; alan düzeyi AES-GCM ikinci katman |
+| Çeviriler | RUYA'nın eklediği metinler 13 dilin tamamında; dil seçicide 14 dil |
+
+Doğrulama: `flutter analyze` (yalnızca upstream deprecation info'ları), `flutter test`, Android 15 emülatöründe:
+düz → şifreli DB migration'ı (11 tablo, dosya başlığı artık "SQLite format 3" değil), yeniden başlatmada veri kalıcılığı,
+release build ile sıfırdan kurulum.
+
+Notlar:
+* SQLCipher native kütüphaneleri APK'yı büyütür: `dist/RUYA.apk` (universal, ≈ 84 MB) her cihazda çalışır; modern telefonlar için `dist/RUYA-arm64-v8a.apk` (≈ 30 MB), eski 32-bit cihazlar için `RUYA-armeabi-v7a.apk`. ABI APK'larının versionCode'u (1003/2003) universal'dan (3) büyüktür; birini kurduktan sonra universal'a geçmek sürüm düşürme sayılır.
+* Yeni çeviriler (12 dil) makine destekli; yayından önce anadili konuşan birinin gözden geçirmesi önerilir. Çekçe dosyasında Menstrudel'den kalan resmi "Vy" ile yeni samimi "ty" hitabı karışık.
+* Düz dosyanın silinmesi flash bellekte güvenli silme garantisi vermez (Android'in dosya tabanlı şifrelemesi bu riski azaltır).
+
+## Sonraki adımlar (öneri)
+* Upstream `deprecated_member_use` uyarıları (Radio/RadioGroup, `year2023`).
+* Menstrudel'in mevcut İngilizce kalan eski metinlerinin (pt/ru vb.) tamamlanması.
+* Kendi imza anahtarınla (`key.properties`) dağıtım; F-Droid / Play için mağaza metinleri.
+* Wear OS uygulamasının RUYA arayüzüne uyarlanması ve Türkçe metinleri.
