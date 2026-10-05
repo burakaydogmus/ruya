@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ruya/models/app/user_goal_types_enum.dart';
+import 'package:ruya/cycle/life_stage.dart';
 import 'dart:convert';
 import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
 import 'package:ruya/services/notification_service.dart';
@@ -45,6 +46,8 @@ class SettingsService extends ChangeNotifier {
   int _pinTimeoutSeconds = kDefaultPinTimeoutSeconds;
   bool _discreteMode = kDefaultDiscreteMode;
   bool _kidMode = kDefaultKidMode;
+  List<DateSpan> _birthControlSpans = [];
+  List<DateSpan> _pregnancySpans = [];
 
   // Notifications
   bool _periodDueNotificationsEnabled = kDefaultPeriodDueNotificationsEnabled;
@@ -131,6 +134,21 @@ class SettingsService extends ChangeNotifier {
   /// Whether sex/libido fields and the sexual activity tracker may be shown.
   bool get showIntimateFields => !_kidMode;
 
+  /// History of hormonal birth control use (birth control mode).
+  List<DateSpan> get birthControlSpans => List.unmodifiable(_birthControlSpans);
+
+  /// History of pregnancies; the start is the last menstrual period.
+  List<DateSpan> get pregnancySpans => List.unmodifiable(_pregnancySpans);
+
+  bool get isOnHormonalBirthControl => _birthControlSpans.any((s) => s.isOngoing);
+
+  DateSpan? get activePregnancy => _pregnancySpans.where((s) => s.isOngoing).firstOrNull;
+
+  bool get isPregnancyModeActive => activePregnancy != null;
+
+  CycleClassifier get cycleClassifier =>
+      CycleClassifier(birthControl: _birthControlSpans, pregnancies: _pregnancySpans);
+
 
   // Notifications
 
@@ -175,6 +193,7 @@ class SettingsService extends ChangeNotifier {
 
   /// Returns true if user is on natural cycle (Not using pill or affecting reversible contraceptive).
   bool get isNaturalCycle {
+    if (isOnHormonalBirthControl || isPregnancyModeActive) return false;
     if (_pillNavEnabled) return false;
     
     if (_reversibleContraceptiveNavEnabled) {
@@ -216,6 +235,8 @@ class SettingsService extends ChangeNotifier {
     _pinTimeoutSeconds = _loadInt(pinTimeoutSecondsKey, kDefaultPinTimeoutSeconds);
     _discreteMode = _loadBool(discreteModeKey, kDefaultDiscreteMode);
     _kidMode = _loadBool(kidModeKey, kDefaultKidMode);
+    _birthControlSpans = DateSpan.decodeList(_prefs.getString(hormonalBirthControlSpansKey));
+    _pregnancySpans = DateSpan.decodeList(_prefs.getString(pregnancySpansKey));
 
     // Notifications
     _periodDueNotificationsEnabled = _loadBool(periodDueNotificationsEnabledKey, kDefaultPeriodDueNotificationsEnabled);
@@ -591,6 +612,36 @@ class SettingsService extends ChangeNotifier {
   Future<void> setKidModeEnabled(bool enabled) async {
     _kidMode = enabled;
     await _prefs.setBool(kidModeKey, enabled);
+    notifyListeners();
+  }
+
+  /// Starts birth control mode from [start] (closes nothing if already active).
+  Future<void> startHormonalBirthControl(DateTime start) async {
+    if (isOnHormonalBirthControl) return;
+    _birthControlSpans = [..._birthControlSpans, DateSpan(start)]..sort((a, b) => a.start.compareTo(b.start));
+    await _prefs.setString(hormonalBirthControlSpansKey, DateSpan.encodeList(_birthControlSpans));
+    notifyListeners();
+  }
+
+  /// Ends birth control mode on [end] (inclusive).
+  Future<void> stopHormonalBirthControl(DateTime end) async {
+    _birthControlSpans = [for (final s in _birthControlSpans) s.isOngoing ? s.closedAt(end) : s];
+    await _prefs.setString(hormonalBirthControlSpansKey, DateSpan.encodeList(_birthControlSpans));
+    notifyListeners();
+  }
+
+  /// Starts pregnancy mode; [lastMenstrualPeriod] is the first day of the last period.
+  Future<void> startPregnancy(DateTime lastMenstrualPeriod) async {
+    if (isPregnancyModeActive) return;
+    _pregnancySpans = [..._pregnancySpans, DateSpan(lastMenstrualPeriod)]..sort((a, b) => a.start.compareTo(b.start));
+    await _prefs.setString(pregnancySpansKey, DateSpan.encodeList(_pregnancySpans));
+    notifyListeners();
+  }
+
+  /// Ends pregnancy mode on [end]; predictions resume from the next logged period.
+  Future<void> endPregnancy(DateTime end) async {
+    _pregnancySpans = [for (final s in _pregnancySpans) s.isOngoing ? s.closedAt(end) : s];
+    await _prefs.setString(pregnancySpansKey, DateSpan.encodeList(_pregnancySpans));
     notifyListeners();
   }
 }

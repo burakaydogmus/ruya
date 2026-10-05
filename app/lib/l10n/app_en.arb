@@ -1992,5 +1992,149 @@
     "kidMode_subtitle": "Hides sex and libido everywhere, including the clinical report. Existing entries are kept.",
     "@kidMode_subtitle": {
         "description": "Preference toggle subtitle"
+    },
+    "pregnancy_weekShort": "weeks",
+    "@pregnancy_weekShort": {
+        "description": "Widget unit"
+    },
+    "pregnancy_title": "Pregnancy mode",
+    "@pregnancy_title": {
+        "description": "Settings entry / screen title"
+    },
+    "pregnancy_status": "Pregnancy · {weeks} weeks {days} days",
+    "@pregnancy_status": {
+        "description": "Today headline",
+        "placeholders": {
+            "weeks": {
+                "type": "int"
+            },
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "pregnancy_dueDate": "Estimated due date: around {date}",
+    "@pregnancy_dueDate": {
+        "description": "Today subline",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "pregnancy_pausedNote": "Period predictions and period reminders are paused.",
+    "@pregnancy_pausedNote": {
+        "description": "Today note"
+    },
+    "pregnancy_intro": "While pregnancy mode is on, RUYA pauses period predictions and reminders and shows your pregnancy week instead. The cycle with the pregnancy is not used for future averages.",
+    "@pregnancy_intro": {
+        "description": "Screen intro"
+    },
+    "pregnancy_start": "Start pregnancy mode",
+    "@pregnancy_start": {
+        "description": "Button"
+    },
+    "pregnancy_pickLmp": "First day of your last period",
+    "@pregnancy_pickLmp": {
+        "description": "Date picker help"
+    },
+    "pregnancy_lmp": "Last period started",
+    "@pregnancy_lmp": {
+        "description": "Row"
+    },
+    "pregnancy_end": "End pregnancy mode",
+    "@pregnancy_end": {
+        "description": "Button"
+    },
+    "pregnancy_pickEnd": "When did the pregnancy end?",
+    "@pregnancy_pickEnd": {
+        "description": "Date picker help"
+    },
+    "pregnancy_history": "Past pregnancies",
+    "@pregnancy_history": {
+        "description": "Section"
+    },
+    "pregnancy_ended": "Pregnancy mode ended. Predictions resume after your next logged period.",
+    "@pregnancy_ended": {
+        "description": "Snackbar"
+    },
+    "pregnancy_started": "Pregnancy mode is on",
+    "@pregnancy_started": {
+        "description": "Snackbar"
+    },
+    "pregnancy_disclaimer": "Week and due date are estimates based on your last period, not a medical assessment.",
+    "@pregnancy_disclaimer": {
+        "description": "Disclaimer"
+    },
+    "birthControl_mode": "I use hormonal birth control",
+    "@birthControl_mode": {
+        "description": "Toggle"
+    },
+    "birthControl_modeSubtitle": "Hides fertile window and ovulation. Bleeds during this time are treated as withdrawal bleeds and kept out of natural cycle averages.",
+    "@birthControl_modeSubtitle": {
+        "description": "Toggle subtitle"
+    },
+    "birthControl_pickStart": "Since when?",
+    "@birthControl_pickStart": {
+        "description": "Date picker help"
+    },
+    "birthControl_pickEnd": "Last day of use",
+    "@birthControl_pickEnd": {
+        "description": "Date picker help"
+    },
+    "birthControl_since": "Since {date}",
+    "@birthControl_since": {
+        "description": "Subtitle",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "today_bleedIn": "{count, plural, =1{Expected bleed in 1 day} other{Expected bleed in {count} days}}",
+    "@today_bleedIn": {
+        "description": "Today countdown on birth control",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "today_bleedToday": "Bleed expected today",
+    "@today_bleedToday": {
+        "description": "Today countdown on birth control"
+    },
+    "today_bleedLate": "{count, plural, =1{Expected bleed about 1 day ago} other{Expected bleed about {count} days ago}}",
+    "@today_bleedLate": {
+        "description": "Today countdown late on birth control",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "cycleKind_natural": "Natural",
+    "@cycleKind_natural": {
+        "description": "Cycle type"
+    },
+    "cycleKind_withdrawal": "Withdrawal bleed",
+    "@cycleKind_withdrawal": {
+        "description": "Cycle type"
+    },
+    "cycleKind_pregnancy": "Pregnancy",
+    "@cycleKind_pregnancy": {
+        "description": "Cycle type"
+    },
+    "report_colKind": "Type",
+    "@report_colKind": {
+        "description": "PDF column"
+    },
+    "report_naturalOnly": "Averages use natural cycles only.",
+    "@report_naturalOnly": {
+        "description": "PDF note"
+    },
+    "calendar_legendPredictedBleed": "Expected bleed",
+    "@calendar_legendPredictedBleed": {
+        "description": "Calendar legend on birth control"
     }
 }

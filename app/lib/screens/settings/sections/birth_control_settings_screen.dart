@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ruya/screens/settings/sections/life_stage_widgets.dart';
 import 'package:ruya/database/repositories/pills_repository.dart';
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
@@ -179,6 +180,8 @@ class _BirthControlSettingsScreenState extends State<BirthControlSettingsScreen>
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               children: [
+                const BirthControlModeTile(),
+                shortDivider,
                 SwitchListTile(
                   title: Text(l10n.settingsScreen_enablePillTracking),
                   subtitle: Text(l10n.settingsScreen_pillDescription),

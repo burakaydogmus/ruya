@@ -140,11 +140,17 @@ class PeriodService extends ChangeNotifier {
   /// Calculates the period predictions, cycle predictions and ongoing status.
   Future<void> _calculatePrediction() async {
     final periods = await getPeriodsSince(DateTime.now().subtract(const Duration(days: _lastNMonthsToConsider * 30)));
+    final classifier = _settingsService.cycleClassifier;
 
-    _upcomingPeriodPrediction = PeriodPredictor.estimateNextPeriod(
-      periods,
-      DateTime.now(),
-    );
+    // Pregnancy pauses all period predictions. Otherwise pregnancy cycles are
+    // dropped, and natural cycles and withdrawal bleeds are averaged separately.
+    _upcomingPeriodPrediction = _settingsService.isPregnancyModeActive
+        ? null
+        : PeriodPredictor.estimateNextPeriod(
+            periods,
+            DateTime.now(),
+            includeCycle: classifier.includeForPrediction,
+          );
 
     _isPeriodOngoing = _lastPeriod != null ? DateUtils.isSameDay(_lastPeriod!.endDate, DateTime.now()) : false;
     
@@ -187,6 +193,8 @@ class PeriodService extends ChangeNotifier {
       periods: _periodEntries,
       predictedCycle: _predictedCurrentCycle,
       now: DateTime.now(),
+      pregnancy: _settingsService.activePregnancy,
+      onBirthControl: _settingsService.isOnHormonalBirthControl,
       lutealPhaseLength: _settingsService.lutealPhaseLength,
       pmsDays: _settingsService.showPmsWindow ? _settingsService.pmsDays : 0,
     );
@@ -215,6 +223,18 @@ class PeriodService extends ChangeNotifier {
 
   /// Updates the home screen widget.
   void _updateWidgetData(AppLocalizations l10n, WidgetController controller) {
+    final pregnancy = _cycleSnapshot.pregnancy;
+    if (pregnancy != null) {
+      final week = _cycleSnapshot.pregnancyWeek!;
+      controller.saveAndAndUpdateCircle(
+        currentValue: week.clamp(0, 40),
+        maxValue: 40,
+        largeText: '$week',
+        smallText: l10n.pregnancy_weekShort,
+        predictionDate: '',
+      );
+      return;
+    }
     String largeText = '$_circleCurrentValue';
     String smallText = l10n.periodPredictionCircle_days(_circleCurrentValue);
 
@@ -235,6 +255,11 @@ class PeriodService extends ChangeNotifier {
 
   /// Schedules period due and overdue notifications.
   Future<void> _schedulePeriodNotifications(AppLocalizations l10n) async {
+    if (_settingsService.isPregnancyModeActive) {
+      await NotificationService.cancelPeriodDueNotification();
+      await NotificationService.cancelPeriodOverdueNotification();
+      return;
+    }
     if (_upcomingPeriodPrediction == null) return;
 
     // Period due notification

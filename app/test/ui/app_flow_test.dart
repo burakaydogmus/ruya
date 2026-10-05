@@ -332,6 +332,51 @@ void main() {
     expect(find.text('Libido'), findsNothing);
   });
 
+  String isoDaysAgo(int days) {
+    final n = DateTime.now();
+    final d = DateTime(n.year, n.month, n.day - days);
+    return '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+  }
+
+  testWidgets('pregnancy mode shows weeks and due date instead of predictions', (tester) async {
+    await launch(tester, initialPrefs: {'pregnancy_spans': '[{"start":"${isoDaysAgo(88)}","end":null}]'});
+    expect(find.text('Gebelik · 12 hafta 4 gün'), findsOneWidget);
+    expect(find.textContaining('Tahmini doğum tarihi'), findsOneWidget);
+    expect(find.textContaining('Regline'), findsNothing);
+    expect(find.textContaining('Bugün:'), findsNothing);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Takvim')));
+    await settle(tester);
+    expect(find.text('PMS (beklenen)'), findsNothing);
+  });
+
+  testWidgets('birth control mode predicts the expected bleed and hides phases', (tester) async {
+    await launch(tester, initialPrefs: {'hormonal_bc_spans': '[{"start":"${isoDaysAgo(60)}","end":null}]'});
+    expect(find.text('Beklenen kanamaya 4 gün kaldı'), findsOneWidget);
+    expect(find.text('Hormonal doğum kontrolü açıkken faz tahminleri gösterilmez.'), findsOneWidget);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Takvim')));
+    await settle(tester);
+    expect(find.text('Tahmini kanama'), findsOneWidget);
+    expect(find.text('Doğurgan (tahmini)'), findsNothing);
+  });
+
+  testWidgets('pregnancy mode can be started and ended from settings', (tester) async {
+    await launch(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    await tapVisible(tester, find.text('Gebelik modu'));
+    await settle(tester);
+    await tester.tap(find.text('Gebelik modunu başlat'));
+    await settle(tester);
+    await tester.tap(find.text('Tamam'));
+    await settle(tester);
+    expect(find.text('Gebelik modunu sonlandır'), findsOneWidget);
+    tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+    await settle(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Bugün')));
+    await settle(tester);
+    expect(find.textContaining('Gebelik ·'), findsOneWidget);
+  });
+
   testWidgets('privacy settings are reachable from settings', (tester) async {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));

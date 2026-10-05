@@ -78,6 +78,8 @@ const String showPmsWindowKey = "show_pms_window";
 const String pinTimeoutSecondsKey = "pin_timeout_seconds";
 const String discreteModeKey = "discrete_mode";
 const String kidModeKey = "kid_mode";
+const String hormonalBirthControlSpansKey = "hormonal_bc_spans";
+const String pregnancySpansKey = "pregnancy_spans";
 
 
 // Notifications

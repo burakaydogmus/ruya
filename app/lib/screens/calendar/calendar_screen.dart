@@ -121,7 +121,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return Column(
       children: [
-        _Legend(colors: colors, showFertile: showFertile, showPms: showPms, showSex: showSex),
+        _Legend(
+          colors: colors,
+          showFertile: showFertile,
+          showPms: showPms,
+          showSex: showSex,
+          birthControl: settings.isOnHormonalBirthControl,
+        ),
         const Divider(height: 1),
         Expanded(
           child: ScrollableCleanCalendar(
@@ -275,7 +281,15 @@ class _DayCell extends StatelessWidget {
 }
 
 class _Legend extends StatelessWidget {
-  const _Legend({required this.colors, required this.showFertile, required this.showPms, required this.showSex});
+  const _Legend({
+    required this.colors,
+    required this.showFertile,
+    required this.showPms,
+    required this.showSex,
+    this.birthControl = false,
+  });
+
+  final bool birthControl;
 
   final _CalendarColors colors;
   final bool showFertile;
@@ -308,7 +322,10 @@ class _Legend extends StatelessWidget {
         runSpacing: 6,
         children: [
           item(circle(fill: FlowRate.medium.color), l10n.calendar_legendPeriod),
-          item(circle(fill: colors.predicted.withValues(alpha: 0.1), border: colors.predicted), l10n.calendar_legendPredicted),
+          item(
+            circle(fill: colors.predicted.withValues(alpha: 0.1), border: colors.predicted),
+            birthControl ? l10n.calendar_legendPredictedBleed : l10n.calendar_legendPredicted,
+          ),
           if (showFertile) ...[
             item(Container(width: 14, height: 12, decoration: BoxDecoration(color: colors.fertile, borderRadius: BorderRadius.circular(3))),
                 l10n.calendar_legendFertile),

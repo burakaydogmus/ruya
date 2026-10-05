@@ -1,3 +1,4 @@
+import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase_enum.dart';
 import 'package:ruya/models/periods/period.dart';
@@ -34,6 +35,8 @@ class CycleSnapshot {
     required this.menstruationDay,
     required this.phase,
     required this.basedOnDefaults,
+    this.pregnancy,
+    this.onBirthControl = false,
   });
 
   /// Cycle length used when only one period has been logged.
@@ -57,6 +60,27 @@ class CycleSnapshot {
   /// True when the estimate uses the default cycle length (fewer than 2 periods).
   final bool basedOnDefaults;
 
+  /// Active pregnancy (predictions are paused while set).
+  final DateSpan? pregnancy;
+
+  /// While on hormonal birth control the forecast is an expected withdrawal bleed.
+  final bool onBirthControl;
+
+  static const int pregnancyLengthDays = 280;
+
+  /// Days since the last menstrual period (gestational age).
+  int? get pregnancyDays => pregnancy == null ? null : _dayDiff(today, pregnancy!.start);
+
+  /// Completed pregnancy weeks (12 weeks 3 days → 12), counted from the LMP.
+  int? get pregnancyWeek => pregnancyDays == null ? null : pregnancyDays! ~/ 7;
+
+  int? get pregnancyDayOfWeek => pregnancyDays == null ? null : pregnancyDays! % 7;
+
+  /// Estimated due date: LMP + 280 days (Naegele's rule).
+  DateTime? get estimatedDueDate => pregnancy == null
+      ? null
+      : DateTime(pregnancy!.start.year, pregnancy!.start.month, pregnancy!.start.day + pregnancyLengthDays);
+
   bool get hasData => cycle != null;
 
   /// Days until the expected period; negative when the period is late.
@@ -78,8 +102,22 @@ class CycleSnapshot {
     required DateTime now,
     int lutealPhaseLength = CyclePhasePredictor.defaultLutealPhaseLength,
     int pmsDays = CyclePhasePredictor.defaultPmsDays,
+    DateSpan? pregnancy,
+    bool onBirthControl = false,
   }) {
     final today = _d(now);
+    if (pregnancy != null) {
+      return CycleSnapshot._(
+        today: today,
+        cycle: null,
+        forecastCycles: const [],
+        isPeriodOngoing: false,
+        menstruationDay: 0,
+        phase: CyclePhase.unknown,
+        basedOnDefaults: false,
+        pregnancy: pregnancy,
+      );
+    }
     if (periods.isEmpty) {
       return CycleSnapshot._(
         today: today,
@@ -131,6 +169,7 @@ class CycleSnapshot {
       menstruationDay: menstruationDay,
       phase: phase,
       basedOnDefaults: basedOnDefaults,
+      onBirthControl: onBirthControl,
     );
   }
 

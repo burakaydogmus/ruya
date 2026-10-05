@@ -37,7 +37,10 @@ class TodayScreen extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
       children: [
-        _CountdownCard(snapshot: snapshot, todayLog: todayLog),
+        if (snapshot.pregnancy != null)
+          _PregnancyCard(snapshot: snapshot)
+        else
+          _CountdownCard(snapshot: snapshot, todayLog: todayLog),
         const SizedBox(height: 12),
         if (snapshot.hasData)
           showPhases
@@ -114,15 +117,16 @@ class _CountdownCard extends StatelessWidget {
     }
 
     final days = snapshot.daysUntilNextPeriod!;
+    final bc = snapshot.onBirthControl;
     final String headline;
     if (snapshot.isPeriodOngoing) {
       headline = l10n.today_periodDay(snapshot.menstruationDay);
     } else if (days > 0) {
-      headline = l10n.today_periodIn(days);
+      headline = bc ? l10n.today_bleedIn(days) : l10n.today_periodIn(days);
     } else if (days == 0) {
-      headline = l10n.today_periodToday;
+      headline = bc ? l10n.today_bleedToday : l10n.today_periodToday;
     } else {
-      headline = l10n.today_periodLate(-days);
+      headline = bc ? l10n.today_bleedLate(-days) : l10n.today_periodLate(-days);
     }
     final expected = DateFormat.MMMMd(l10n.localeName).format(snapshot.cycle!.nextPeriodStart);
     final isPeriodToday = todayLog != null && todayLog!.flow != FlowRate.none;
@@ -172,6 +176,59 @@ class _CountdownCard extends StatelessWidget {
                 onPressed: () => _quick(context, (log) => log.copyWith(flow: FlowRate.medium)),
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PregnancyCard extends StatelessWidget {
+  const _PregnancyCard({required this.snapshot});
+
+  final CycleSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final due = DateFormat.yMMMMd(l10n.localeName).format(snapshot.estimatedDueDate!);
+    final progress = (snapshot.pregnancyDays! / CycleSnapshot.pregnancyLengthDays).clamp(0.0, 1.0);
+
+    return Card(
+      elevation: 0,
+      color: scheme.tertiaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              Icon(Icons.pregnant_woman, color: scheme.onTertiaryContainer),
+              const SizedBox(width: 8),
+              _EstimateTag(label: l10n.today_estimateTag),
+            ]),
+            const SizedBox(height: 12),
+            Text(
+              l10n.pregnancy_status(snapshot.pregnancyWeek!, snapshot.pregnancyDayOfWeek!),
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: scheme.onTertiaryContainer,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(l10n.pregnancy_dueDate(due), style: TextStyle(color: scheme.onTertiaryContainer)),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(value: progress, minHeight: 8),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '${l10n.pregnancy_pausedNote} ${l10n.pregnancy_disclaimer}',
+              style: theme.textTheme.bodySmall?.copyWith(color: scheme.onTertiaryContainer),
+            ),
           ],
         ),
       ),

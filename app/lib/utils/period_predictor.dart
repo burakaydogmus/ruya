@@ -22,7 +22,10 @@ class PeriodPredictor {
   /// [minValidCycleLength] and [maxValidCycleLength] (defined in `constants.dart`).
   ///
   /// Returns an empty list if there are fewer than `_minPeriodsLogged` or no valid cycles.
-  static List<int> _getValidCycleLengths(List<Period> periods) {
+  static List<int> _getValidCycleLengths(
+    List<Period> periods, {
+    bool Function(DateTime start, DateTime nextStart)? includeCycle,
+  }) {
     if (periods.length < _minPeriodsLogged) {
       return [];
     }
@@ -36,7 +39,9 @@ class PeriodPredictor {
           .difference(sortedPeriods[i].startDate)
           .inDays;
 
-      if (days >= minValidCycleLength && days <= maxValidCycleLength) {
+      final included = includeCycle == null ||
+          includeCycle(sortedPeriods[i].startDate, sortedPeriods[i + 1].startDate);
+      if (included && days >= minValidCycleLength && days <= maxValidCycleLength) {
         cycleLengths.add(days);
       }
     }
@@ -64,10 +69,14 @@ class PeriodPredictor {
   ///
   /// Returns a [PeriodPredictionResult] object, or `null` if there are not enough
   /// entries or if statistics cannot be calculated.
+  ///
+  /// [includeCycle] can drop cycles from the average (pregnancy, or withdrawal
+  /// bleeds versus natural cycles, see CycleClassifier).
   static PeriodPredictionResult? estimateNextPeriod(
     List<Period> periods,
-    DateTime now,
-  ) {
+    DateTime now, {
+    bool Function(DateTime start, DateTime nextStart)? includeCycle,
+  }) {
     if (periods.length < _minPeriodsLogged) {
       return null;
     }
@@ -75,7 +84,7 @@ class PeriodPredictor {
     final sortedPeriods = List<Period>.from(periods)
       ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
-    final List<int> validCycleLengths = _getValidCycleLengths(sortedPeriods);
+    final List<int> validCycleLengths = _getValidCycleLengths(sortedPeriods, includeCycle: includeCycle);
     if (validCycleLengths.isEmpty) {
       return null;
     }
@@ -162,12 +171,15 @@ class PeriodPredictor {
   ///
   /// Returns a [CycleStats] object, or `null` if there are not enough periods
   /// or no valid cycle data.
-  static CycleStats? getCycleStats(List<Period> periods) {
+  static CycleStats? getCycleStats(
+    List<Period> periods, {
+    bool Function(DateTime start, DateTime nextStart)? includeCycle,
+  }) {
     if (periods.length < _minPeriodsLogged) {
       return null;
     }
 
-    List<int> validCycleLengths = _getValidCycleLengths(periods);
+    List<int> validCycleLengths = _getValidCycleLengths(periods, includeCycle: includeCycle);
 
     if (validCycleLengths.isEmpty) {
       return null;

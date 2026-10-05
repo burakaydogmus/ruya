@@ -9,6 +9,7 @@ import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/period_logs/pain_level_enum.dart';
 import 'package:ruya/models/period_logs/symptom.dart';
 import 'package:ruya/report/clinical_report_data.dart';
+import 'package:ruya/cycle/life_stage.dart';
 
 /// Renders [ClinicalReportData] to a vector PDF entirely on the device.
 ///
@@ -90,17 +91,24 @@ class ClinicalReportPdf {
           pw.SizedBox(height: 16),
           _sectionTitle(l10n.report_summary),
           _summary(data, l10n),
+          if (data.cycles.any((c) => c.kind != CycleKind.natural))
+            pw.Padding(padding: const pw.EdgeInsets.only(top: 6), child: pw.Text(l10n.report_naturalOnly, style: small)),
           pw.SizedBox(height: 16),
           _sectionTitle(l10n.report_cycles),
           if (data.cycles.isEmpty)
             pw.Text(l10n.report_noCycles, style: small)
           else
             _table(
-              headers: [l10n.report_colStart, l10n.report_colPeriod, l10n.report_colCycle],
+              headers: [l10n.report_colStart, l10n.report_colKind, l10n.report_colPeriod, l10n.report_colCycle],
               rows: [
                 for (final c in data.cycles.reversed)
                   [
                     dateFmt.format(c.start),
+                    switch (c.kind) {
+                      CycleKind.natural => l10n.cycleKind_natural,
+                      CycleKind.withdrawal => l10n.cycleKind_withdrawal,
+                      CycleKind.pregnancy => l10n.cycleKind_pregnancy,
+                    },
                     l10n.insights_days(c.periodDays),
                     c.isOngoing
                         ? l10n.report_ongoing(c.length)

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/periods/period.dart';
@@ -60,6 +61,7 @@ class ReportCycle {
     required this.length,
     required this.isOngoing,
     this.isGap = false,
+    this.kind = CycleKind.natural,
   });
 
   final DateTime start;
@@ -73,6 +75,9 @@ class ReportCycle {
 
   /// Implausible length (usually untracked periods): shown, but not averaged.
   final bool isGap;
+
+  /// Natural cycle, withdrawal bleed (hormonal birth control) or pregnancy.
+  final CycleKind kind;
 
   DateTime get end => DateTime(start.year, start.month, start.day + length - 1);
 }
@@ -106,7 +111,9 @@ class ClinicalReportData {
   final ClinicalReportOptions options;
 
   /// Completed cycles only (an ongoing cycle has no final length yet).
-  List<ReportCycle> get completedCycles => cycles.where((c) => !c.isOngoing && !c.isGap).toList();
+  /// Completed natural cycles: the basis for every average in the report.
+  List<ReportCycle> get completedCycles =>
+      cycles.where((c) => !c.isOngoing && !c.isGap && c.kind == CycleKind.natural).toList();
 
   int? get averageCycleLength {
     final c = completedCycles;
@@ -128,8 +135,9 @@ class ClinicalReportData {
   }
 
   int? get averagePeriodDays {
-    if (cycles.isEmpty) return null;
-    return (cycles.map((c) => c.periodDays).reduce((a, b) => a + b) / cycles.length).round();
+    final natural = cycles.where((c) => c.kind == CycleKind.natural).toList();
+    if (natural.isEmpty) return null;
+    return (natural.map((c) => c.periodDays).reduce((a, b) => a + b) / natural.length).round();
   }
 
   /// Valid cycle lengths are 10–130 days (same bounds as the predictor);
@@ -143,6 +151,7 @@ class ClinicalReportData {
     required DateTime from,
     required DateTime to,
     ClinicalReportOptions options = const ClinicalReportOptions(),
+    CycleClassifier classifier = const CycleClassifier(),
     DateTime? now,
   }) {
     final start = _d(from);
@@ -157,12 +166,15 @@ class ClinicalReportData {
       if (s.isBefore(start) || s.isAfter(end)) continue;
       if (i + 1 < sorted.length) {
         final length = _diff(_d(sorted[i + 1].startDate), s);
+        final kind = classifier.classify(s, _d(sorted[i + 1].startDate));
         cycles.add(ReportCycle(
           start: s,
           periodDays: p.totalDays,
           length: length,
           isOngoing: false,
-          isGap: length < _minCycle || length > _maxCycle,
+          // Long pregnancy cycles are labelled as pregnancy, not as a tracking gap.
+          isGap: kind == CycleKind.natural && (length < _minCycle || length > _maxCycle),
+          kind: kind,
         ));
       } else {
         cycles.add(ReportCycle(
@@ -170,6 +182,7 @@ class ClinicalReportData {
           periodDays: p.totalDays,
           length: _diff(today, s) + 1,
           isOngoing: true,
+          kind: classifier.classify(s, null),
         ));
       }
     }

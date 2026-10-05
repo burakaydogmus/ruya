@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ruya/insights/insight_calculators.dart';
+import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase_enum.dart';
 import 'package:ruya/models/period_logs/daily_log_enums.dart';
@@ -115,7 +116,24 @@ class CycleHistoryWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Row(
                       children: [
-                        Expanded(flex: 4, child: Text(fmt.format(e.start))),
+                        Expanded(
+                          flex: 4,
+                          child: Row(children: [
+                            Flexible(child: Text(fmt.format(e.start))),
+                            if (e.kind != CycleKind.natural) ...[
+                              const SizedBox(width: 4),
+                              Tooltip(
+                                message: e.kind == CycleKind.withdrawal
+                                    ? l10n.cycleKind_withdrawal
+                                    : l10n.cycleKind_pregnancy,
+                                child: Icon(
+                                  e.kind == CycleKind.withdrawal ? Icons.medication_outlined : Icons.pregnant_woman,
+                                  size: 16,
+                                ),
+                              ),
+                            ],
+                          ]),
+                        ),
                         Expanded(flex: 3, child: Text(l10n.insights_days(e.periodDays))),
                         Expanded(
                           flex: 3,

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:ruya/cycle/life_stage.dart';
+
 import 'package:ruya/models/birth_control/pills/pill_intake.dart';
 import 'package:ruya/models/birth_control/pills/pill_regimen.dart';
 import 'package:ruya/models/birth_control/pills/pill_status_enum.dart';
@@ -75,7 +77,14 @@ class PillAdherence {
 
 /// One row of the cycle history list.
 class CycleHistoryEntry {
-  const CycleHistoryEntry({required this.start, required this.periodDays, this.cycleLength});
+  const CycleHistoryEntry({
+    required this.start,
+    required this.periodDays,
+    this.cycleLength,
+    this.kind = CycleKind.natural,
+  });
+
+  final CycleKind kind;
 
   final DateTime start;
   final int periodDays;
@@ -88,7 +97,11 @@ class CycleHistory {
   CycleHistory._();
 
   /// Most recent first, at most [limit] entries.
-  static List<CycleHistoryEntry> build(List<Period> periods, {int limit = 12}) {
+  static List<CycleHistoryEntry> build(
+    List<Period> periods, {
+    int limit = 12,
+    CycleClassifier classifier = const CycleClassifier(),
+  }) {
     final sorted = List<Period>.from(periods)..sort((a, b) => a.startDate.compareTo(b.startDate));
     final entries = <CycleHistoryEntry>[
       for (var i = 0; i < sorted.length; i++)
@@ -96,6 +109,10 @@ class CycleHistory {
           start: _d(sorted[i].startDate),
           periodDays: sorted[i].totalDays,
           cycleLength: i + 1 < sorted.length ? _diff(sorted[i + 1].startDate, sorted[i].startDate) : null,
+          kind: classifier.classify(
+            sorted[i].startDate,
+            i + 1 < sorted.length ? _d(sorted[i + 1].startDate) : null,
+          ),
         ),
     ];
     return entries.reversed.take(limit).toList();

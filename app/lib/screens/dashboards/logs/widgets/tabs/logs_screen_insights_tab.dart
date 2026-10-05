@@ -19,6 +19,7 @@ import 'package:ruya/widgets/insights/mood_frequency.dart';
 import 'package:ruya/widgets/insights/cycle_overview.dart';
 import 'package:ruya/models/period_logs/daily_log_enums.dart';
 import 'package:ruya/insights/insight_calculators.dart';
+import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/widgets/insights/extended_insights.dart';
 import 'package:ruya/database/repositories/pills_repository.dart';
 import 'package:ruya/services/settings_service.dart';
@@ -151,7 +152,11 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
             logs: allLogs,
             lutealPhaseLength: settings.lutealPhaseLength,
           );
-          final CycleStats? cycleStats = PeriodPredictor.getCycleStats(allPeriods);
+          final CycleStats? cycleStats = PeriodPredictor.getCycleStats(
+            allPeriods,
+            includeCycle: (start, next) =>
+                context.read<SettingsService>().cycleClassifier.classify(start, next) == CycleKind.natural,
+          );
           final PeriodStats? periodStats = PeriodPredictor.getPeriodStats(allPeriods);
 
           final String loggingSpan = _formatLoggingSpan(allLogs, l10n);
@@ -216,7 +221,9 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
 
                 const SizedBox(height: 16.0),
 
-                CycleHistoryWidget(entries: CycleHistory.build(periodService.periodEntries)),
+                CycleHistoryWidget(
+                  entries: CycleHistory.build(periodService.periodEntries, classifier: settings.cycleClassifier),
+                ),
 
                 const SizedBox(height: 16.0),
                 

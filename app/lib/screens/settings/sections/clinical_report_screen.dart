@@ -10,6 +10,7 @@ import 'package:ruya/security/app_lock_controller.dart';
 import 'package:ruya/services/log_service.dart';
 import 'package:ruya/services/period_service.dart';
 import 'package:ruya/services/user_service.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Builds the clinical PDF for a chosen date range on the device.
@@ -59,6 +60,7 @@ class _ClinicalReportScreenState extends State<ClinicalReportScreen> {
       from: _range.start,
       to: _range.end,
       options: widget.allowIntimateFields ? _options : _options.copyWith(includeSexAndLibido: false),
+      classifier: context.read<SettingsService>().cycleClassifier,
     );
     final pdf = ClinicalReportPdf(
       regular: await rootBundle.load('assets/fonts/Roboto-Regular.ttf'),
