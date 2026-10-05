@@ -17,7 +17,7 @@ import 'package:ruya/services/settings_service.dart';
 ///   the lock screen; channels with revealing names are removed
 /// * the home-screen widget shows only a number
 /// * lock screen and biometric prompt wording
-/// * the recents (overview) thumbnail is blank
+/// * the recents (overview) thumbnail is blank (also whenever a PIN is set)
 ///
 /// Android limits (cannot be changed by an app at runtime): the name in
 /// Settings › Apps and the app name printed by the system above notifications
@@ -36,12 +36,19 @@ class DiscreteModeController {
       );
 
   /// Applies the saved preference at startup (launcher alias + notification wording).
-  Future<void> applySaved(AppLocalizations l10n) async {
+  ///
+  /// The recents thumbnail is hidden in discrete mode and whenever a PIN is set
+  /// (otherwise the locked app would still be readable in the app switcher).
+  Future<void> applySaved(AppLocalizations l10n, {bool pinEnabled = false}) async {
     final enabled = _settings.isDiscreteModeEnabled;
     await NotificationService.setDiscrete(enabled ? neutralText(l10n) : null);
     await _setLauncherIdentity(enabled, onlyIfDifferent: true);
-    await _setHideInRecents(enabled);
+    await updateRecentsPrivacy(pinEnabled: pinEnabled);
   }
+
+  /// Re-evaluates whether the recents thumbnail must be hidden.
+  Future<void> updateRecentsPrivacy({required bool pinEnabled}) =>
+      _setHideInRecents(_settings.isDiscreteModeEnabled || pinEnabled);
 
   /// Turns discrete mode on/off and reschedules notifications with the new wording.
   Future<void> setEnabled(
@@ -49,11 +56,12 @@ class DiscreteModeController {
     required AppLocalizations l10n,
     required PeriodService periodService,
     required DataRefreshCoordinator coordinator,
+    bool pinEnabled = false,
   }) async {
     await _settings.setDiscreteModeEnabled(enabled);
     await NotificationService.setDiscrete(enabled ? neutralText(l10n) : null);
     await _setLauncherIdentity(enabled);
-    await _setHideInRecents(enabled);
+    await updateRecentsPrivacy(pinEnabled: pinEnabled);
     periodService.forceNotificationReschedule();
     await coordinator.resetAllData();
     await _reschedulePillAndSanitary(l10n);

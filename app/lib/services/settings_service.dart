@@ -386,7 +386,8 @@ class SettingsService extends ChangeNotifier {
     _periodDueNotificationsEnabled = enabled;
     await _prefs.setBool(periodDueNotificationsEnabledKey, enabled);
     if (!enabled) {
-      await NotificationService.cancelPillReminder();
+      // Menstrudel cancelled the pill reminder here by mistake.
+      await NotificationService.cancelPeriodDueNotification();
     }
     notifyListeners();
   }
@@ -407,6 +408,7 @@ class SettingsService extends ChangeNotifier {
   Future<void> setPeriodOverdueNotificationsEnabled(bool isEnabled) async {
     _periodOverdueNotificationsEnabled = isEnabled;
     await _prefs.setBool(periodOverdueNotificationsEnabledKey, isEnabled);
+    if (!isEnabled) await NotificationService.cancelPeriodOverdueNotification();
     notifyListeners();
   }
 

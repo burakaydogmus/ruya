@@ -30,6 +30,9 @@ class PrivacySettingsScreen extends StatelessWidget {
       );
       if (pin == null) return;
       await lock.setPin(pin);
+      if (context.mounted) {
+        await context.read<DiscreteModeController>().updateRecentsPrivacy(pinEnabled: true);
+      }
       if (context.mounted) _snack(context, l10n.privacy_pinEnabled);
       return;
     }
@@ -37,6 +40,9 @@ class PrivacySettingsScreen extends StatelessWidget {
     if (!ok) return;
     await lock.removePin();
     await settings.setBiometricsEnabled(false);
+    if (context.mounted) {
+      await context.read<DiscreteModeController>().updateRecentsPrivacy(pinEnabled: false);
+    }
     if (context.mounted) _snack(context, l10n.privacy_pinDisabled);
   }
 
@@ -97,6 +103,7 @@ class PrivacySettingsScreen extends StatelessWidget {
           l10n: l10n,
           periodService: context.read<PeriodService>(),
           coordinator: context.read<DataRefreshCoordinator>(),
+          pinEnabled: context.read<AppLockController>().hasPin,
         );
     messenger.showSnackBar(SnackBar(content: Text(enable ? l10n.privacy_discreteOn : l10n.privacy_discreteOff)));
   }

@@ -178,7 +178,8 @@ class NotificationService {
       tzScheduledTime: tzScheduledTime,
       title: title,
       body: body,
-      notificationID: periodDueNotificationId,
+      // Separate IDs so the overdue reminder no longer replaces the due one.
+      notificationID: daysAfter != null ? periodOverdueNotificationId : periodDueNotificationId,
       notificationChannelId: periodNotificationChannelId,
       notificationChannelName: periodNotificationChannelName,
     );  

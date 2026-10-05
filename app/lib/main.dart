@@ -37,6 +37,9 @@ import 'dart:ui' show PlatformDispatcher;
 final watchService = WatchSyncService();
 final logsRepository = LogsRepository();
 
+/// Bumped when data changes outside the UI (Wear OS quick log) so the app refreshes.
+final externalLogChanges = ValueNotifier<int>(0);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -75,9 +78,12 @@ void main() async {
 
   // Discrete mode must be in effect before anything schedules a notification.
   final discreteMode = DiscreteModeController(settingsService);
-  await discreteMode.applySaved(_startupLocalizations(settingsService));
+  await discreteMode.applySaved(_startupLocalizations(settingsService), pinEnabled: appLock.hasPin);
 
-  watchService.initialize(onPeriodLog: logsRepository.logFromWatch);
+  watchService.initialize(onPeriodLog: () async {
+    await logsRepository.logFromWatch();
+    externalLogChanges.value++;
+  });
 
   runApp(buildRuyaApp(
     settingsService: settingsService,
@@ -168,6 +174,20 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   // Tapping the home-screen widget simply opens the app (Menstrudel showed a
   // debug dialog with the launch URI here).
+
+  @override
+  void initState() {
+    super.initState();
+    externalLogChanges.addListener(_onExternalLogChange);
+  }
+
+  @override
+  void dispose() {
+    externalLogChanges.removeListener(_onExternalLogChange);
+    super.dispose();
+  }
+
+  void _onExternalLogChange() => context.read<DataRefreshCoordinator>().onExternalLogsChanged();
   @override
   Widget build(BuildContext context) {
     final themeNotifier = context.watch<ThemeNotifier>();

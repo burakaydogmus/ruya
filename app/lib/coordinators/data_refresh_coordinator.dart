@@ -66,6 +66,14 @@ class DataRefreshCoordinator {
     );
   }
 
+  /// Reloads logs written outside the UI (e.g. the Wear OS quick log) and
+  /// recalculates periods, predictions, notifications and the widget.
+  Future<void> onExternalLogsChanged() async {
+    await logService.loadLogs();
+    final l10n = _l10n;
+    if (l10n != null) onLogsChanged(l10n);
+  }
+
   void dispose() {
     logService.removeListener(_onLogServiceChanged);
   }
