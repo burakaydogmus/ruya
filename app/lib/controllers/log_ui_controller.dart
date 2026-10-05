@@ -117,10 +117,10 @@ class LogUIController extends ChangeNotifier {
           if (showSnack && context.mounted) _showSuccess(context, l10n.dailyLog_deleted);
       }
       coordinator.onLogsChanged(l10n);
-    } on DuplicateLogException catch (e) {
-      if (context.mounted) _showError(context, e.message);
-    } on FutureDateException catch (e) {
-      if (context.mounted) _showError(context, e.message);
+    } on DuplicateLogException {
+      if (context.mounted) _showError(context, l10n.dailyLog_duplicateDate);
+    } on FutureDateException {
+      if (context.mounted) _showError(context, l10n.dailyLog_futureDate);
     } catch (e) {
       debugPrint('Saving log failed: $e');
       if (context.mounted) _showError(context, l10n.dailyLog_error);

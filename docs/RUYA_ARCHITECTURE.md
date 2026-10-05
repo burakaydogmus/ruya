@@ -183,3 +183,36 @@ CREATE TABLE log_moods (
 | Upstream bağımlılıkları beta (`file_picker 12`) | API kırılması | `pubspec.lock` commit'lendi |
 | Tam DB şifrelemesi yok (M1) | Root'lu cihazda yapısal veriler okunabilir | Alan şifreleme + sandbox + FBE; SQLCipher M2'de |
 | Release imzası | `key.properties` yok | Yoksa debug anahtarıyla imzalanır (yerel kurulum için); dağıtım için kendi keystore'unu ekle |
+
+---
+
+## Milestone 1 — durum (tamamlandı)
+
+| Özellik | Durum |
+|---|---|
+| RUYA adı, `com.burakaydogmus.ruya`, ikon, Türkçe dil | ✔ |
+| Menstrudel regl/akış/ağrı/belirti, hap, LARC, hijyen, cinsellik, bildirim, widget, Wear OS | ✔ korunuyor (takipçiler Kayıt sekmesinde) |
+| Bugün ekranı (kalan gün, faz, ruh hali, hızlı kayıt) | ✔ |
+| Faz hesabı, doğurgan dönem, yumurtlama, PMS (luteal/PMS ayarlanabilir) | ✔ |
+| Günlük kayıt: ruh hali, akıntı, ilaç, not, libido, cinsellik, doğum kontrolü | ✔ (not + ilaç AES-GCM şifreli) |
+| PIN kilidi, biyometri, zaman aşımı | ✔ |
+| Şifreli yerel yedek (schemaVersion 1, önizleme, transaction'lı geri yükleme) | ✔ |
+| Release `INTERNET` izni | yok ✔ |
+
+Doğrulama: `flutter analyze` (yalnızca upstream deprecation info'ları), `flutter test` 94/94,
+JVM unit test (Kotlin PBKDF2, RFC 7914), debug + release build, Android 15 emülatöründe release APK ile
+onboarding → Bugün → takvim → PIN kilidi → şifreli yedek kaydet/geri yükle akışı.
+
+Release APK'daki izinler: POST_NOTIFICATIONS, (USE/SCHEDULE)_EXACT_ALARM, RECEIVE_BOOT_COMPLETED,
+USE_BIOMETRIC/USE_FINGERPRINT, VIBRATE, WAKE_LOCK, FOREGROUND_SERVICE, ACCESS_NETWORK_STATE.
+Son üçü bir eklentinin bağımlılığı olan androidx WorkManager'dan gelir; internet erişimi vermezler.
+
+## Sonraki milestone'lar
+* **M2:** Discrete mode (activity-alias ile ikon/isim, nötr bildirim metinleri, gizli bildirim kanalı),
+  Clinical PDF (`pdf` paketi, tarih aralığı, kid mode filtreleri), Flo/Clue/drip importer'ları
+  (`lib/import/` adapter + önizleme + "mevcut gün kazanır" birleştirme), İçgörüler: hap uyumu, ağrı/akış/belirti
+  eğilimleri, döngü geçmişi listesi.
+* **M3:** Gebelik modu, doğum kontrolü modu (withdrawal bleeding etiketi), çocuk modu, SQLCipher ile tam DB şifreleme,
+  FLAG_SECURE / son uygulamalarda içeriği gizleme, Wear OS'tan gelen kaydın UI'ı anında yenilemesi.
+* **Teknik borç:** upstream `deprecated_member_use` uyarıları (Radio/RadioGroup, `year2023`), regl "due/overdue"
+  bildirimlerinin aynı ID'yi paylaşması, `setNotificationsEnabled(false)` hatası, 10 dildeki yeni anahtarların çevirisi.

@@ -1609,5 +1609,13 @@
     "cycleSettings_pmsDaysHint": "Days before the expected period",
     "@cycleSettings_pmsDaysHint": {
         "description": "Cycle setting hint"
+    },
+    "dailyLog_duplicateDate": "That day already has a log. Open it from the calendar to edit it.",
+    "@dailyLog_duplicateDate": {
+        "description": "Duplicate day error"
+    },
+    "dailyLog_futureDate": "You can't log days in the future.",
+    "@dailyLog_futureDate": {
+        "description": "Future date error"
     }
 }

@@ -537,5 +537,7 @@
     "cycleSettings_lutealLength": "Luteal faz süresi",
     "cycleSettings_lutealLengthHint": "Yumurtlamadan sonraki regle kadar gün (genellikle 14)",
     "cycleSettings_pmsDays": "PMS dönemi",
-    "cycleSettings_pmsDaysHint": "Beklenen regl öncesi gün sayısı"
+    "cycleSettings_pmsDaysHint": "Beklenen regl öncesi gün sayısı",
+    "dailyLog_duplicateDate": "O gün için zaten bir kayıt var. Düzenlemek için takvimden aç.",
+    "dailyLog_futureDate": "Gelecekteki günler için kayıt yapılamaz."
 }
