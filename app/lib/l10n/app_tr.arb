@@ -606,5 +606,17 @@
     "privacy_discreteSubtitle": "RUYA'yı nötr bir simgeyle \"Ajanda\" olarak gösterir; bildirimler nötr metin kullanır ve kilit ekranında gizlenir",
     "privacy_discreteOn": "Gizli mod açıldı. Ana ekrandaki simgenin güncellenmesi birkaç saniye sürebilir.",
     "privacy_discreteOff": "Gizli mod kapatıldı",
-    "privacy_discreteLimits": "Android, uygulamaların Ayarlar › Uygulamalar'da ve bildirimlerin üstünde görünen adı değiştirmesine izin vermez; oralarda RUYA yazmaya devam eder. En iyi koruma için PIN kilidiyle birlikte kullan."
+    "privacy_discreteLimits": "Android, uygulamaların Ayarlar › Uygulamalar'da ve bildirimlerin üstünde görünen adı değiştirmesine izin vermez; oralarda RUYA yazmaya devam eder. En iyi koruma için PIN kilidiyle birlikte kullan.",
+    "insights_pillTitle": "Hap uyumu",
+    "insights_pillRate": "Aktif hapların %{percent}'i alındı",
+    "insights_pillEmpty": "Bu aralıkta henüz aktif hap günü yok.",
+    "insights_pillOnTime": "Zamanında",
+    "insights_pillLate": "Geç",
+    "insights_pillSkipped": "Atlandı",
+    "insights_pillMissed": "Kaydedilmedi",
+    "insights_historyTitle": "Döngü geçmişi",
+    "insights_historyEmpty": "Döngü geçmişin için reglerini kaydet.",
+    "insights_historyCurrent": "şu anki",
+    "insights_moodByPhaseTitle": "Faza göre ruh hali",
+    "insights_moodByPhaseSubtitle": "Fazlar kayıtlı döngülerinden tahmin edilir"
 }

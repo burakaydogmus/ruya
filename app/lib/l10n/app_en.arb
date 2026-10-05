@@ -1931,5 +1931,58 @@
     "privacy_discreteLimits": "Android does not let apps change the name shown in Settings › Apps or above notifications; those still say RUYA. Combine with the PIN lock for the best protection.",
     "@privacy_discreteLimits": {
         "description": "Discrete limits"
+    },
+    "insights_pillTitle": "Pill adherence",
+    "@insights_pillTitle": {
+        "description": "Insights card"
+    },
+    "insights_pillRate": "{percent}% of active pills taken",
+    "@insights_pillRate": {
+        "description": "Pill rate",
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
+    "insights_pillEmpty": "No active pill days in this range yet.",
+    "@insights_pillEmpty": {
+        "description": "Pill empty"
+    },
+    "insights_pillOnTime": "On time",
+    "@insights_pillOnTime": {
+        "description": "Pill stat"
+    },
+    "insights_pillLate": "Late",
+    "@insights_pillLate": {
+        "description": "Pill stat"
+    },
+    "insights_pillSkipped": "Skipped",
+    "@insights_pillSkipped": {
+        "description": "Pill stat"
+    },
+    "insights_pillMissed": "Not logged",
+    "@insights_pillMissed": {
+        "description": "Pill stat"
+    },
+    "insights_historyTitle": "Cycle history",
+    "@insights_historyTitle": {
+        "description": "Insights card"
+    },
+    "insights_historyEmpty": "Log your periods to build your cycle history.",
+    "@insights_historyEmpty": {
+        "description": "History empty"
+    },
+    "insights_historyCurrent": "current",
+    "@insights_historyCurrent": {
+        "description": "Current cycle"
+    },
+    "insights_moodByPhaseTitle": "Mood by cycle phase",
+    "@insights_moodByPhaseTitle": {
+        "description": "Insights card"
+    },
+    "insights_moodByPhaseSubtitle": "Phases are estimated from your logged cycles",
+    "@insights_moodByPhaseSubtitle": {
+        "description": "Insights subtitle"
     }
 }

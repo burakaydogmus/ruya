@@ -207,11 +207,21 @@ Release APK'daki izinler: POST_NOTIFICATIONS, (USE/SCHEDULE)_EXACT_ALARM, RECEIV
 USE_BIOMETRIC/USE_FINGERPRINT, VIBRATE, WAKE_LOCK, FOREGROUND_SERVICE, ACCESS_NETWORK_STATE.
 Son üçü bir eklentinin bağımlılığı olan androidx WorkManager'dan gelir; internet erişimi vermezler.
 
+## Milestone 2 — durum (tamamlandı)
+
+| Özellik | Uygulama | Doğrulama |
+|---|---|---|
+| Flo / Clue / drip içe aktarma | `lib/import/` adapter'ları + otomatik format tespiti; önizleme; mevcut gün asla değişmez (tek transaction) | 17 birim testi, UI erişim testi |
+| Clinical PDF | `lib/report/`: cihazda vektörel PDF, A4 yatay, özet, döngü geçmişi (kayıt boşlukları ayrı), günlük tablo, bölüm seçimi, isim isteğe bağlı; Roboto gömülü | Testler + emülatörde SAF ile kaydedilen PDF |
+| Discrete mode | `activity-alias` (RUYA ↔ "Ajanda"), nötr bildirim metni + tek gizli kanal (kilit ekranında görünmez), widget yalnızca sayı, nötr kilit ekranı/başlık, son uygulamalar küçük resmi gizli | UI testi + emülatörde launcher/kilit/recents |
+| İçgörüler | Hap uyumu, faza göre ruh hali (tahmin motoruyla gün gün tutarlı), döngü geçmişi listesi | 5 birim testi + UI testi |
+
+Discrete mode için Android sınırları: uygulamanın Ayarlar › Uygulamalar'daki adı ve sistemin bildirimlerin üstüne
+yazdığı uygulama adı çalışma zamanında değiştirilemez (RUYA kalır); bazı launcher'lar simgeyi birkaç saniye sonra
+yeniler; uygulamadan son uygulamalar ekranına geçiş animasyonu anlık olarak canlı içeriği gösterebilir (kaydedilen
+küçük resim boştur). LARC hatırlatması bir sonraki LARC ekranı açılışında nötr metne geçer.
+
 ## Sonraki milestone'lar
-* **M2:** Discrete mode (activity-alias ile ikon/isim, nötr bildirim metinleri, gizli bildirim kanalı),
-  Clinical PDF (`pdf` paketi, tarih aralığı, kid mode filtreleri), Flo/Clue/drip importer'ları
-  (`lib/import/` adapter + önizleme + "mevcut gün kazanır" birleştirme), İçgörüler: hap uyumu, ağrı/akış/belirti
-  eğilimleri, döngü geçmişi listesi.
 * **M3:** Gebelik modu, doğum kontrolü modu (withdrawal bleeding etiketi), çocuk modu, SQLCipher ile tam DB şifreleme,
   FLAG_SECURE / son uygulamalarda içeriği gizleme, Wear OS'tan gelen kaydın UI'ı anında yenilemesi.
 * **Teknik borç:** upstream `deprecated_member_use` uyarıları (Radio/RadioGroup, `year2023`), regl "due/overdue"

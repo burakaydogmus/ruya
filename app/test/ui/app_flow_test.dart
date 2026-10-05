@@ -298,6 +298,20 @@ void main() {
     expect(NotificationService.isDiscrete, isFalse);
   });
 
+  testWidgets('insights show overview, mood by phase and cycle history', (tester) async {
+    await launch(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('İçgörüler')));
+    await settle(tester);
+    expect(find.text('Ortalama döngü'), findsOneWidget);
+    final outer = find.byType(Scrollable).first;
+    await tester.scrollUntilVisible(find.text('Faza göre ruh hali'), 300, scrollable: outer);
+    expect(find.text('Faza göre ruh hali'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Döngü geçmişi'), 300, scrollable: outer);
+    await tester.scrollUntilVisible(find.text('şu anki'), 200, scrollable: outer);
+    expect(find.text('şu anki'), findsOneWidget);
+    expect(find.text('28 gün'), findsWidgets);
+  });
+
   testWidgets('privacy settings are reachable from settings', (tester) async {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));

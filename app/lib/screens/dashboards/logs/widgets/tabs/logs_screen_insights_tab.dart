@@ -18,6 +18,10 @@ import 'package:ruya/widgets/insights/monthly_flow.dart';
 import 'package:ruya/widgets/insights/mood_frequency.dart';
 import 'package:ruya/widgets/insights/cycle_overview.dart';
 import 'package:ruya/models/period_logs/daily_log_enums.dart';
+import 'package:ruya/insights/insight_calculators.dart';
+import 'package:ruya/widgets/insights/extended_insights.dart';
+import 'package:ruya/database/repositories/pills_repository.dart';
+import 'package:ruya/services/settings_service.dart';
 
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +84,17 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
       periodService.getMonthlyPeriodFlowsSince(_insightsDataStartDate),
       logsService.getSymptomFrequencySince(_insightsDataStartDate),
       logsService.getMoodFrequencySince(_insightsDataStartDate),
+      _loadPillAdherence(),
     ]);
+  }
+
+  /// Adherence for the active pill regimen in the selected range, or null.
+  Future<PillAdherence?> _loadPillAdherence() async {
+    final repo = PillsRepository();
+    final regimen = await repo.readActivePillRegimen();
+    if (regimen?.id == null) return null;
+    final intakes = await repo.readIntakesForRegimen(regimen!.id!);
+    return PillAdherence.compute(regimen: regimen, intakes: intakes, since: _insightsDataStartDate);
   }
 
   String _formatLoggingSpan(List<LogDay> allLogs, AppLocalizations l10n) {
@@ -130,6 +144,13 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
           final allFlows = snapshot.data![2] as List<MonthlyFlowData>;
           final symptomCounts = snapshot.data![3] as Map<Symptom, int>;
           final moodCounts = snapshot.data![4] as Map<Mood, int>;
+          final pillAdherence = snapshot.data![5] as PillAdherence?;
+          final settings = context.read<SettingsService>();
+          final moodByPhase = MoodByPhase.compute(
+            periods: periodService.periodEntries,
+            logs: allLogs,
+            lutealPhaseLength: settings.lutealPhaseLength,
+          );
           final CycleStats? cycleStats = PeriodPredictor.getCycleStats(allPeriods);
           final PeriodStats? periodStats = PeriodPredictor.getPeriodStats(allPeriods);
 
@@ -182,6 +203,20 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
                 const SizedBox(height: 16.0),
 
                 MoodFrequencyWidget(moodCounts: moodCounts),
+
+                if (settings.isNaturalCycle) ...[
+                  const SizedBox(height: 16.0),
+                  MoodByPhaseWidget(data: moodByPhase),
+                ],
+
+                if (pillAdherence != null) ...[
+                  const SizedBox(height: 16.0),
+                  PillAdherenceWidget(adherence: pillAdherence),
+                ],
+
+                const SizedBox(height: 16.0),
+
+                CycleHistoryWidget(entries: CycleHistory.build(periodService.periodEntries)),
 
                 const SizedBox(height: 16.0),
                 
