@@ -49,6 +49,16 @@ void main() {
   );
 
   late InMemorySecureKeyValueStore store;
+  final identityCalls = <MethodCall>[];
+  var launcherDiscrete = false;
+  messenger.setMockMethodCallHandler(
+    const MethodChannel('com.burakaydogmus.ruya/app_identity'),
+    (call) async {
+      identityCalls.add(call);
+      if (call.method == 'setDiscrete') launcherDiscrete = (call.arguments as Map)['enabled'] as bool;
+      return launcherDiscrete;
+    },
+  );
   WidgetController.hitTestWarningShouldBeFatal = true;
 
   setUpAll(() async {
@@ -258,6 +268,36 @@ void main() {
     expect(find.text("PDF'i kaydet"), findsOneWidget);
   });
 
+  testWidgets('discrete mode swaps the launcher identity and neutral titles', (tester) async {
+    await launch(tester);
+    identityCalls.clear();
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    await tester.tap(find.text('Gizlilik'));
+    await settle(tester);
+    await tapVisible(tester, find.text('Gizli mod').last);
+    await settle(tester);
+    expect(identityCalls.where((c) => c.method == 'setDiscrete').single.arguments, {'enabled': true});
+    expect(NotificationService.isDiscrete, isTrue);
+
+    tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+    await settle(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Bugün')));
+    await settle(tester);
+    expect(find.text('Ajanda'), findsOneWidget);
+    expect(find.text('RUYA'), findsNothing);
+
+    // Turning it off restores RUYA.
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    await tester.tap(find.text('Gizlilik'));
+    await settle(tester);
+    await tapVisible(tester, find.text('Gizli mod').last);
+    await settle(tester);
+    expect(launcherDiscrete, isFalse);
+    expect(NotificationService.isDiscrete, isFalse);
+  });
+
   testWidgets('privacy settings are reachable from settings', (tester) async {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
@@ -265,8 +305,8 @@ void main() {
     await tester.tap(find.text('Gizlilik'));
     await settle(tester);
     expect(find.text('PIN kilidi'), findsOneWidget);
-    expect(find.text('Şifreli yedek'), findsOneWidget);
-    await tester.tap(find.text('Şifreli yedek'));
+    await tester.scrollUntilVisible(find.text('Şifreli yedek'), 200);
+    await tapVisible(tester, find.text('Şifreli yedek'));
     await settle(tester);
     expect(find.text('Şifreli yedek oluştur'), findsWidgets);
   });

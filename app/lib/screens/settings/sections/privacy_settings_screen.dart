@@ -6,6 +6,9 @@ import 'package:ruya/screens/settings/sections/backup_screen.dart';
 import 'package:ruya/security/app_lock_controller.dart';
 import 'package:ruya/services/settings_service.dart';
 import 'package:ruya/utils/constants.dart';
+import 'package:ruya/security/discrete_mode.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/coordinators/data_refresh_coordinator.dart';
 
 /// Settings › Privacy: PIN lock, biometric unlock, lock timeout, encrypted backup.
 class PrivacySettingsScreen extends StatelessWidget {
@@ -86,6 +89,18 @@ class PrivacySettingsScreen extends StatelessWidget {
     if (picked != null) await settings.setPinTimeoutSeconds(picked);
   }
 
+  Future<void> _toggleDiscrete(BuildContext context, bool enable) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    await context.read<DiscreteModeController>().setEnabled(
+          enable,
+          l10n: l10n,
+          periodService: context.read<PeriodService>(),
+          coordinator: context.read<DataRefreshCoordinator>(),
+        );
+    messenger.showSnackBar(SnackBar(content: Text(enable ? l10n.privacy_discreteOn : l10n.privacy_discreteOff)));
+  }
+
   void _snack(BuildContext context, String text) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
 
@@ -135,6 +150,19 @@ class PrivacySettingsScreen extends StatelessWidget {
             subtitle: Text(timeoutLabel(l10n, settings.pinTimeoutSeconds)),
             enabled: lock.hasPin,
             onTap: () => _pickTimeout(context),
+          ),
+          const Divider(),
+          _Header(l10n.privacy_discrete),
+          SwitchListTile(
+            secondary: const Icon(Icons.visibility_off_outlined),
+            title: Text(l10n.privacy_discrete),
+            subtitle: Text(l10n.privacy_discreteSubtitle),
+            value: settings.isDiscreteModeEnabled,
+            onChanged: (v) => _toggleDiscrete(context, v),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+            child: Text(l10n.privacy_discreteLimits, style: theme.textTheme.bodySmall),
           ),
           const Divider(),
           _Header(l10n.privacy_sectionData),

@@ -43,6 +43,7 @@ class SettingsService extends ChangeNotifier {
 
   // Privacy
   int _pinTimeoutSeconds = kDefaultPinTimeoutSeconds;
+  bool _discreteMode = kDefaultDiscreteMode;
 
   // Notifications
   bool _periodDueNotificationsEnabled = kDefaultPeriodDueNotificationsEnabled;
@@ -118,6 +119,9 @@ class SettingsService extends ChangeNotifier {
 
   /// Seconds the app may stay in the background before the PIN is required again.
   int get pinTimeoutSeconds => _pinTimeoutSeconds;
+
+  /// Neutral launcher name/icon, notifications and widget text.
+  bool get isDiscreteModeEnabled => _discreteMode;
 
 
   // Notifications
@@ -202,6 +206,7 @@ class SettingsService extends ChangeNotifier {
 
     // Privacy
     _pinTimeoutSeconds = _loadInt(pinTimeoutSecondsKey, kDefaultPinTimeoutSeconds);
+    _discreteMode = _loadBool(discreteModeKey, kDefaultDiscreteMode);
 
     // Notifications
     _periodDueNotificationsEnabled = _loadBool(periodDueNotificationsEnabledKey, kDefaultPeriodDueNotificationsEnabled);
@@ -563,6 +568,12 @@ class SettingsService extends ChangeNotifier {
   Future<void> setPinTimeoutSeconds(int seconds) async {
     _pinTimeoutSeconds = seconds < 0 ? 0 : seconds;
     await _prefs.setInt(pinTimeoutSecondsKey, _pinTimeoutSeconds);
+    notifyListeners();
+  }
+
+  Future<void> setDiscreteModeEnabled(bool enabled) async {
+    _discreteMode = enabled;
+    await _prefs.setBool(discreteModeKey, enabled);
     notifyListeners();
   }
 }

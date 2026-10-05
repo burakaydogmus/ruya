@@ -31,6 +31,8 @@ import 'package:ruya/security/secure_key_value_store.dart';
 import 'package:ruya/security/app_lock_controller.dart';
 import 'package:ruya/security/pin_service.dart';
 import 'package:ruya/screens/lock/lock_screen.dart';
+import 'package:ruya/security/discrete_mode.dart';
+import 'dart:ui' show PlatformDispatcher;
 
 final watchService = WatchSyncService();
 final logsRepository = LogsRepository();
@@ -71,6 +73,10 @@ void main() async {
   );
   await appLock.init();
 
+  // Discrete mode must be in effect before anything schedules a notification.
+  final discreteMode = DiscreteModeController(settingsService);
+  await discreteMode.applySaved(_startupLocalizations(settingsService));
+
   watchService.initialize(onPeriodLog: logsRepository.logFromWatch);
 
   runApp(buildRuyaApp(
@@ -78,8 +84,18 @@ void main() async {
     userService: userService,
     symptomService: symptomService,
     appLock: appLock,
+    discreteMode: discreteMode,
   ));
 
+}
+
+/// Localizations for code that runs before MaterialApp (startup notifications).
+AppLocalizations _startupLocalizations(SettingsService settings) {
+  final code = settings.languageCode == 'system'
+      ? PlatformDispatcher.instance.locale.languageCode
+      : settings.languageCode;
+  final supported = AppLocalizations.supportedLocales.map((l) => l.languageCode);
+  return lookupAppLocalizations(Locale(supported.contains(code) ? code : 'en'));
 }
 
 /// Provider tree + app. Shared by [main] and widget tests.
@@ -88,6 +104,7 @@ Widget buildRuyaApp({
   required UserService userService,
   required SymptomService symptomService,
   required AppLockController appLock,
+  DiscreteModeController? discreteMode,
 }) {
   return MultiProvider(
     providers: [
@@ -96,6 +113,7 @@ Widget buildRuyaApp({
       ChangeNotifierProvider(create: (_) => userService),
       ChangeNotifierProvider(create: (_) => symptomService),
       ChangeNotifierProvider.value(value: appLock),
+      Provider.value(value: discreteMode ?? DiscreteModeController(settingsService)),
 
       // --- Repositories ---
       Provider(create: (_) => LogsRepository()),
@@ -154,6 +172,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     final themeNotifier = context.watch<ThemeNotifier>();
     final localeNotifier = context.watch<LocaleNotifier>();
+    final discrete = context.select<SettingsService, bool>((s) => s.isDiscreteModeEnabled);
 
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
@@ -181,7 +200,9 @@ class _MainAppState extends State<MainApp> {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           onGenerateTitle: (context) {
-            return AppLocalizations.of(context)!.appTitle;
+            final l10n = AppLocalizations.of(context)!;
+            // Shown in the recents screen.
+            return discrete ? l10n.discrete_appName : l10n.appTitle;
           },
           builder: (context, child) {
             WidgetsBinding.instance.addPostFrameCallback((_) {

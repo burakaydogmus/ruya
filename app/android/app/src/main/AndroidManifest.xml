@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
 
     <application
-        android:label="RUYA"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:allowBackup="false"
         android:fullBackupContent="false"
@@ -40,12 +40,39 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Launcher entries live on the aliases below so discrete mode can swap
+                 the visible name/icon. The home widget opens this activity directly. -->
+            <intent-filter>
+                <action android:name="es.antonborri.home_widget.action.LAUNCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <!-- Default identity: RUYA name and icon. -->
+        <activity-alias
+            android:name=".LauncherDefault"
+            android:targetActivity=".MainActivity"
+            android:label="@string/app_name"
+            android:icon="@mipmap/ic_launcher"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="es.antonborri.home_widget.action.LAUNCH"/>
             </intent-filter>
-        </activity>
+        </activity-alias>
+        <!-- Discrete identity: neutral name and icon, toggled from Settings > Privacy. -->
+        <activity-alias
+            android:name=".LauncherDiscrete"
+            android:targetActivity=".MainActivity"
+            android:label="@string/discrete_app_name"
+            android:icon="@mipmap/ic_launcher_discrete"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
         <receiver
             android:name=".HomeScreenWidgetProvider"
             android:exported="true">

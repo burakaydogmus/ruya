@@ -595,5 +595,16 @@
     "reportScreen_share": "Paylaş",
     "reportScreen_saved": "Rapor kaydedildi",
     "reportScreen_failed": "Rapor oluşturulamadı",
-    "report_gap": "{days} gün (kayıt boşluğu, ortalamaya katılmadı)"
+    "report_gap": "{days} gün (kayıt boşluğu, ortalamaya katılmadı)",
+    "discrete_appName": "Ajanda",
+    "discrete_notificationTitle": "Hatırlatma",
+    "discrete_notificationBody": "Bugün için bir notun var.",
+    "discrete_channelName": "Hatırlatmalar",
+    "lock_titleNeutral": "Kilitli",
+    "auth_unlockReasonNeutral": "Kilidi açmak için kimliğini doğrula",
+    "privacy_discrete": "Gizli mod",
+    "privacy_discreteSubtitle": "RUYA'yı nötr bir simgeyle \"Ajanda\" olarak gösterir; bildirimler nötr metin kullanır ve kilit ekranında gizlenir",
+    "privacy_discreteOn": "Gizli mod açıldı. Ana ekrandaki simgenin güncellenmesi birkaç saniye sürebilir.",
+    "privacy_discreteOff": "Gizli mod kapatıldı",
+    "privacy_discreteLimits": "Android, uygulamaların Ayarlar › Uygulamalar'da ve bildirimlerin üstünde görünen adı değiştirmesine izin vermez; oralarda RUYA yazmaya devam eder. En iyi koruma için PIN kilidiyle birlikte kullan."
 }

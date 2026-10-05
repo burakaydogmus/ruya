@@ -6,6 +6,7 @@ import 'package:ruya/screens/log/log_screen.dart';
 import 'package:ruya/screens/settings/settings_screen.dart';
 import 'package:ruya/screens/today/today_screen.dart';
 import 'package:ruya/services/user_service.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:ruya/widgets/main/main_navigation_bar.dart';
 import 'package:ruya/widgets/main/app_bar.dart';
 import 'package:ruya/l10n/app_localizations.dart';
@@ -47,6 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final discrete = context.select<SettingsService, bool>((s) => s.isDiscreteModeEnabled);
 
     final pages = <Widget>[
       const TodayScreen(),
@@ -57,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
 
     final titles = <String>[
-      'RUYA',
+      discrete ? l10n.discrete_appName : 'RUYA',
       l10n.navBar_calendar,
       l10n.navBar_log,
       l10n.navBar_insights,

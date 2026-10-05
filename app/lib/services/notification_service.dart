@@ -15,8 +15,80 @@ void onDidReceiveBackgroundNotificationResponse(fln.NotificationResponse notific
   debugPrint('Background notification tapped: ${notificationResponse.payload}');
 }
 
+/// Neutral wording used for every notification while discrete mode is on.
+class NeutralNotificationText {
+  const NeutralNotificationText({required this.title, required this.body, required this.channelName});
+  final String title;
+  final String body;
+  final String channelName;
+}
+
 class NotificationService {
   static final fln.FlutterLocalNotificationsPlugin _plugin = fln.FlutterLocalNotificationsPlugin();
+
+  /// Single neutral channel used in discrete mode (hidden on the lock screen).
+  static const String discreteChannelId = 'reminders_private_channel';
+
+  /// Channels whose names reveal the app's purpose; removed when discrete mode
+  /// is switched on so they disappear from the system notification settings.
+  static const List<String> revealingChannelIds = [
+    periodNotificationChannelId,
+    sanitaryProductChannelId,
+    pillReminderChannelId,
+    reversibleContraceptivesReminderChannelId,
+    loggingReminderChannelId,
+    cyclePhaseReminderChannelId,
+  ];
+
+  static NeutralNotificationText? _neutral;
+
+  static bool get isDiscrete => _neutral != null;
+
+  /// Enables (non-null) or disables (null) neutral notifications for future schedules.
+  static Future<void> setDiscrete(NeutralNotificationText? neutral) async {
+    final wasDiscrete = _neutral != null;
+    _neutral = neutral;
+    final android = _plugin.resolvePlatformSpecificImplementation<fln.AndroidFlutterLocalNotificationsPlugin>();
+    if (android == null) return;
+    try {
+      if (neutral != null && !wasDiscrete) {
+        for (final id in revealingChannelIds) {
+          await android.deleteNotificationChannel(channelId: id);
+        }
+      } else if (neutral == null && wasDiscrete) {
+        await android.deleteNotificationChannel(channelId: discreteChannelId);
+      }
+    } catch (e) {
+      debugPrint('Could not update notification channels: $e');
+    }
+  }
+
+  static fln.AndroidNotificationDetails _androidDetails(
+    String channelId,
+    String channelName, {
+    String? channelDescription,
+  }) {
+    final neutral = _neutral;
+    if (neutral != null) {
+      return fln.AndroidNotificationDetails(
+        discreteChannelId,
+        neutral.channelName,
+        importance: fln.Importance.high,
+        priority: fln.Priority.high,
+        visibility: fln.NotificationVisibility.secret,
+      );
+    }
+    return fln.AndroidNotificationDetails(
+      channelId,
+      channelName,
+      channelDescription: channelDescription,
+      importance: fln.Importance.max,
+      priority: fln.Priority.high,
+    );
+  }
+
+  static String _title(String title) => _neutral?.title ?? title;
+  static String _body(String body) => _neutral?.body ?? body;
 
   static Future<void> initialize() async {
     const androidSettings = fln.AndroidInitializationSettings('@drawable/ic_launcher_monochrome');
@@ -53,17 +125,14 @@ class NotificationService {
     await _plugin.cancel(id: notificationID);
 
     final details = fln.NotificationDetails(
-      android: fln.AndroidNotificationDetails(
-        notificationChannelId, notificationChannelName,
-        importance: fln.Importance.max, priority: fln.Priority.high
-      ),
-      iOS: fln.DarwinNotificationDetails(presentSound: true, presentBadge: true),
+      android: _androidDetails(notificationChannelId, notificationChannelName),
+      iOS: const fln.DarwinNotificationDetails(presentSound: true, presentBadge: true),
     );
 
     await _plugin.zonedSchedule(
       id: notificationID,
-      title: title,
-      body: body,
+      title: _title(title),
+      body: _body(body),
       scheduledDate: tzScheduledTime,
       notificationDetails: details,
       androidScheduleMode: fln.AndroidScheduleMode.exactAllowWhileIdle,
@@ -268,19 +337,19 @@ class NotificationService {
 
     final tz.TZDateTime scheduledDate = _nextInstanceOfTime(reminderTime, startingTomorrow);
 
-    const details = fln.NotificationDetails(
-      android: fln.AndroidNotificationDetails(
-        pillReminderChannelId, pillReminderChannelName,
+    final details = fln.NotificationDetails(
+      android: _androidDetails(
+        pillReminderChannelId,
+        pillReminderChannelName,
         channelDescription: 'Daily reminders to take your birth control pill',
-        importance: fln.Importance.max, priority: fln.Priority.high,
       ),
-      iOS: fln.DarwinNotificationDetails(),
+      iOS: const fln.DarwinNotificationDetails(),
     );
 
     await _plugin.zonedSchedule(
       id: pillReminderId,
-      title: title,
-      body: body,
+      title: _title(title),
+      body: _body(body),
       scheduledDate: scheduledDate,
       notificationDetails: details,
       androidScheduleMode: fln.AndroidScheduleMode.exactAllowWhileIdle,

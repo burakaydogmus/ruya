@@ -27,6 +27,12 @@ class PeriodService extends ChangeNotifier {
 
   PeriodService(this._settingsService, this._periodsRepo);
 
+  bool _forcePhaseNotificationReschedule = false;
+
+  /// Makes the next [refreshData] reschedule fertile/ovulation notifications
+  /// even if the predicted dates did not change (e.g. after discrete mode changed).
+  void forceNotificationReschedule() => _forcePhaseNotificationReschedule = true;
+
   bool _isLoading = true;
   List<Period> _periodEntries = [];
   Period? _lastPeriod;
@@ -109,11 +115,13 @@ class PeriodService extends ChangeNotifier {
         _updateWidgetData(l10n, widgetController);
         _schedulePeriodNotifications(l10n);
 
+        final force = _forcePhaseNotificationReschedule;
+        _forcePhaseNotificationReschedule = false;
         if (_predictedCurrentCycle != null && _settingsService.isNaturalCycle){
-          if (oldCyclePredictionFertileStart != _predictedCurrentCycle?.fertileWindowStart && _settingsService.areFertileWindowNotificationsEnabled) {
+          if ((force || oldCyclePredictionFertileStart != _predictedCurrentCycle?.fertileWindowStart) && _settingsService.areFertileWindowNotificationsEnabled) {
             _scheduleFertileWindowNotification(l10n);
           } 
-          if (oldCyclePredictionOvulationDay != _predictedCurrentCycle?.ovulationDay && _settingsService.areOvulationNotificationsEnabled) {
+          if ((force || oldCyclePredictionOvulationDay != _predictedCurrentCycle?.ovulationDay) && _settingsService.areOvulationNotificationsEnabled) {
             _scheduleOvulationDayNotification(l10n);
           }
         }
@@ -211,7 +219,8 @@ class PeriodService extends ChangeNotifier {
     String smallText = l10n.periodPredictionCircle_days(_circleCurrentValue);
 
     String dateText = '';
-    if (_upcomingPeriodPrediction != null) {
+    // Discrete mode: the widget shows only a neutral countdown.
+    if (_upcomingPeriodPrediction != null && !_settingsService.isDiscreteModeEnabled) {
       dateText =
           '${l10n.logScreen_nextPeriodEstimate}:\n ${DateFormat('MMM d').format(_upcomingPeriodPrediction!.estimatedStartDate)}';
     }

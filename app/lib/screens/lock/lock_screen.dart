@@ -6,6 +6,7 @@ import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/screens/lock/pin_pad.dart';
 import 'package:ruya/security/app_lock_controller.dart';
 import 'package:ruya/security/pin_service.dart';
+import 'package:ruya/services/settings_service.dart';
 
 /// Wraps the whole app and covers it with [LockScreen] while locked.
 /// The app below stays mounted (state is kept) but is hidden from touch and
@@ -94,7 +95,10 @@ class _LockScreenState extends State<LockScreen> {
 
   Future<void> _biometrics() async {
     final l10n = AppLocalizations.of(context)!;
-    await context.read<AppLockController>().unlockWithBiometrics(l10n.auth_unlockReason);
+    final discrete = context.read<SettingsService>().isDiscreteModeEnabled;
+    await context.read<AppLockController>().unlockWithBiometrics(
+      discrete ? l10n.auth_unlockReasonNeutral : l10n.auth_unlockReason,
+    );
   }
 
   Future<bool> _submit(String pin) async {
@@ -118,6 +122,7 @@ class _LockScreenState extends State<LockScreen> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final lock = context.watch<AppLockController>();
+    final discrete = context.select<SettingsService, bool>((s) => s.isDiscreteModeEnabled);
     final until = _lockedUntil;
     final remaining = until == null ? 0 : until.difference(DateTime.now()).inSeconds + 1;
 
@@ -130,12 +135,15 @@ class _LockScreenState extends State<LockScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: Image.asset('assets/icon/ruya.png', width: 72, height: 72),
-                ),
+                if (discrete)
+                  Icon(Icons.lock_outline, size: 64, color: theme.colorScheme.primary)
+                else
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: Image.asset('assets/icon/ruya.png', width: 72, height: 72),
+                  ),
                 const SizedBox(height: 16),
-                Text(l10n.lock_title, style: theme.textTheme.headlineSmall),
+                Text(discrete ? l10n.lock_titleNeutral : l10n.lock_title, style: theme.textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 SizedBox(
                   height: 40,

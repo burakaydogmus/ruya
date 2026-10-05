@@ -1887,5 +1887,49 @@
                 "type": "int"
             }
         }
+    },
+    "discrete_appName": "Planner",
+    "@discrete_appName": {
+        "description": "Neutral app name in discrete mode (matches Android discrete_app_name)"
+    },
+    "discrete_notificationTitle": "Reminder",
+    "@discrete_notificationTitle": {
+        "description": "Neutral notification title"
+    },
+    "discrete_notificationBody": "You have a note for today.",
+    "@discrete_notificationBody": {
+        "description": "Neutral notification body"
+    },
+    "discrete_channelName": "Reminders",
+    "@discrete_channelName": {
+        "description": "Neutral notification channel"
+    },
+    "lock_titleNeutral": "Locked",
+    "@lock_titleNeutral": {
+        "description": "Lock screen title in discrete mode"
+    },
+    "auth_unlockReasonNeutral": "Authenticate to unlock",
+    "@auth_unlockReasonNeutral": {
+        "description": "Biometric prompt in discrete mode"
+    },
+    "privacy_discrete": "Discrete mode",
+    "@privacy_discrete": {
+        "description": "Toggle"
+    },
+    "privacy_discreteSubtitle": "Shows RUYA as \"Planner\" with a neutral icon; notifications use neutral text and are hidden on the lock screen",
+    "@privacy_discreteSubtitle": {
+        "description": "Toggle subtitle"
+    },
+    "privacy_discreteOn": "Discrete mode is on. The launcher icon may take a few seconds to update.",
+    "@privacy_discreteOn": {
+        "description": "Snackbar"
+    },
+    "privacy_discreteOff": "Discrete mode is off",
+    "@privacy_discreteOff": {
+        "description": "Snackbar"
+    },
+    "privacy_discreteLimits": "Android does not let apps change the name shown in Settings › Apps or above notifications; those still say RUYA. Combine with the PIN lock for the best protection.",
+    "@privacy_discreteLimits": {
+        "description": "Discrete limits"
     }
 }
