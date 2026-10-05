@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ruya/l10n/app_localizations.dart';
-import 'package:ruya/services/settings_service.dart';
-import 'package:provider/provider.dart';
 
+/// Fixed five-destination navigation. Optional trackers (pill, LARC, sanitary,
+/// sex) live inside the Log destination instead of adding more tabs.
 class MainNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onDestinationSelected;
@@ -16,7 +16,6 @@ class MainNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final settingsService = context.watch<SettingsService>();
 
     return NavigationBar(
       selectedIndex: selectedIndex,
@@ -24,37 +23,28 @@ class MainNavigationBar extends StatelessWidget {
       indicatorColor: Theme.of(context).colorScheme.primaryContainer,
       destinations: <Widget>[
         NavigationDestination(
-          selectedIcon: Icon(Icons.book),
-          icon: Icon(Icons.book_outlined),
-          label: l10n.navBar_logs,
+          selectedIcon: const Icon(Icons.wb_twilight),
+          icon: const Icon(Icons.wb_twilight_outlined),
+          label: l10n.navBar_today,
         ),
-        if (settingsService.isSanitaryNavEnabled)
-          NavigationDestination(
-            selectedIcon: Icon(Icons.water_drop_rounded),
-            icon: Icon(Icons.water_drop_outlined),
-            label: l10n.navBar_sanitary,
-          ),
-        if (settingsService.isSexActivityNavEnabled)
-          NavigationDestination(
-            selectedIcon: Icon(Icons.favorite_rounded),
-            icon: Icon(Icons.favorite_border_rounded),
-            label: l10n.navBar_sexActivity,
-          ),
-        if (settingsService.isPillNavEnabled)
-          NavigationDestination(
-            selectedIcon: Icon(Icons.medication_rounded),
-            icon: Icon(Icons.medication_outlined),
-            label: l10n.navBar_pill,
-          ),
-        if (settingsService.isReversibleContraceptiveNavEnabled)
-          NavigationDestination(
-            selectedIcon: Icon(Icons.verified_user_rounded),
-            icon: Icon(Icons.verified_user_outlined),
-            label: l10n.navBar_reversibleContraceptive,
-          ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.settings),
-          icon: Icon(Icons.settings_outlined),
+          selectedIcon: const Icon(Icons.calendar_month),
+          icon: const Icon(Icons.calendar_month_outlined),
+          label: l10n.navBar_calendar,
+        ),
+        NavigationDestination(
+          selectedIcon: const Icon(Icons.book),
+          icon: const Icon(Icons.book_outlined),
+          label: l10n.navBar_log,
+        ),
+        NavigationDestination(
+          selectedIcon: const Icon(Icons.insights),
+          icon: const Icon(Icons.insights_outlined),
+          label: l10n.navBar_insights,
+        ),
+        NavigationDestination(
+          selectedIcon: const Icon(Icons.settings),
+          icon: const Icon(Icons.settings_outlined),
           label: l10n.navBar_settings,
         ),
       ],

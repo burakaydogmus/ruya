@@ -37,6 +37,12 @@ class SettingsService extends ChangeNotifier {
   bool _phasePredictions = kDefaultPhasePredictions;
   bool _displayFertileChance = kDefaultDisplayFertileChance;
   bool _displayFertileWindowOnCalendar = kDefaultDisplayFertileWindowOnCalendar;
+  int _lutealPhaseLength = kDefaultLutealPhaseLength;
+  int _pmsDays = kDefaultPmsDays;
+  bool _showPmsWindow = kDefaultShowPmsWindow;
+
+  // Privacy
+  int _pinTimeoutSeconds = kDefaultPinTimeoutSeconds;
 
   // Notifications
   bool _periodDueNotificationsEnabled = kDefaultPeriodDueNotificationsEnabled;
@@ -104,6 +110,14 @@ class SettingsService extends ChangeNotifier {
   bool get displayFertileChance => _displayFertileChance;
   /// Whether fertility window should be displayed on the calendar.
   bool get displayFertileWindowOnCalendar => _displayFertileWindowOnCalendar;
+  /// Estimated luteal phase length in days (ovulation = next period - this).
+  int get lutealPhaseLength => _lutealPhaseLength;
+  /// Days before the expected period shown as the estimated PMS window.
+  int get pmsDays => _pmsDays;
+  bool get showPmsWindow => _showPmsWindow;
+
+  /// Seconds the app may stay in the background before the PIN is required again.
+  int get pinTimeoutSeconds => _pinTimeoutSeconds;
 
 
   // Notifications
@@ -181,6 +195,13 @@ class SettingsService extends ChangeNotifier {
     _phasePredictions = _loadBool(phasePredictionsKey, kDefaultPhasePredictions);
     _displayFertileChance = _loadBool(displayFertileChanceKey, kDefaultDisplayFertileChance);
     _displayFertileWindowOnCalendar = _loadBool(displayFertileWindowOnCalendarKey, kDefaultDisplayFertileWindowOnCalendar);
+    _lutealPhaseLength = _loadInt(lutealPhaseLengthKey, kDefaultLutealPhaseLength)
+        .clamp(kMinLutealPhaseLength, kMaxLutealPhaseLength);
+    _pmsDays = _loadInt(pmsDaysKey, kDefaultPmsDays).clamp(kMinPmsDays, kMaxPmsDays);
+    _showPmsWindow = _loadBool(showPmsWindowKey, kDefaultShowPmsWindow);
+
+    // Privacy
+    _pinTimeoutSeconds = _loadInt(pinTimeoutSecondsKey, kDefaultPinTimeoutSeconds);
 
     // Notifications
     _periodDueNotificationsEnabled = _loadBool(periodDueNotificationsEnabledKey, kDefaultPeriodDueNotificationsEnabled);
@@ -518,6 +539,30 @@ class SettingsService extends ChangeNotifier {
   Future<void> setDisplayFertileWindowOnCalendar(bool enabled) async {
     _displayFertileWindowOnCalendar = enabled;
     await _prefs.setBool(displayFertileWindowOnCalendarKey, enabled);
+    notifyListeners();
+  }
+
+  Future<void> setLutealPhaseLength(int days) async {
+    _lutealPhaseLength = days.clamp(kMinLutealPhaseLength, kMaxLutealPhaseLength);
+    await _prefs.setInt(lutealPhaseLengthKey, _lutealPhaseLength);
+    notifyListeners();
+  }
+
+  Future<void> setPmsDays(int days) async {
+    _pmsDays = days.clamp(kMinPmsDays, kMaxPmsDays);
+    await _prefs.setInt(pmsDaysKey, _pmsDays);
+    notifyListeners();
+  }
+
+  Future<void> setShowPmsWindow(bool enabled) async {
+    _showPmsWindow = enabled;
+    await _prefs.setBool(showPmsWindowKey, enabled);
+    notifyListeners();
+  }
+
+  Future<void> setPinTimeoutSeconds(int seconds) async {
+    _pinTimeoutSeconds = seconds < 0 ? 0 : seconds;
+    await _prefs.setInt(pinTimeoutSecondsKey, _pinTimeoutSeconds);
     notifyListeners();
   }
 }

@@ -70,6 +70,12 @@ const String reversibleContraceptiveDurationsKey = "larc_durations"; // Key will
 const String phasePredictionsKey = "phase_predictions";
 const String displayFertileChanceKey = "display_fertile_chance";
 const String displayFertileWindowOnCalendarKey = "display_fertile_window_on_calendar";
+const String lutealPhaseLengthKey = "luteal_phase_length";
+const String pmsDaysKey = "pms_days";
+const String showPmsWindowKey = "show_pms_window";
+
+// Privacy (RUYA). PIN hash lives in the secure store, not in shared preferences.
+const String pinTimeoutSecondsKey = "pin_timeout_seconds";
 
 
 // Notifications
@@ -122,6 +128,17 @@ const Set<Symptom> kDefaultSymptoms = {};
 const bool kDefaultPhasePredictions = true;
 const bool kDefaultDisplayFertileChance = true;
 const bool kDefaultDisplayFertileWindowOnCalendar = true;
+const int kDefaultLutealPhaseLength = 14;
+const int kMinLutealPhaseLength = 10;
+const int kMaxLutealPhaseLength = 16;
+const int kDefaultPmsDays = 5;
+const int kMinPmsDays = 1;
+const int kMaxPmsDays = 10;
+const bool kDefaultShowPmsWindow = true;
+
+// Privacy
+const int kDefaultPinTimeoutSeconds = 60;
+const List<int> kPinTimeoutOptionsSeconds = [0, 30, 60, 120, 300, 900];
 
 // Notifications
 const bool kDefaultPeriodDueNotificationsEnabled = true;

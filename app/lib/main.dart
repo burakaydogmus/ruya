@@ -23,10 +23,14 @@ import 'package:ruya/services/wear_sync_service.dart';
 import 'package:ruya/models/themes/app_theme_mode_enum.dart';
 import 'package:ruya/notifiers/locale_notifier.dart';
 import 'package:ruya/services/settings_service.dart';
-import 'package:home_widget/home_widget.dart';
 import 'package:ruya/services/widget_controller.dart';
 import 'package:ruya/services/period_service.dart';
 import 'package:ruya/services/log_service.dart';
+import 'package:ruya/security/field_cipher.dart';
+import 'package:ruya/security/secure_key_value_store.dart';
+import 'package:ruya/security/app_lock_controller.dart';
+import 'package:ruya/security/pin_service.dart';
+import 'package:ruya/screens/lock/lock_screen.dart';
 
 final watchService = WatchSyncService();
 final logsRepository = LogsRepository();
@@ -44,64 +48,96 @@ void main() async {
 
   await NotificationService.initialize();
 
+  // Data key for encrypted DB fields (Android Keystore backed). Must be ready
+  // before anything reads or writes logs.
+  final SecureKeyValueStore secureStore = PlatformSecureKeyValueStore();
+  try {
+    await FieldCipher.instance.init(secureStore);
+  } catch (e) {
+    // Encrypted fields stay unreadable and new notes cannot be saved, but the
+    // rest of the app keeps working. Nothing is written in plaintext.
+    debugPrint('FieldCipher init failed: $e');
+  }
+
   final SharedPreferences sharedPrefrences = await SharedPreferences.getInstance();
   final SettingsService settingsService = SettingsService(sharedPrefrences);
   final UserService userService = UserService(UserRepository());
   final SymptomService symptomService = SymptomService(sharedPrefrences);
 
+  final AppLockController appLock = AppLockController(
+    pinService: PinService(secureStore),
+    timeoutSeconds: () => settingsService.pinTimeoutSeconds,
+    biometricsPreferred: () => settingsService.areBiometricsEnabled,
+  );
+  await appLock.init();
+
   watchService.initialize(onPeriodLog: logsRepository.logFromWatch);
 
-  runApp(
-    MultiProvider(
-      providers: [
-        // --- Core services ---
-        ChangeNotifierProvider(create: (_) => settingsService),
-        ChangeNotifierProvider(create: (_) => userService),
-        ChangeNotifierProvider(create: (_) => symptomService),
+  runApp(buildRuyaApp(
+    settingsService: settingsService,
+    userService: userService,
+    symptomService: symptomService,
+    appLock: appLock,
+  ));
 
-        // --- Repositories ---
-        Provider(create: (_) => LogsRepository()),
-        Provider(create: (_) => PeriodsRepository()),
+}
 
-        // --- UI state ---
-        ChangeNotifierProvider(
-          create: (context) => ThemeNotifier(context.read<SettingsService>()),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => LocaleNotifier(context.read<SettingsService>()),
-        ),
+/// Provider tree + app. Shared by [main] and widget tests.
+Widget buildRuyaApp({
+  required SettingsService settingsService,
+  required UserService userService,
+  required SymptomService symptomService,
+  required AppLockController appLock,
+}) {
+  return MultiProvider(
+    providers: [
+      // --- Core services ---
+      ChangeNotifierProvider(create: (_) => settingsService),
+      ChangeNotifierProvider(create: (_) => userService),
+      ChangeNotifierProvider(create: (_) => symptomService),
+      ChangeNotifierProvider.value(value: appLock),
 
-        // --- Integrations ---
-        Provider(create: (_) => WidgetController()),
+      // --- Repositories ---
+      Provider(create: (_) => LogsRepository()),
+      Provider(create: (_) => PeriodsRepository()),
 
-        // --- Domain services ---
-        ChangeNotifierProvider(
-          create: (context) => LogService(context.read<LogsRepository>()),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => PeriodService(
-            context.read<SettingsService>(),
-            context.read<PeriodsRepository>(),
-          ),
-        ),
-        Provider(
-          create: (context) => DataRefreshCoordinator(
-            logService: context.read<LogService>(),
-            periodService: context.read<PeriodService>(),
-            widgetController: context.read<WidgetController>(),
-          ),
-        ),
+      // --- UI state ---
+      ChangeNotifierProvider(
+        create: (context) => ThemeNotifier(context.read<SettingsService>()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => LocaleNotifier(context.read<SettingsService>()),
+      ),
 
-        // --- Controllers ---
-        ChangeNotifierProvider(create: (_) => LogUIController()),
-        ChangeNotifierProvider(create: (_) => LogSanitaryUIController()),
-        ChangeNotifierProvider(create: (_) => LogSexUIController()),
-        ChangeNotifierProvider(create: (_) => LogReversibleContraceptiveUIController())
-      ],
-      child: const MainApp(),
-    ),
+      // --- Integrations ---
+      Provider(create: (_) => WidgetController()),
+
+      // --- Domain services ---
+      ChangeNotifierProvider(
+        create: (context) => LogService(context.read<LogsRepository>()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => PeriodService(
+          context.read<SettingsService>(),
+          context.read<PeriodsRepository>(),
+        ),
+      ),
+      Provider(
+        create: (context) => DataRefreshCoordinator(
+          logService: context.read<LogService>(),
+          periodService: context.read<PeriodService>(),
+          widgetController: context.read<WidgetController>(),
+        ),
+      ),
+
+      // --- Controllers ---
+      ChangeNotifierProvider(create: (_) => LogUIController()),
+      ChangeNotifierProvider(create: (_) => LogSanitaryUIController()),
+      ChangeNotifierProvider(create: (_) => LogSexUIController()),
+      ChangeNotifierProvider(create: (_) => LogReversibleContraceptiveUIController())
+    ],
+    child: const MainApp(),
   );
-
 }
 
 class MainApp extends StatefulWidget {
@@ -112,33 +148,8 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  @override
-  void initState() {
-    super.initState();
-    HomeWidget.initiallyLaunchedFromHomeWidget().then(_handleWidgetLaunch);
-    HomeWidget.widgetClicked.listen(_handleWidgetLaunch);
-  }
-
-  void _handleWidgetLaunch(Uri? uri) {
-    if (uri != null) {
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('App Launched from Widget'),
-            content: Text('URI: $uri'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-    }
-  }
-
+  // Tapping the home-screen widget simply opens the app (Menstrudel showed a
+  // debug dialog with the launch URI here).
   @override
   Widget build(BuildContext context) {
     final themeNotifier = context.watch<ThemeNotifier>();
@@ -179,7 +190,7 @@ class _MainAppState extends State<MainApp> {
                 context.read<DataRefreshCoordinator>().registerL10n(l10n);
               }
             });
-            return child!;
+            return AppLockGate(child: child!);
           },
           theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
           darkTheme: ThemeData(

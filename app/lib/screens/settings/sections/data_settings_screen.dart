@@ -11,6 +11,7 @@ import 'package:ruya/database/repositories/sanitary_product_repository.dart';
 import 'package:ruya/services/notification_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:ruya/security/app_lock_controller.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
@@ -109,12 +110,12 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
 
       if (!mounted) return;
       final box = context.findRenderObject() as RenderBox;
-      final result = await SharePlus.instance.share(
+      final result = await context.read<AppLockController>().runExempt(() => SharePlus.instance.share(
         ShareParams(
           files: [XFile(filePath)],
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
         ),
-      );
+      ));
 
       if (result.status == ShareResultStatus.success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -142,7 +143,8 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
   Future<void> _importLogic(DataType type) async {
     final l10n = AppLocalizations.of(context)!;
     try {
-      final result = await FilePicker.pickFiles(type: FileType.custom, allowedExtensions: ['json'])
+      final result = await context.read<AppLockController>()
+          .runExempt(() => FilePicker.pickFiles(type: FileType.custom, allowedExtensions: ['json']))
           .timeout(
             const Duration(seconds: 30),
             onTimeout: () {

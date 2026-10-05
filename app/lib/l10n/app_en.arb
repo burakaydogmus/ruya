@@ -975,5 +975,619 @@
     "contraception_other": "Other",
     "@contraception_other": {
         "description": "Contraception method"
+    },
+    "dailyLog_editTitle": "Edit day",
+    "@dailyLog_editTitle": {
+        "description": "Daily log sheet title when editing"
+    },
+    "dailyLog_deleteTitle": "Delete this day's log?",
+    "@dailyLog_deleteTitle": {
+        "description": "Delete confirmation title"
+    },
+    "dailyLog_deleteBody": "All entries for this day will be removed. This cannot be undone.",
+    "@dailyLog_deleteBody": {
+        "description": "Delete confirmation body"
+    },
+    "dailyLog_symptoms": "Symptoms",
+    "@dailyLog_symptoms": {
+        "description": "Section title"
+    },
+    "dailyLog_moodTitle": "Mood ({count}/{max})",
+    "@dailyLog_moodTitle": {
+        "description": "Mood section title with selection count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyLog_discharge": "Vaginal discharge",
+    "@dailyLog_discharge": {
+        "description": "Section title"
+    },
+    "dailyLog_medication": "Medication",
+    "@dailyLog_medication": {
+        "description": "Section title"
+    },
+    "dailyLog_medicationHint": "Add a medication, e.g. ibuprofen",
+    "@dailyLog_medicationHint": {
+        "description": "Medication input hint"
+    },
+    "dailyLog_contraception": "Contraception",
+    "@dailyLog_contraception": {
+        "description": "Section title"
+    },
+    "dailyLog_sex": "Sex",
+    "@dailyLog_sex": {
+        "description": "Section title"
+    },
+    "dailyLog_libido": "Libido",
+    "@dailyLog_libido": {
+        "description": "Section title"
+    },
+    "dailyLog_notes": "Notes",
+    "@dailyLog_notes": {
+        "description": "Section title"
+    },
+    "dailyLog_notesHint": "Anything you want to remember about today",
+    "@dailyLog_notesHint": {
+        "description": "Notes hint"
+    },
+    "dailyLog_notesEncrypted": "Notes and medication are encrypted on this device",
+    "@dailyLog_notesEncrypted": {
+        "description": "Helper text under notes"
+    },
+    "dailyLog_saved": "Saved",
+    "@dailyLog_saved": {
+        "description": "Snackbar after saving a log"
+    },
+    "dailyLog_deleted": "Log deleted",
+    "@dailyLog_deleted": {
+        "description": "Snackbar after deleting a log"
+    },
+    "dailyLog_error": "Something went wrong. Please try again.",
+    "@dailyLog_error": {
+        "description": "Generic error"
+    },
+    "phaseName_menstruation": "Menstrual phase",
+    "@phaseName_menstruation": {
+        "description": "Cycle phase name"
+    },
+    "phaseName_follicular": "Follicular phase",
+    "@phaseName_follicular": {
+        "description": "Cycle phase name"
+    },
+    "phaseName_fertileWindow": "Fertile window",
+    "@phaseName_fertileWindow": {
+        "description": "Cycle phase name"
+    },
+    "phaseName_ovulation": "Ovulation",
+    "@phaseName_ovulation": {
+        "description": "Cycle phase name"
+    },
+    "phaseName_luteal": "Luteal phase",
+    "@phaseName_luteal": {
+        "description": "Cycle phase name"
+    },
+    "phaseName_late": "Period late",
+    "@phaseName_late": {
+        "description": "Cycle phase name"
+    },
+    "phaseName_unknown": "Unknown",
+    "@phaseName_unknown": {
+        "description": "Cycle phase name"
+    },
+    "navBar_today": "Today",
+    "@navBar_today": {
+        "description": "Bottom navigation"
+    },
+    "navBar_calendar": "Calendar",
+    "@navBar_calendar": {
+        "description": "Bottom navigation"
+    },
+    "navBar_log": "Log",
+    "@navBar_log": {
+        "description": "Bottom navigation"
+    },
+    "navBar_insights": "Insights",
+    "@navBar_insights": {
+        "description": "Bottom navigation"
+    },
+    "today_periodIn": "{count, plural, =1{Period in 1 day} other{Period in {count} days}}",
+    "@today_periodIn": {
+        "description": "Today countdown",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "today_periodToday": "Period expected today",
+    "@today_periodToday": {
+        "description": "Today countdown"
+    },
+    "today_periodLate": "{count, plural, =1{Period about 1 day late} other{Period about {count} days late}}",
+    "@today_periodLate": {
+        "description": "Today countdown when late",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "today_periodDay": "Period · day {day}",
+    "@today_periodDay": {
+        "description": "Today countdown during a period",
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+    "today_expectedOn": "Expected around {date}",
+    "@today_expectedOn": {
+        "description": "Expected period date",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "today_estimateTag": "Estimate",
+    "@today_estimateTag": {
+        "description": "Tag on estimated values"
+    },
+    "today_basedOnDefaults": "First estimate: an average 28-day cycle is assumed. It improves as you log more periods.",
+    "@today_basedOnDefaults": {
+        "description": "Shown when only one period is logged"
+    },
+    "today_noData": "No period logged yet",
+    "@today_noData": {
+        "description": "Today empty state title"
+    },
+    "today_noDataBody": "Log the first day of your period. Estimates are built from your own logs, on this device.",
+    "@today_noDataBody": {
+        "description": "Today empty state body"
+    },
+    "today_startPeriod": "My period started today",
+    "@today_startPeriod": {
+        "description": "Quick action button"
+    },
+    "today_phaseToday": "Today: {phase}",
+    "@today_phaseToday": {
+        "description": "Current phase headline",
+        "placeholders": {
+            "phase": {
+                "type": "String"
+            }
+        }
+    },
+    "today_cycleDay": "Cycle day {day} · estimated",
+    "@today_cycleDay": {
+        "description": "Cycle day subtitle",
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+    "today_fertileChip": "Estimated fertile window",
+    "@today_fertileChip": {
+        "description": "Chip on today screen"
+    },
+    "today_ovulationChip": "Estimated ovulation day",
+    "@today_ovulationChip": {
+        "description": "Chip on today screen"
+    },
+    "today_pmsChip": "Expected PMS window",
+    "@today_pmsChip": {
+        "description": "Chip on today screen"
+    },
+    "today_phasesHidden": "Phase estimates are hidden while hormonal contraception is enabled.",
+    "@today_phasesHidden": {
+        "description": "Shown when not a natural cycle"
+    },
+    "today_moodTitle": "How are you feeling today?",
+    "@today_moodTitle": {
+        "description": "Mood quick entry title"
+    },
+    "today_quickLog": "Quick log",
+    "@today_quickLog": {
+        "description": "Quick log card title"
+    },
+    "today_symptoms": "Symptoms",
+    "@today_symptoms": {
+        "description": "Quick log button"
+    },
+    "today_symptomsCount": "{count, plural, =0{Symptoms} =1{1 symptom} other{{count} symptoms}}",
+    "@today_symptomsCount": {
+        "description": "Quick log symptoms button",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "today_fullLog": "Full log",
+    "@today_fullLog": {
+        "description": "Quick log button"
+    },
+    "today_disclaimer": "Estimates are approximate and based on your logs. They are not medical advice or contraception.",
+    "@today_disclaimer": {
+        "description": "Disclaimer footer"
+    },
+    "today_phaseInfo": "About this phase",
+    "@today_phaseInfo": {
+        "description": "Phase info dialog title"
+    },
+    "calendar_legendPeriod": "Period",
+    "@calendar_legendPeriod": {
+        "description": "Calendar legend"
+    },
+    "calendar_legendPredicted": "Expected period",
+    "@calendar_legendPredicted": {
+        "description": "Calendar legend"
+    },
+    "calendar_legendFertile": "Fertile (est.)",
+    "@calendar_legendFertile": {
+        "description": "Calendar legend"
+    },
+    "calendar_legendOvulation": "Ovulation (est.)",
+    "@calendar_legendOvulation": {
+        "description": "Calendar legend"
+    },
+    "calendar_legendPms": "PMS (expected)",
+    "@calendar_legendPms": {
+        "description": "Calendar legend"
+    },
+    "calendar_legendSex": "Sex",
+    "@calendar_legendSex": {
+        "description": "Calendar legend"
+    },
+    "calendar_legendContraception": "Contraception",
+    "@calendar_legendContraception": {
+        "description": "Calendar legend"
+    },
+    "insights_moodTitle": "Mood trends",
+    "@insights_moodTitle": {
+        "description": "Insights card title"
+    },
+    "insights_moodEmpty": "Log your mood on the Today screen to see trends here.",
+    "@insights_moodEmpty": {
+        "description": "Insights empty mood"
+    },
+    "insights_avgCycle": "Average cycle",
+    "@insights_avgCycle": {
+        "description": "Insights overview"
+    },
+    "insights_variation": "Variation",
+    "@insights_variation": {
+        "description": "Insights overview"
+    },
+    "insights_avgPeriod": "Average period",
+    "@insights_avgPeriod": {
+        "description": "Insights overview"
+    },
+    "insights_days": "{count, plural, =1{1 day} other{{count} days}}",
+    "@insights_days": {
+        "description": "Day count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "lock_title": "RUYA is locked",
+    "@lock_title": {
+        "description": "Lock screen title"
+    },
+    "lock_enterPin": "Enter your PIN",
+    "@lock_enterPin": {
+        "description": "Lock screen prompt"
+    },
+    "lock_unlock": "Unlock",
+    "@lock_unlock": {
+        "description": "Lock screen button"
+    },
+    "lock_wrongPin": "{count, plural, =1{Wrong PIN. 1 attempt left.} other{Wrong PIN. {count} attempts left.}}",
+    "@lock_wrongPin": {
+        "description": "Wrong PIN message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "lock_lockedOut": "Too many attempts. Try again in {seconds} s.",
+    "@lock_lockedOut": {
+        "description": "Lockout message",
+        "placeholders": {
+            "seconds": {
+                "type": "int"
+            }
+        }
+    },
+    "lock_forgotHint": "Forgot your PIN? Reinstall RUYA and restore an encrypted backup. Backups never contain your PIN.",
+    "@lock_forgotHint": {
+        "description": "Forgot PIN hint"
+    },
+    "pinSetup_title": "Set PIN",
+    "@pinSetup_title": {
+        "description": "PIN setup title"
+    },
+    "pinSetup_enterNew": "Enter a new PIN",
+    "@pinSetup_enterNew": {
+        "description": "PIN setup step 1"
+    },
+    "pinSetup_confirm": "Enter the PIN again",
+    "@pinSetup_confirm": {
+        "description": "PIN setup step 2"
+    },
+    "pinSetup_hint": "{min} to {max} digits",
+    "@pinSetup_hint": {
+        "description": "PIN length hint",
+        "placeholders": {
+            "min": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "pinSetup_mismatch": "PINs did not match. Start again.",
+    "@pinSetup_mismatch": {
+        "description": "PIN mismatch"
+    },
+    "pinSetup_next": "Continue",
+    "@pinSetup_next": {
+        "description": "PIN setup button"
+    },
+    "pinVerify_current": "Enter your current PIN",
+    "@pinVerify_current": {
+        "description": "PIN verify prompt"
+    },
+    "settingsScreen_privacy": "Privacy",
+    "@settingsScreen_privacy": {
+        "description": "Settings entry"
+    },
+    "privacy_title": "Privacy",
+    "@privacy_title": {
+        "description": "Privacy screen title"
+    },
+    "privacy_sectionLock": "App lock",
+    "@privacy_sectionLock": {
+        "description": "Section header"
+    },
+    "privacy_sectionData": "Your data",
+    "@privacy_sectionData": {
+        "description": "Section header"
+    },
+    "privacy_pinLock": "PIN lock",
+    "@privacy_pinLock": {
+        "description": "Toggle"
+    },
+    "privacy_pinLockSubtitle": "Ask for a PIN when opening RUYA",
+    "@privacy_pinLockSubtitle": {
+        "description": "Toggle subtitle"
+    },
+    "privacy_changePin": "Change PIN",
+    "@privacy_changePin": {
+        "description": "Action"
+    },
+    "privacy_disablePin": "Turn off PIN",
+    "@privacy_disablePin": {
+        "description": "Verify screen title"
+    },
+    "privacy_pinEnabled": "PIN lock is on",
+    "@privacy_pinEnabled": {
+        "description": "Snackbar"
+    },
+    "privacy_pinDisabled": "PIN lock is off",
+    "@privacy_pinDisabled": {
+        "description": "Snackbar"
+    },
+    "privacy_pinChanged": "PIN changed",
+    "@privacy_pinChanged": {
+        "description": "Snackbar"
+    },
+    "privacy_biometric": "Biometric unlock",
+    "@privacy_biometric": {
+        "description": "Toggle"
+    },
+    "privacy_biometricSubtitle": "Unlock with fingerprint or face; the PIN stays as fallback",
+    "@privacy_biometricSubtitle": {
+        "description": "Toggle subtitle"
+    },
+    "privacy_biometricNeedsPin": "Set a PIN first",
+    "@privacy_biometricNeedsPin": {
+        "description": "Toggle subtitle"
+    },
+    "privacy_biometricConfirm": "Confirm to enable biometric unlock",
+    "@privacy_biometricConfirm": {
+        "description": "System prompt reason"
+    },
+    "privacy_timeout": "Lock after",
+    "@privacy_timeout": {
+        "description": "Timeout setting"
+    },
+    "privacy_timeoutImmediately": "Immediately",
+    "@privacy_timeoutImmediately": {
+        "description": "Timeout option"
+    },
+    "privacy_timeoutSeconds": "{count} seconds in background",
+    "@privacy_timeoutSeconds": {
+        "description": "Timeout option",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "privacy_timeoutMinutes": "{count, plural, =1{1 minute in background} other{{count} minutes in background}}",
+    "@privacy_timeoutMinutes": {
+        "description": "Timeout option",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "privacy_backupSubtitle": "Password-protected, AES-256 encrypted file",
+    "@privacy_backupSubtitle": {
+        "description": "Backup entry subtitle"
+    },
+    "privacy_summaryTitle": "How RUYA protects your data",
+    "@privacy_summaryTitle": {
+        "description": "Privacy summary title"
+    },
+    "privacy_summaryBody": "Everything stays on this device. RUYA has no account, no cloud, no analytics and no trackers, and does not request internet access. Android cloud backup is disabled. Notes and medication are encrypted with a key kept in the Android Keystore.",
+    "@privacy_summaryBody": {
+        "description": "Privacy summary"
+    },
+    "backup_title": "Encrypted backup",
+    "@backup_title": {
+        "description": "Backup screen title"
+    },
+    "backup_intro": "Create a password-protected backup of all your RUYA data and save it wherever you like. You can restore it on this or another device.",
+    "@backup_intro": {
+        "description": "Backup intro"
+    },
+    "backup_exportTitle": "Create backup",
+    "@backup_exportTitle": {
+        "description": "Section title"
+    },
+    "backup_password": "Backup password",
+    "@backup_password": {
+        "description": "Field label"
+    },
+    "backup_passwordConfirm": "Repeat password",
+    "@backup_passwordConfirm": {
+        "description": "Field label"
+    },
+    "backup_passwordHelper": "At least {min} characters. Without this password the backup cannot be opened.",
+    "@backup_passwordHelper": {
+        "description": "Field helper",
+        "placeholders": {
+            "min": {
+                "type": "int"
+            }
+        }
+    },
+    "backup_passwordTooShort": "Use at least {min} characters",
+    "@backup_passwordTooShort": {
+        "description": "Validation",
+        "placeholders": {
+            "min": {
+                "type": "int"
+            }
+        }
+    },
+    "backup_passwordMismatch": "Passwords do not match",
+    "@backup_passwordMismatch": {
+        "description": "Validation"
+    },
+    "backup_exportButton": "Create encrypted backup",
+    "@backup_exportButton": {
+        "description": "Button"
+    },
+    "backup_encrypting": "Encrypting…",
+    "@backup_encrypting": {
+        "description": "Progress"
+    },
+    "backup_exported": "Backup saved",
+    "@backup_exported": {
+        "description": "Snackbar"
+    },
+    "backup_exportFailed": "Backup could not be created",
+    "@backup_exportFailed": {
+        "description": "Snackbar"
+    },
+    "backup_importTitle": "Restore backup",
+    "@backup_importTitle": {
+        "description": "Section title"
+    },
+    "backup_importBody": "You will see a summary of the backup before anything is changed.",
+    "@backup_importBody": {
+        "description": "Section body"
+    },
+    "backup_importButton": "Choose backup file",
+    "@backup_importButton": {
+        "description": "Button"
+    },
+    "backup_notABackup": "This is not a RUYA backup file",
+    "@backup_notABackup": {
+        "description": "Error"
+    },
+    "backup_enterPassword": "Backup password",
+    "@backup_enterPassword": {
+        "description": "Dialog title"
+    },
+    "backup_open": "Open",
+    "@backup_open": {
+        "description": "Button"
+    },
+    "backup_decrypting": "Decrypting…",
+    "@backup_decrypting": {
+        "description": "Progress"
+    },
+    "backup_wrongPassword": "Wrong password or damaged file",
+    "@backup_wrongPassword": {
+        "description": "Error"
+    },
+    "backup_invalidFile": "The backup could not be read",
+    "@backup_invalidFile": {
+        "description": "Error"
+    },
+    "backup_previewTitle": "Restore this backup?",
+    "@backup_previewTitle": {
+        "description": "Preview title"
+    },
+    "backup_previewCreated": "Created",
+    "@backup_previewCreated": {
+        "description": "Preview row"
+    },
+    "backup_previewVersion": "Version",
+    "@backup_previewVersion": {
+        "description": "Preview row"
+    },
+    "backup_previewLogs": "Daily logs",
+    "@backup_previewLogs": {
+        "description": "Preview row"
+    },
+    "backup_previewRange": "Date range",
+    "@backup_previewRange": {
+        "description": "Preview row"
+    },
+    "backup_previewPeriods": "Periods",
+    "@backup_previewPeriods": {
+        "description": "Preview row"
+    },
+    "backup_previewOther": "Pill, contraceptive, sanitary and sex entries",
+    "@backup_previewOther": {
+        "description": "Preview row"
+    },
+    "backup_previewWarning": "All RUYA data currently on this device will be replaced by this backup.",
+    "@backup_previewWarning": {
+        "description": "Preview warning"
+    },
+    "backup_replaceAndRestore": "Replace and restore",
+    "@backup_replaceAndRestore": {
+        "description": "Button"
+    },
+    "backup_restoring": "Restoring…",
+    "@backup_restoring": {
+        "description": "Progress"
+    },
+    "backup_restored": "Backup restored",
+    "@backup_restored": {
+        "description": "Snackbar"
+    },
+    "backup_restoreFailed": "Restore failed. Your data was not changed.",
+    "@backup_restoreFailed": {
+        "description": "Snackbar"
     }
 }

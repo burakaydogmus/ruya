@@ -25,18 +25,24 @@ class StatChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            value,
-            style: textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
+          Flexible(
+            child: Text(
+              value,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
             ),
           ),
           const SizedBox(width: 4.0),
-          Text(
-            label,
-            style: textTheme.bodySmall?.copyWith(
-              color: color.withValues(alpha: 0.7),
+          Flexible(
+            child: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodySmall?.copyWith(
+                color: color.withValues(alpha: 0.7),
+              ),
             ),
           ),
         ],

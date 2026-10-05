@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ruya/cycle/cycle_snapshot.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase.dart';
 import 'package:ruya/models/flows/flow_data.dart';
 import 'package:ruya/models/flows/flow_enum.dart';
@@ -37,6 +38,11 @@ class PeriodService extends ChangeNotifier {
   int _circleMaxValue = 28;
   bool _isPeriodOngoing = false;
   int _menstruationDay = 0;
+  CycleSnapshot _cycleSnapshot = CycleSnapshot.compute(
+    periods: const [],
+    predictedCycle: null,
+    now: DateTime.now(),
+  );
 
   /// Whether a background operation is currently in progress.
   bool get isLoading => _isLoading;
@@ -67,6 +73,9 @@ class PeriodService extends ChangeNotifier {
 
   /// The number of days since current period started.
   int get menstruationDay => _menstruationDay;
+
+  /// Today's estimated cycle position (phase, fertile window, PMS, countdown).
+  CycleSnapshot get cycleSnapshot => _cycleSnapshot;
 
   /// A pre-computed list of timeline items for the PeriodListView.
   List<Object> get timelineItems => _timelineItems;
@@ -139,7 +148,9 @@ class PeriodService extends ChangeNotifier {
       _predictedCurrentCycle = CyclePhasePredictor.predictCycle(
         lastPeriodStartDate: lastPeriodStartDate, 
         averageCycleLength: averageCycleLength, 
-        averagePeriodDuration: averagePeriodDuration
+        averagePeriodDuration: averagePeriodDuration,
+        lutealPhaseLength: _settingsService.lutealPhaseLength,
+        pmsDays: _settingsService.showPmsWindow ? _settingsService.pmsDays : 0,
       );
 
       final estimatedFollowingPeriodStartDate = _upcomingPeriodPrediction!.estimatedStartDate.add(
@@ -163,6 +174,14 @@ class PeriodService extends ChangeNotifier {
       _followingPeriodPrediction = null;
     }
 
+
+    _cycleSnapshot = CycleSnapshot.compute(
+      periods: _periodEntries,
+      predictedCycle: _predictedCurrentCycle,
+      now: DateTime.now(),
+      lutealPhaseLength: _settingsService.lutealPhaseLength,
+      pmsDays: _settingsService.showPmsWindow ? _settingsService.pmsDays : 0,
+    );
 
     if (lastPeriod == null){
       _menstruationDay = 0;

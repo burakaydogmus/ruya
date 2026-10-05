@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ruya/database/repositories/logs_repository.dart';
 import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/period_logs/daily_log_enums.dart';
 
 class LogService extends ChangeNotifier {
   final LogsRepository _logRepo;
@@ -91,10 +92,27 @@ class LogService extends ChangeNotifier {
     await loadLogs();
   }
 
+  /// Medication names used in the last [days] days, most recent first (for suggestions).
+  List<String> recentMedications({int days = 60}) {
+    final cutoff = DateTime.now().subtract(Duration(days: days));
+    final seen = <String>{};
+    final result = <String>[];
+    for (final log in _logs) {
+      if (log.date.isBefore(cutoff)) continue;
+      for (final m in log.medications) {
+        if (seen.add(m.toLowerCase())) result.add(m);
+      }
+    }
+    return result;
+  }
+
   /// Fetches logs starting from a specific date.
   Future<List<LogDay>> getLogsSince(DateTime date) async {
     return _logRepo.readLogsSince(date);
   }
+
+  /// Fetches mood counts since [date] for insights.
+  Future<Map<Mood, int>> getMoodFrequencySince(DateTime date) => _logRepo.getMoodFrequencySince(date);
 
   /// Fetches the frequency of symptoms starting from a specific date for insights purposes.
   Future<Map<Symptom, int>> getSymptomFrequencySince(DateTime date) async {

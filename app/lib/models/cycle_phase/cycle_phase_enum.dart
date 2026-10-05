@@ -38,6 +38,26 @@ extension FlowExtension on CyclePhase {
     }
   }
 
+  /// Medical phase name used by RUYA screens ("Luteal phase", "Luteal faz").
+  String getPhaseName(AppLocalizations l10n) {
+    switch (this) {
+      case CyclePhase.menstruation:
+        return l10n.phaseName_menstruation;
+      case CyclePhase.follicular:
+        return l10n.phaseName_follicular;
+      case CyclePhase.fertileWindow:
+        return l10n.phaseName_fertileWindow;
+      case CyclePhase.ovulation:
+        return l10n.phaseName_ovulation;
+      case CyclePhase.luteal:
+        return l10n.phaseName_luteal;
+      case CyclePhase.late:
+        return l10n.phaseName_late;
+      case CyclePhase.unknown:
+        return l10n.phaseName_unknown;
+    }
+  }
+
   String getDescription(AppLocalizations l10n) {
     switch (this) {
       case CyclePhase.menstruation:

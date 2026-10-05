@@ -6,7 +6,7 @@ import 'package:ruya/screens/settings/sections/birth_control_settings_screen.dar
 import 'package:ruya/screens/settings/sections/log_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/cycle_notifications_and_predictions_screen.dart';
 import 'package:ruya/screens/settings/sections/data_settings_screen.dart';
-import 'package:ruya/screens/settings/sections/security_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/privacy_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/preferences_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/about_screen.dart';
 import 'package:ruya/screens/settings/sections/user_settings_screen.dart';
@@ -54,12 +54,12 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
         _SettingsSectionButton(
-          title: l10n.settingsScreen_security,
-          icon: Icons.security_outlined,
+          title: l10n.settingsScreen_privacy,
+          icon: Icons.shield_outlined,
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SecuritySettingsScreen()),
+              MaterialPageRoute(builder: (context) => const PrivacySettingsScreen()),
             );
           },
         ),

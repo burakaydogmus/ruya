@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ruya/controllers/log_reversible_contraceptive_ui_controller.dart';
-import 'package:ruya/controllers/log_sanitary_ui_controller.dart';
-import 'package:ruya/controllers/log_sex_ui_controller.dart';
 import 'package:ruya/controllers/log_ui_controller.dart';
-import 'package:ruya/screens/dashboards/logs/logs_screen.dart';
-import 'package:ruya/screens/dashboards/sanitary_screen.dart';
+import 'package:ruya/screens/calendar/calendar_screen.dart';
+import 'package:ruya/screens/dashboards/logs/widgets/tabs/logs_screen_insights_tab.dart';
+import 'package:ruya/screens/log/log_screen.dart';
 import 'package:ruya/screens/settings/settings_screen.dart';
-import 'package:ruya/screens/dashboards/pills_screen.dart';
-import 'package:ruya/screens/dashboards/sex/sex_screen.dart';
+import 'package:ruya/screens/today/today_screen.dart';
 import 'package:ruya/services/user_service.dart';
 import 'package:ruya/widgets/main/main_navigation_bar.dart';
 import 'package:ruya/widgets/main/app_bar.dart';
 import 'package:ruya/l10n/app_localizations.dart';
-import 'package:ruya/services/settings_service.dart';
 import 'package:provider/provider.dart';
-import 'package:ruya/screens/dashboards/reversible_contraceptive/reversible_contraceptive_screen.dart';
 
-enum FabState {
-  logPeriod,
-  setReminder,
-  cancelReminder,
-}
-
+/// RUYA main navigation: Today · Calendar · Log · Insights · Settings.
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -38,8 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  /// Builds Log screen FAB
-  Widget _buildLogDayFab(BuildContext context, AppLocalizations l10n, int? age) {
+  Widget _buildLogDayFab(BuildContext context, AppLocalizations l10n) {
     return FloatingActionButton(
       key: const ValueKey('log_day_fab'),
       tooltip: l10n.fabToolTip_logs,
@@ -48,49 +37,8 @@ class _MainScreenState extends State<MainScreen> {
               context: context,
               selectedDate: DateTime.now(),
               symptomService: context.read(),
-              age: age,
+              age: context.read<UserService>().age,
             );
-      },
-      child: const Icon(Icons.add),
-    );
-  }
-
-  /// Builds Sanitary screen FAB
-  Widget _buildSanitaryFab(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return FloatingActionButton(
-      key: const ValueKey('log_sanitary_fab'),
-      tooltip: l10n.fabToolTip_sanitary,
-      onPressed: () {
-        context.read<LogSanitaryUIController>().handleCreateNewSanitaryLog(
-              context: context,
-            );
-      },
-      child: const Icon(Icons.add),
-    );
-  }
-
-  /// Builds Sex screen FAB
-  Widget _buildSexFab(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return FloatingActionButton(
-      key: const ValueKey('log_sex_fab'),
-      tooltip: l10n.fabToolTip_sexActivity,
-      onPressed: () {
-        context.read<LogSexUIController>().handleCreateNewSexLog(context: context);
-      },
-      child: const Icon(Icons.add),
-    );
-  }
-
-  /// Builds Reversible contraceptive screen FAB
-  Widget _buildReversibleContraceptiveFab(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return FloatingActionButton(
-      key: const ValueKey('log_reversible_contraceptive_fab'),
-      tooltip: l10n.fabToolTip_reversibleContraceptive,
-      onPressed: () {
-        context.read<LogReversibleContraceptiveUIController>().handleCreateNewReversibleContraceptiveLog(context: context);
       },
       child: const Icon(Icons.add),
     );
@@ -99,69 +47,45 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final settingsService = context.watch<SettingsService>();
-    final userService = context.watch<UserService>();
 
-    final bool isPillNavEnabled = settingsService.isPillNavEnabled;
-    final bool isReversibleContraceptiveNavEnabled = settingsService.isReversibleContraceptiveNavEnabled;
-    final bool isSanitaryNavEnabled = settingsService.isSanitaryNavEnabled;
-    final bool isSexActivityNavEnabled = settingsService.isSexActivityNavEnabled;
-      
-    /// Define pages on enabled features
-    final List<Widget> pages = <Widget>[
-      const LogsScreen(),
-      if (isSanitaryNavEnabled) const SanitaryScreen(),
-      if (isSexActivityNavEnabled) const SexScreen(),
-      if (isPillNavEnabled) const PillsScreen(),
-      if (isReversibleContraceptiveNavEnabled) const ReversibleContraceptiveScreen(),
+    final pages = <Widget>[
+      const TodayScreen(),
+      const CalendarScreen(),
+      const LogScreen(),
+      const LogsScreenInsightsTab(),
       const SettingsScreen(),
     ];
 
-    /// Define app bars based on enabled features
-    final List<PreferredSizeWidget?> appBars = [
-      TopAppBar(titleText: l10n.mainScreen_logsPageTitle),
-      if (isSanitaryNavEnabled)
-        TopAppBar(titleText: l10n.mainScreen_sanitaryPageTitle),
-      if (isSexActivityNavEnabled)
-        TopAppBar(titleText: l10n.mainSceen_sexActivityPageTitle),
-      if (isPillNavEnabled)
-        TopAppBar(titleText: l10n.mainScreen_pillsPageTitle),
-      if (isReversibleContraceptiveNavEnabled)
-        TopAppBar(titleText: l10n.mainScreen_reversibleContraceptivesPageTitle),
-      TopAppBar(titleText: l10n.mainScreen_settingsPageTitle),
+    final titles = <String>[
+      'RUYA',
+      l10n.navBar_calendar,
+      l10n.navBar_log,
+      l10n.navBar_insights,
+      l10n.mainScreen_settingsPageTitle,
     ];
 
-    final List appFABs = [
-      _buildLogDayFab(context, l10n, userService.age),
-      if (isSanitaryNavEnabled) _buildSanitaryFab(context),
-      if (isSexActivityNavEnabled) _buildSexFab(context),
-      if (isPillNavEnabled) null,
-      if (isReversibleContraceptiveNavEnabled) _buildReversibleContraceptiveFab(context),
+    final fabs = <Widget?>[
+      null,
+      _buildLogDayFab(context, l10n),
+      _buildLogDayFab(context, l10n),
+      null,
       null,
     ];
 
-    int correctedIndex = _selectedIndex;
-    if (_selectedIndex >= pages.length) {
-      correctedIndex = pages.length - 1;
-    }
+    final index = _selectedIndex.clamp(0, pages.length - 1);
 
     return Scaffold(
-      appBar: appBars[correctedIndex],
-      body: pages[correctedIndex],
+      appBar: TopAppBar(titleText: titles[index]),
+      body: pages[index],
       bottomNavigationBar: MainNavigationBar(
-        selectedIndex: correctedIndex,
+        selectedIndex: index,
         onDestinationSelected: _onItemTapped,
       ),
       floatingActionButton: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(
-                  scale: animation,
-                  child: child,
-                );
-              },
-              child: appFABs[correctedIndex],
-            )
+        duration: const Duration(milliseconds: 200),
+        transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+        child: fabs[index] == null ? const SizedBox.shrink(key: ValueKey('no_fab')) : KeyedSubtree(key: ValueKey('fab_$index'), child: fabs[index]!),
+      ),
     );
   }
 }

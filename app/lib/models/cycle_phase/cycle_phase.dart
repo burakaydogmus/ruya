@@ -9,6 +9,12 @@ class PredictedCycle {
   final DateTime lutealStart;
   final DateTime nextPeriodStart;
 
+  /// First day of the estimated PMS window (equal to [nextPeriodStart] when disabled).
+  final DateTime pmsStart;
+
+  /// Average period duration used for the estimate.
+  final int periodDuration;
+
   PredictedCycle({
     required this.menstruationStart,
     required this.follicularStart,
@@ -16,7 +22,64 @@ class PredictedCycle {
     required this.ovulationDay,
     required this.lutealStart,
     required this.nextPeriodStart,
-  });
+    DateTime? pmsStart,
+    this.periodDuration = 5,
+  }) : pmsStart = pmsStart ?? nextPeriodStart;
+
+  /// Last fertile day (ovulation day itself).
+  DateTime get fertileWindowEnd => ovulationDay;
+
+  /// Estimated last day of the next period.
+  DateTime get nextPeriodEnd =>
+      DateTime(nextPeriodStart.year, nextPeriodStart.month, nextPeriodStart.day + periodDuration - 1);
+
+  int get cycleLength => _dayDiff(nextPeriodStart, menstruationStart);
+
+  static DateTime _d(DateTime date) => DateTime(date.year, date.month, date.day);
+
+  static int _dayDiff(DateTime a, DateTime b) =>
+      DateTime.utc(a.year, a.month, a.day).difference(DateTime.utc(b.year, b.month, b.day)).inDays;
+
+  bool _inRange(DateTime date, DateTime from, DateTime to) {
+    final d = _d(date);
+    return !d.isBefore(from) && !d.isAfter(to);
+  }
+
+  /// Whether [date] falls in the estimated fertile window (inclusive of ovulation day).
+  bool isInFertileWindow(DateTime date) => _inRange(date, fertileWindowStart, fertileWindowEnd);
+
+  bool isOvulationDay(DateTime date) => _d(date) == ovulationDay;
+
+  /// Whether [date] falls in the estimated PMS window before the next period.
+  bool isInPmsWindow(DateTime date) {
+    final d = _d(date);
+    return !d.isBefore(pmsStart) && d.isBefore(nextPeriodStart);
+  }
+
+  /// Whether [date] falls in the estimated next period.
+  bool isInPredictedNextPeriod(DateTime date) => _inRange(date, nextPeriodStart, nextPeriodEnd);
+
+  /// 1-based day of the cycle for [date], or null if before this cycle.
+  int? cycleDayFor(DateTime date) {
+    final diff = _dayDiff(date, menstruationStart);
+    return diff < 0 ? null : diff + 1;
+  }
+
+  /// The same cycle shifted forward by [cycles] cycle lengths (for calendar forecasts).
+  PredictedCycle shiftedBy(int cycles) {
+    final offset = cycleLength * cycles;
+    DateTime s(DateTime d) => DateTime(d.year, d.month, d.day + offset);
+    return PredictedCycle(
+      menstruationStart: s(menstruationStart),
+      follicularStart: s(follicularStart),
+      fertileWindowStart: s(fertileWindowStart),
+      ovulationDay: s(ovulationDay),
+      lutealStart: s(lutealStart),
+      nextPeriodStart: s(nextPeriodStart),
+      pmsStart: s(pmsStart),
+      periodDuration: periodDuration,
+    );
+  }
 
   CyclePhase getPhaseForDate(DateTime date) {
     // Normalise to midnight to make comparison work regardless of time

@@ -15,6 +15,9 @@ import 'package:ruya/widgets/insights/flow_intensity.dart';
 import 'package:ruya/widgets/insights/pain_intensity.dart';
 import 'package:ruya/widgets/insights/log_summary_widget.dart';
 import 'package:ruya/widgets/insights/monthly_flow.dart';
+import 'package:ruya/widgets/insights/mood_frequency.dart';
+import 'package:ruya/widgets/insights/cycle_overview.dart';
+import 'package:ruya/models/period_logs/daily_log_enums.dart';
 
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +79,7 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
       logsService.getLogsSince(_insightsDataStartDate),
       periodService.getMonthlyPeriodFlowsSince(_insightsDataStartDate),
       logsService.getSymptomFrequencySince(_insightsDataStartDate),
+      logsService.getMoodFrequencySince(_insightsDataStartDate),
     ]);
   }
 
@@ -125,6 +129,7 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
           final allLogs = snapshot.data![1] as List<LogDay>;
           final allFlows = snapshot.data![2] as List<MonthlyFlowData>;
           final symptomCounts = snapshot.data![3] as Map<Symptom, int>;
+          final moodCounts = snapshot.data![4] as Map<Mood, int>;
           final CycleStats? cycleStats = PeriodPredictor.getCycleStats(allPeriods);
           final PeriodStats? periodStats = PeriodPredictor.getPeriodStats(allPeriods);
 
@@ -168,7 +173,15 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
                 
                 const SizedBox(height: 16.0),
 
+                CycleOverviewWidget(cycleStats: cycleStats, periodStats: periodStats),
+
+                const SizedBox(height: 16.0),
+
                 SymptomFrequencyWidget(symptomCounts: symptomCounts),
+
+                const SizedBox(height: 16.0),
+
+                MoodFrequencyWidget(moodCounts: moodCounts),
 
                 const SizedBox(height: 16.0),
                 

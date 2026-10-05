@@ -4,39 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/models/themes/app_theme_mode_enum.dart';
 import 'package:ruya/notifiers/theme_notifier.dart';
-import 'package:ruya/services/settings_service.dart';
 
 class AppearanceSettingsScreen extends StatelessWidget {
   const AppearanceSettingsScreen({super.key});
-
-  Future<void> _showViewPicker(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    final settingsService = context.read<SettingsService>();
-    
-    final PeriodHistoryView? result = await showDialog<PeriodHistoryView>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text(l10n.settingsScreen_selectHistoryView),
-          children: PeriodHistoryView.values.map((view) {
-            final viewName = '${view.name[0].toUpperCase()}${view.name.substring(1)}';
-            return RadioListTile<PeriodHistoryView>(
-              title: Text('$viewName View'),
-              value: view,
-              groupValue: settingsService.historyView, 
-              onChanged: (PeriodHistoryView? value) {
-                Navigator.of(context).pop(value);
-              },
-            );
-          }).toList(),
-        );
-      },
-    );
-
-    if (result != null && result != settingsService.historyView) {
-      await settingsService.setHistoryView(result);
-    }
-  }
 
   Future<void> _showThemeModePicker(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
@@ -107,9 +77,6 @@ class AppearanceSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final themeNotifier = context.watch<ThemeNotifier>();
-    final settingsService = context.watch<SettingsService>();
-
-    final selectedViewName = '${settingsService.historyView.name[0].toUpperCase()}${settingsService.historyView.name.substring(1)}';
 
     return Scaffold(
       appBar: AppBar(
@@ -117,11 +84,6 @@ class AppearanceSettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: Text(l10n.settingsScreen_historyViewStyle),
-            subtitle: Text('$selectedViewName ${l10n.settingsScreen_view}'),
-            onTap: () => _showViewPicker(context),
-          ),
           ListTile(
             title: Text(l10n.settingsScreen_appTheme),
             subtitle: Text(themeNotifier.themeMode.getDisplayName(l10n)),
