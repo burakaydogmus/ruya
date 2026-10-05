@@ -235,6 +235,18 @@ void main() {
     expect(find.text('Bugün nasıl hissediyorsun?'), findsOneWidget);
   });
 
+  testWidgets('import from other apps is reachable from settings', (tester) async {
+    await launch(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    await tapVisible(tester, find.text('Diğer uygulamalardan aktar'));
+    await settle(tester);
+    expect(find.text('Flo'), findsOneWidget);
+    expect(find.text('Clue'), findsOneWidget);
+    expect(find.text('drip'), findsOneWidget);
+    expect(find.text('Dışa aktarma dosyası seç'), findsOneWidget);
+  });
+
   testWidgets('privacy settings are reachable from settings', (tester) async {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));

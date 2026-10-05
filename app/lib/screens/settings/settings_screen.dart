@@ -7,6 +7,7 @@ import 'package:ruya/screens/settings/sections/log_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/cycle_notifications_and_predictions_screen.dart';
 import 'package:ruya/screens/settings/sections/data_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/privacy_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/external_import_screen.dart';
 import 'package:ruya/screens/settings/sections/preferences_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/about_screen.dart';
 import 'package:ruya/screens/settings/sections/user_settings_screen.dart';
@@ -100,6 +101,16 @@ class SettingsScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const DataSettingsScreen()),
+            );
+          },
+        ),
+        _SettingsSectionButton(
+          title: l10n.settingsScreen_importOtherApps,
+          icon: Icons.move_to_inbox_outlined,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ExternalImportScreen()),
             );
           },
         ),

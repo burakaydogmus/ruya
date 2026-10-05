@@ -233,6 +233,44 @@ class LogsRepository {
     });
   }
 
+  /// Inserts [logs] in one transaction, skipping any calendar day that already
+  /// has a log (existing data always wins) and days in the future.
+  /// Returns the number of logs inserted.
+  Future<int> insertNewLogs(List<LogDay> logs) async {
+    final db = await dbProvider.database;
+    final existing = (await db.query('period_logs', columns: ['date']))
+        .map((r) => DateTime.parse(r['date'] as String))
+        .map((d) => DateTime(d.year, d.month, d.day))
+        .toSet();
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final toInsert = <LogDay>[];
+    for (final log in logs) {
+      final day = DateTime(log.date.year, log.date.month, log.date.day);
+      if (day.isAfter(today) || !existing.add(day) || !log.hasContent) continue;
+      toInsert.add(log);
+    }
+    final rows = [for (final log in toInsert) await LogRowCodec.toDbRow(log)];
+
+    await db.transaction((txn) async {
+      for (var i = 0; i < toInsert.length; i++) {
+        final log = toInsert[i];
+        final id = await txn.insert('period_logs', rows[i]..remove('id'));
+        final batch = txn.batch();
+        for (final symptom in log.symptoms.toSet()) {
+          batch.insert('log_symptoms', {'log_id_fk': id, 'symptom': symptom.getDbName()},
+              conflictAlgorithm: ConflictAlgorithm.ignore);
+        }
+        for (final mood in log.moods.toSet()) {
+          batch.insert('log_moods', {'log_id_fk': id, 'mood': mood.dbValue},
+              conflictAlgorithm: ConflictAlgorithm.ignore);
+        }
+        await batch.commit(noResult: true);
+      }
+    });
+    return toInsert.length;
+  }
+
   /// Mood counts for logs since [date], used for insights.
   Future<Map<Mood, int>> getMoodFrequencySince(DateTime date) async {
     final db = await dbProvider.database;

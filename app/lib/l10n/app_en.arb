@@ -1617,5 +1617,95 @@
     "dailyLog_futureDate": "You can't log days in the future.",
     "@dailyLog_futureDate": {
         "description": "Future date error"
+    },
+    "settingsScreen_importOtherApps": "Import from other apps",
+    "@settingsScreen_importOtherApps": {
+        "description": "Settings entry"
+    },
+    "import_title": "Import from other apps",
+    "@import_title": {
+        "description": "Screen title"
+    },
+    "import_intro": "Bring your history from another period tracker. The file is read on this device only.",
+    "@import_intro": {
+        "description": "Intro"
+    },
+    "import_floHow": "Data export JSON (period start/end dates)",
+    "@import_floHow": {
+        "description": "Flo format"
+    },
+    "import_clueHow": "measurements.json from the Clue data export",
+    "@import_clueHow": {
+        "description": "Clue format"
+    },
+    "import_dripHow": "CSV export from drip",
+    "@import_dripHow": {
+        "description": "drip format"
+    },
+    "import_pickFile": "Choose export file",
+    "@import_pickFile": {
+        "description": "Button"
+    },
+    "import_safety": "You will see a summary first. Days you already logged in RUYA are never changed.",
+    "@import_safety": {
+        "description": "Safety note"
+    },
+    "import_tooLarge": "The file is too large (max 50 MB)",
+    "@import_tooLarge": {
+        "description": "Error"
+    },
+    "import_unrecognised": "This file was not recognised as a Flo, Clue or drip export",
+    "@import_unrecognised": {
+        "description": "Error"
+    },
+    "import_failed": "Import failed. Nothing was changed.",
+    "@import_failed": {
+        "description": "Error"
+    },
+    "import_nothingNew": "Nothing new to import: every day in this file is already in RUYA",
+    "@import_nothingNew": {
+        "description": "Info"
+    },
+    "import_previewTitle": "Import from {source}?",
+    "@import_previewTitle": {
+        "description": "Preview title",
+        "placeholders": {
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "import_previewNewDays": "Days to add",
+    "@import_previewNewDays": {
+        "description": "Preview row"
+    },
+    "import_previewFlowDays": "Period days",
+    "@import_previewFlowDays": {
+        "description": "Preview row"
+    },
+    "import_previewKept": "Already in RUYA (kept)",
+    "@import_previewKept": {
+        "description": "Preview row"
+    },
+    "import_previewSkipped": "Unreadable entries skipped",
+    "@import_previewSkipped": {
+        "description": "Preview row"
+    },
+    "import_previewNote": "Periods and predictions are recalculated after the import.",
+    "@import_previewNote": {
+        "description": "Preview note"
+    },
+    "import_confirm": "Import",
+    "@import_confirm": {
+        "description": "Button"
+    },
+    "import_done": "{count, plural, =1{1 day imported} other{{count} days imported}}",
+    "@import_done": {
+        "description": "Snackbar",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     }
 }
