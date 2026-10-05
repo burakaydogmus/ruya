@@ -3,7 +3,7 @@
 **RUYA** — internet gerektirmeyen, cihaz üzerinde çalışan, gizlilik odaklı bir regl/döngü takip uygulaması (Android, Flutter).
 
 * Bulut yok, hesap yok, analitik/izleyici yok. Release APK'da `INTERNET` izni yoktur.
-* Veriler cihazdaki SQLite veritabanında; serbest metin alanları (not, ilaç) AES-256-GCM ile şifrelenir, anahtar Android Keystore'da tutulur.
+* Veriler cihazdaki SQLCipher ile şifrelenmiş veritabanında; serbest metin alanları (not, ilaç) ayrıca AES-256-GCM ile şifrelenir. Anahtarlar Android Keystore'da tutulur.
 * PIN kilidi, biyometrik kilit, ayarlanabilir kilit zaman aşımı, parola korumalı şifreli yedek.
 * Tahminler (regl, yumurtlama, doğurgan dönem, PMS) **yaklaşık** değerlerdir; tıbbi tavsiye değildir.
 

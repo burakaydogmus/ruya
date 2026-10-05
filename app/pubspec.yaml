@@ -37,6 +37,7 @@ dependencies:
   cryptography: ^2.9.0
   flutter_secure_storage: ^11.2.0
   pdf: ^3.13.1
+  sqflite_sqlcipher: ^3.4.1
 
 dev_dependencies:
   flutter_test:

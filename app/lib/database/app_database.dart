@@ -1,3 +1,4 @@
+import 'package:ruya/database/database_encryption.dart';
 import 'package:ruya/database/database_migrator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -20,12 +21,21 @@ class AppDatabase {
       return _database!;
     }
 
+    if (!inMemory && DatabaseEncryption.isEnabled) {
+      _database = await DatabaseEncryption.open(
+        version: schemaVersion,
+        onCreate: _createDB,
+        onUpgrade: DatabaseMigrator.upgrade,
+      );
+      return _database!;
+    }
+
     String path;
     if (inMemory) {
       path = inMemoryDatabasePath;
     } else {
       final dbPath = await getDatabasesPath();
-      path = join(dbPath, 'app_database.db');
+      path = join(dbPath, DatabaseEncryption.plainFileName);
     }
 
     _database = await openDatabase(

@@ -1444,7 +1444,7 @@
     "@privacy_summaryTitle": {
         "description": "Privacy summary title"
     },
-    "privacy_summaryBody": "Everything stays on this device. RUYA has no account, no cloud, no analytics and no trackers, and does not request internet access. Android cloud backup is disabled. Notes and medication are encrypted with a key kept in the Android Keystore.",
+    "privacy_summaryBody": "Everything stays on this device. RUYA has no account, no cloud, no analytics and no trackers, and does not request internet access. Android cloud backup is disabled. The whole database is encrypted with SQLCipher, and notes and medication are encrypted once more; both keys are kept in the Android Keystore.",
     "@privacy_summaryBody": {
         "description": "Privacy summary"
     },

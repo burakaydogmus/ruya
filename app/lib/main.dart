@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:ruya/controllers/log_reversible_contraceptive_ui_controller.dart';
 import 'package:ruya/controllers/log_sanitary_ui_controller.dart';
@@ -27,6 +28,7 @@ import 'package:ruya/services/widget_controller.dart';
 import 'package:ruya/services/period_service.dart';
 import 'package:ruya/services/log_service.dart';
 import 'package:ruya/security/field_cipher.dart';
+import 'package:ruya/database/database_encryption.dart';
 import 'package:ruya/security/secure_key_value_store.dart';
 import 'package:ruya/security/app_lock_controller.dart';
 import 'package:ruya/security/pin_service.dart';
@@ -56,6 +58,11 @@ void main() async {
   // Data key for encrypted DB fields (Android Keystore backed). Must be ready
   // before anything reads or writes logs.
   final SecureKeyValueStore secureStore = PlatformSecureKeyValueStore();
+  // Full-database encryption (SQLCipher) on Android; migrates a plaintext
+  // database once and falls back to it if anything goes wrong.
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    await DatabaseEncryption.prepare(secureStore);
+  }
   try {
     await FieldCipher.instance.init(secureStore);
   } catch (e) {

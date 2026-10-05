@@ -499,7 +499,7 @@
     "privacy_timeoutMinutes": "Arka planda {count} dakika sonra",
     "privacy_backupSubtitle": "Parola korumalı, AES-256 şifreli dosya",
     "privacy_summaryTitle": "RUYA verilerini nasıl korur",
-    "privacy_summaryBody": "Her şey bu cihazda kalır. RUYA'da hesap, bulut, analitik ve izleyici yoktur; internet izni istemez. Android bulut yedeği kapalıdır. Notlar ve ilaçlar Android Keystore'da tutulan bir anahtarla şifrelenir.",
+    "privacy_summaryBody": "Her şey bu cihazda kalır. RUYA'da hesap, bulut, analitik ve izleyici yoktur; internet izni istemez. Android bulut yedeği kapalıdır. Veritabanının tamamı SQLCipher ile şifrelenir, notlar ve ilaçlar ayrıca bir kez daha şifrelenir; iki anahtar da Android Keystore'da tutulur.",
     "backup_title": "Şifreli yedek",
     "backup_intro": "Tüm RUYA verilerinin parola korumalı bir yedeğini oluştur ve istediğin yere kaydet. Bu cihaza veya başka bir cihaza geri yükleyebilirsin.",
     "backup_exportTitle": "Yedek oluştur",
