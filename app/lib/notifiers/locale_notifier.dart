@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/services/settings_service.dart';
 
 class LocaleNotifier extends ChangeNotifier {
   final SettingsService _settingsService;

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:menstrudel/models/flows/flow_enum.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import 'package:menstrudel/database/app_database.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/periods/period.dart';
-import 'package:menstrudel/models/flows/flow_data.dart';
+import 'package:ruya/database/app_database.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/periods/period.dart';
+import 'package:ruya/models/flows/flow_data.dart';
 
 class PeriodsRepository {
   final dbProvider = AppDatabase.instance;

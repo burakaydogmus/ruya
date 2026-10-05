@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/cycle_phase/cycle_phase_enum.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/models/period_logs/pain_level_enum.dart';
-import 'package:menstrudel/models/period_prediction_result.dart';
+import 'package:ruya/models/cycle_phase/cycle_phase_enum.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/models/period_logs/pain_level_enum.dart';
+import 'package:ruya/models/period_prediction_result.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/services/log_service.dart';
-import 'package:menstrudel/services/period_service.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/prefrences/day_of_week_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/log_service.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/prefrences/day_of_week_enum.dart';
 
 class PeriodJournalView extends StatefulWidget {
   final Function(DateTime) onLogRequested;

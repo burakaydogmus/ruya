@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class WelcomeStep extends StatelessWidget {
   const WelcomeStep({super.key});
@@ -15,7 +15,7 @@ class WelcomeStep extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/icon/menstrudel.png', 
+            'assets/icon/ruya.png', 
             width: 120,
             height: 120,
           ),

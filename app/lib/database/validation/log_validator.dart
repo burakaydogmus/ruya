@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/utils/exceptions.dart';
-import 'package:menstrudel/database/repositories/logs_repository.dart';
+import 'package:ruya/utils/exceptions.dart';
+import 'package:ruya/database/repositories/logs_repository.dart';
 
 class LogValidator {
   final LogsRepository repository;

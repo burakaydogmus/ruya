@@ -1,6 +1,6 @@
 {
     "@@locale": "it",
-    "appTitle": "Menstrudel",
+    "appTitle": "RUYA",
     "nextDue": "In scadenza",
     "ongoing": "In corso",
     "overdue": "In ritardo",
@@ -303,7 +303,7 @@
             }
         }
     },
-    "onboardingScreen_welcomeToMenstrudel": "Benvenuta su Menstrudel",
+    "onboardingScreen_welcomeToMenstrudel": "Benvenuta su RUYA",
     "@onboardingScreen_welcomeToMenstrudel": {
         "description": "Title for the onboarding screen."
     },
@@ -311,7 +311,7 @@
     "@onboardingScreen_welcomeToMenstrudelDescription": {
         "description": "Small into description for the onboarding screen."
     },
-    "onBoardingScreen_byUsingMenstrudelYouAgreeTo": "Usando Menstrudel accetti la nostra ",
+    "onBoardingScreen_byUsingMenstrudelYouAgreeTo": "Usando RUYA accetti la nostra ",
     "@onBoardingScreen_byUsingMenstrudelYouAgreeTo": {
         "description": "Part of the privacy policy agreement text on the onboarding screen."
     },
@@ -736,7 +736,7 @@
     "@aboutScreen_share": {
         "description": "Link button text for the share button on the about screen."
     },
-    "aboutScreen_shareText": "Scopri Menstrudel, un'app per il monitoraggio del ciclo privata e offline!",
+    "aboutScreen_shareText": "Scopri RUYA, un'app per il monitoraggio del ciclo privata e offline!",
     "@aboutScreen_shareText": {
         "description": "Text used when sharing the app from the about screen."
     },

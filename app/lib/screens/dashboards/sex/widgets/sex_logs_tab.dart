@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/sex/sex_log_entry.dart';
-import 'package:menstrudel/widgets/sex_activities/screen/sex_log_card.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/sex/sex_log_entry.dart';
+import 'package:ruya/widgets/sex_activities/screen/sex_log_card.dart';
 
 class SexLogsTab extends StatelessWidget {
   final bool isLoading;

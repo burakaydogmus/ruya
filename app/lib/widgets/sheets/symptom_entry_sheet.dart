@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/models/period_logs/pain_level_enum.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/services/symptom_service.dart';
-import 'package:menstrudel/widgets/dialogs/custom_symptom_dialog.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/models/period_logs/pain_level_enum.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/services/symptom_service.dart';
+import 'package:ruya/widgets/dialogs/custom_symptom_dialog.dart';
 
 class SymptomEntrySheet extends StatefulWidget {
   const SymptomEntrySheet({super.key, required this.selectedDate, required this.symptomService, required this.age});

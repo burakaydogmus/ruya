@@ -1,4 +1,4 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 /// An enum representing different types of data settings in the application.
 /// Used for selecting data types for export, import, or deletion.

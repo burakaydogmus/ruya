@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/cycle_phase/cycle_phase.dart';
-import 'package:menstrudel/models/flows/flow_data.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
+import 'package:ruya/models/cycle_phase/cycle_phase.dart';
+import 'package:ruya/models/flows/flow_data.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/database/repositories/periods_repository.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/periods/period.dart';
-import 'package:menstrudel/models/period_prediction_result.dart';
-import 'package:menstrudel/utils/cycle_phase_predictor.dart';
-import 'package:menstrudel/utils/period_predictor.dart';
-import 'package:menstrudel/services/notification_service.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/services/wear_sync_service.dart';
-import 'package:menstrudel/services/widget_controller.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/database/repositories/periods_repository.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/periods/period.dart';
+import 'package:ruya/models/period_prediction_result.dart';
+import 'package:ruya/utils/cycle_phase_predictor.dart';
+import 'package:ruya/utils/period_predictor.dart';
+import 'package:ruya/services/notification_service.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/services/wear_sync_service.dart';
+import 'package:ruya/services/widget_controller.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class PeriodService extends ChangeNotifier {
   final SettingsService _settingsService;

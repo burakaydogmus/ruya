@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:menstrudel/screens/main_screen.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/screens/main_screen.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:provider/provider.dart';
 
 class AuthGate extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AuthGateState extends State<AuthGate> {
   final LocalAuthentication auth = LocalAuthentication();
   try {
     final bool didAuthenticate = await auth.authenticate(
-      localizedReason: 'Please authenticate to open Menstrudel',
+      localizedReason: AppLocalizations.of(context)!.auth_unlockReason,
       persistAcrossBackgrounding: true, 
       biometricOnly: false, 
     );

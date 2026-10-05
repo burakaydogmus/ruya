@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/app/data_settings_type_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/app/data_settings_type_enum.dart';
 import 'data_menu_card.dart';
 
 class StepDataTypeSelection extends StatelessWidget {

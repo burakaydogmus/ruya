@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 typedef ReversibleContraceptiveSaveCallback = void Function(DateTime date, String? note);
 

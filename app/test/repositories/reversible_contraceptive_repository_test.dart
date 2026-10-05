@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:menstrudel/database/app_database.dart';
-import 'package:menstrudel/database/repositories/reversible_contraceptive_repository.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
+import 'package:ruya/database/app_database.dart';
+import 'package:ruya/database/repositories/reversible_contraceptive_repository.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 ReversibleContraceptiveLogEntry _reversibleContraceptive(String date, {ReversibleContraceptiveTypes type = ReversibleContraceptiveTypes.copperIud, int? id}) => 

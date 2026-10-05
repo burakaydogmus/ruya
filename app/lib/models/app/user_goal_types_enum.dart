@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/app/settings_presets.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/app/settings_presets.dart';
 
 /// Enum representing different types of user app goals.
 enum UserGoalTypes {

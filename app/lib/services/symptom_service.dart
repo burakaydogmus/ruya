@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/models/period_logs/symptom_type_enum.dart';
-import 'package:menstrudel/utils/constants.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/period_logs/symptom_type_enum.dart';
+import 'package:ruya/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for managing user symptoms and related data.

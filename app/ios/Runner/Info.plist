@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Menstrudel</string>
+	<string>RUYA</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>menstrudel</string>
+	<string>ruya</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,9 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Menstrudel uses Face ID to secure your private health data.</string>
+	<string>RUYA uses Face ID to secure your private health data.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Menstrudel needs access to the photo library to allow you to share your exported user data to other apps like files, email or messengers.</string>
+	<string>RUYA needs access to the photo library to allow you to share your exported user data to other apps like files, email or messengers.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

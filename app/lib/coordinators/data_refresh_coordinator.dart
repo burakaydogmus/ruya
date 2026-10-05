@@ -1,7 +1,7 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/services/log_service.dart';
-import 'package:menstrudel/services/period_service.dart';
-import 'package:menstrudel/services/widget_controller.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/log_service.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/services/widget_controller.dart';
 
 class DataRefreshCoordinator {
   final LogService logService;

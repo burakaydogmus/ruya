@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class PillStatusCard extends StatelessWidget {
   final int currentPillNumberInCycle;

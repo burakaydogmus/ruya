@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/controllers/log_reversible_contraceptive_ui_controller.dart';
-import 'package:menstrudel/controllers/log_sanitary_ui_controller.dart';
-import 'package:menstrudel/controllers/log_sex_ui_controller.dart';
-import 'package:menstrudel/controllers/log_ui_controller.dart';
-import 'package:menstrudel/screens/dashboards/logs/logs_screen.dart';
-import 'package:menstrudel/screens/dashboards/sanitary_screen.dart';
-import 'package:menstrudel/screens/settings/settings_screen.dart';
-import 'package:menstrudel/screens/dashboards/pills_screen.dart';
-import 'package:menstrudel/screens/dashboards/sex/sex_screen.dart';
-import 'package:menstrudel/services/user_service.dart';
-import 'package:menstrudel/widgets/main/main_navigation_bar.dart';
-import 'package:menstrudel/widgets/main/app_bar.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/controllers/log_reversible_contraceptive_ui_controller.dart';
+import 'package:ruya/controllers/log_sanitary_ui_controller.dart';
+import 'package:ruya/controllers/log_sex_ui_controller.dart';
+import 'package:ruya/controllers/log_ui_controller.dart';
+import 'package:ruya/screens/dashboards/logs/logs_screen.dart';
+import 'package:ruya/screens/dashboards/sanitary_screen.dart';
+import 'package:ruya/screens/settings/settings_screen.dart';
+import 'package:ruya/screens/dashboards/pills_screen.dart';
+import 'package:ruya/screens/dashboards/sex/sex_screen.dart';
+import 'package:ruya/services/user_service.dart';
+import 'package:ruya/widgets/main/main_navigation_bar.dart';
+import 'package:ruya/widgets/main/app_bar.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/screens/dashboards/reversible_contraceptive/reversible_contraceptive_screen.dart';
+import 'package:ruya/screens/dashboards/reversible_contraceptive/reversible_contraceptive_screen.dart';
 
 enum FabState {
   logPeriod,

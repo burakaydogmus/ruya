@@ -1,5 +1,5 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/period_logs/symptom_type_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/period_logs/symptom_type_enum.dart';
 
 class Symptom {
   SymptomType type;

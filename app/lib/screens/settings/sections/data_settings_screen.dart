@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/coordinators/data_refresh_coordinator.dart';
-import 'package:menstrudel/database/repositories/periods_repository.dart';
-import 'package:menstrudel/database/repositories/sex_repository.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/app/data_settings_type_enum.dart';
-import 'package:menstrudel/widgets/dialogs/delete_confirmation_dialog.dart';
-import 'package:menstrudel/database/repositories/pills_repository.dart';
-import 'package:menstrudel/database/repositories/reversible_contraceptive_repository.dart';
-import 'package:menstrudel/database/repositories/sanitary_product_repository.dart';
-import 'package:menstrudel/services/notification_service.dart';
+import 'package:ruya/coordinators/data_refresh_coordinator.dart';
+import 'package:ruya/database/repositories/periods_repository.dart';
+import 'package:ruya/database/repositories/sex_repository.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/app/data_settings_type_enum.dart';
+import 'package:ruya/widgets/dialogs/delete_confirmation_dialog.dart';
+import 'package:ruya/database/repositories/pills_repository.dart';
+import 'package:ruya/database/repositories/reversible_contraceptive_repository.dart';
+import 'package:ruya/database/repositories/sanitary_product_repository.dart';
+import 'package:ruya/services/notification_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -101,7 +101,7 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
 
       final Directory directory = await getApplicationDocumentsDirectory();
       final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-      final fileName = 'menstrudel_${fileNamePart}_$timestamp.json';
+      final fileName = 'ruya_${fileNamePart}_$timestamp.json';
       final file = File('${directory.path}/$fileName');
 
       await file.writeAsString(jsonData);

@@ -1,4 +1,4 @@
-import 'package:menstrudel/models/cycle_phase/cycle_phase.dart';
+import 'package:ruya/models/cycle_phase/cycle_phase.dart';
 
 /// A utility class for calculating when each cycle phase is due based on user data.
 /// This is to be used with natural cycles only. If user is on the pill it should not be used.

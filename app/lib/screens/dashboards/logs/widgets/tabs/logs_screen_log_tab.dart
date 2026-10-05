@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/controllers/log_ui_controller.dart';
-import 'package:menstrudel/services/period_service.dart';
-import 'package:menstrudel/screens/dashboards/logs/widgets/dynamic_history_view.dart';
+import 'package:ruya/controllers/log_ui_controller.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/screens/dashboards/logs/widgets/dynamic_history_view.dart';
 import 'package:provider/provider.dart';
 
 class LogsScreenLogTab extends StatefulWidget {

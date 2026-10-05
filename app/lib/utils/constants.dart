@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/models/themes/app_theme_mode_enum.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/themes/app_theme_mode_enum.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
 
 /// The base app seed colour.
 const seedColor = Color(0xFF60A5FA);

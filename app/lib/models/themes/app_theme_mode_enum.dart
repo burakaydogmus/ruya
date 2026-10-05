@@ -1,4 +1,4 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 enum AppThemeMode { light, dark, system }

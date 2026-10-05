@@ -1,5 +1,5 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/cycle_phase/cycle_phase_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/cycle_phase/cycle_phase_enum.dart';
 
 class PredictedCycle {
   final DateTime menstruationStart;

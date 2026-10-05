@@ -1,12 +1,12 @@
-import 'package:menstrudel/database/app_database.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_regimen.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_intake.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_reminder.dart';
+import 'package:ruya/database/app_database.dart';
+import 'package:ruya/models/birth_control/pills/pill_regimen.dart';
+import 'package:ruya/models/birth_control/pills/pill_intake.dart';
+import 'package:ruya/models/birth_control/pills/pill_reminder.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/services/notification_service.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/notification_service.dart';
 import 'package:flutter/material.dart';
 
 class PillsRepository {

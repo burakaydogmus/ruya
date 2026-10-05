@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
 
 class SymptomFrequencyWidget extends StatelessWidget {
   final Map<Symptom, int> symptomCounts;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_regimen.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/models/birth_control/pills/pill_regimen.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class RegimenSetupDialog extends StatefulWidget {
   const RegimenSetupDialog({super.key});

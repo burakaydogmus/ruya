@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:menstrudel/database/app_database.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/database/repositories/periods_repository.dart';
-import 'package:menstrudel/database/repositories/logs_repository.dart';
+import 'package:ruya/database/app_database.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/database/repositories/periods_repository.dart';
+import 'package:ruya/database/repositories/logs_repository.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 LogDay _log(String date, {FlowRate flow = FlowRate.medium}) =>

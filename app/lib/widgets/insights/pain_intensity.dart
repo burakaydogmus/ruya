@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/period_logs/pain_level_enum.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/period_logs/pain_level_enum.dart';
 
 class PainBreakdownWidget extends StatelessWidget {
   final List<LogDay> logs;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_entry.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_entry.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_enum.dart';
 
 class SanitaryProductsLogCard extends StatelessWidget {
   const SanitaryProductsLogCard({

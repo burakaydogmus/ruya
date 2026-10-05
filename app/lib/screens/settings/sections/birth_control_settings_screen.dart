@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/pills_repository.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_regimen.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_reminder.dart';
-import 'package:menstrudel/services/notification_service.dart';
-import 'package:menstrudel/widgets/dialogs/delete_confirmation_dialog.dart';
-import 'package:menstrudel/widgets/dialogs/reversible_contraceptive_duration_config_dialog.dart';
-import 'package:menstrudel/widgets/settings/regimen_setup_dialog.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/database/repositories/pills_repository.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
+import 'package:ruya/models/birth_control/pills/pill_regimen.dart';
+import 'package:ruya/models/birth_control/pills/pill_reminder.dart';
+import 'package:ruya/services/notification_service.dart';
+import 'package:ruya/widgets/dialogs/delete_confirmation_dialog.dart';
+import 'package:ruya/widgets/dialogs/reversible_contraceptive_duration_config_dialog.dart';
+import 'package:ruya/widgets/settings/regimen_setup_dialog.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:provider/provider.dart';
 
 class BirthControlSettingsScreen extends StatefulWidget {

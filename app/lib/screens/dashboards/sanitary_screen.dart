@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/database/repositories/sanitary_product_repository.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_entry.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/services/notification_service.dart';
-import 'package:menstrudel/widgets/sanitary_products/screen/sanitary_product_insights_tab.dart';
-import 'package:menstrudel/widgets/sanitary_products/screen/sanitary_product_logs_tab.dart';
-import 'package:menstrudel/controllers/log_sanitary_ui_controller.dart';
+import 'package:ruya/database/repositories/sanitary_product_repository.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_entry.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/notification_service.dart';
+import 'package:ruya/widgets/sanitary_products/screen/sanitary_product_insights_tab.dart';
+import 'package:ruya/widgets/sanitary_products/screen/sanitary_product_logs_tab.dart';
+import 'package:ruya/controllers/log_sanitary_ui_controller.dart';
 
 class SanitaryScreen extends StatefulWidget {
   const SanitaryScreen({super.key});

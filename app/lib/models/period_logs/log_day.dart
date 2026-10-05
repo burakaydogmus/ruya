@@ -1,5 +1,5 @@
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
 
 /// Represents a single day's log.
 ///

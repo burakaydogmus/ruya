@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/flows/flow_data.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
+import 'package:ruya/models/flows/flow_data.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
 
 class FlowPatternsWidget extends StatelessWidget {
   final List<MonthlyFlowData> monthlyFlowData;

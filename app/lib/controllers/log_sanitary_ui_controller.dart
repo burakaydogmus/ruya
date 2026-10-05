@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/sanitary_product_repository.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_entry.dart';
-import 'package:menstrudel/widgets/sanitary_products/sheets/log_sanitary_product_bottom_sheet.dart';
-import 'package:menstrudel/widgets/sanitary_products/sheets/edit_sanitary_product_bottom_sheet.dart';
+import 'package:ruya/database/repositories/sanitary_product_repository.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_entry.dart';
+import 'package:ruya/widgets/sanitary_products/sheets/log_sanitary_product_bottom_sheet.dart';
+import 'package:ruya/widgets/sanitary_products/sheets/edit_sanitary_product_bottom_sheet.dart';
 
 class LogSanitaryUIController extends ChangeNotifier {
   final SanitaryProductRepository _repo = SanitaryProductRepository();

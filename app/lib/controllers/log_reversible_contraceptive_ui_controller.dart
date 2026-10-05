@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/reversible_contraceptive_repository.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/screens/dashboards/reversible_contraceptive/widgets/edit_reversible_contraceptive_bottom_sheet.dart';
-import 'package:menstrudel/screens/dashboards/reversible_contraceptive/widgets/reversible_contraceptive_bottom_sheet.dart';
+import 'package:ruya/database/repositories/reversible_contraceptive_repository.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/screens/dashboards/reversible_contraceptive/widgets/edit_reversible_contraceptive_bottom_sheet.dart';
+import 'package:ruya/screens/dashboards/reversible_contraceptive/widgets/reversible_contraceptive_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class LogReversibleContraceptiveUIController extends ChangeNotifier {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_entry.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/widgets/sanitary_products/screen/sanitary_product_log_card.dart';
-import 'package:menstrudel/widgets/sanitary_products/screen/countdown_card.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_entry.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/widgets/sanitary_products/screen/sanitary_product_log_card.dart';
+import 'package:ruya/widgets/sanitary_products/screen/countdown_card.dart';
 
 class SanitaryProductLogsTab extends StatelessWidget {
   final bool isLoading;

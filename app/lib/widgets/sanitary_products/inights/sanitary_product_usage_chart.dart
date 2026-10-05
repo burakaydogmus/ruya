@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_entry.dart';
-import 'package:menstrudel/models/sanitary_products/sanitary_products_enum.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_entry.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class SanitaryProductUsageChart extends StatelessWidget {
   final List<SanitaryProductsEntry> historyEntries;

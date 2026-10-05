@@ -1,5 +1,5 @@
-import 'package:menstrudel/models/phone_sync/circle_data.dart';
-import 'package:menstrudel/models/phone_sync/log_request.dart';
+import 'package:ruya/models/phone_sync/circle_data.dart';
+import 'package:ruya/models/phone_sync/log_request.dart';
 
 class SharedContextData {
   final CircleData? circleData;

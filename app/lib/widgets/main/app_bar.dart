@@ -5,7 +5,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget{
   
   const TopAppBar({
     super.key,
-    this.titleText = "Menstrudel",
+    this.titleText = "RUYA",
   });
 
   @override

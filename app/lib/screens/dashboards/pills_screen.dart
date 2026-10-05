@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/pills_repository.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_regimen.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_intake.dart';
-import 'package:menstrudel/services/notification_service.dart';
+import 'package:ruya/database/repositories/pills_repository.dart';
+import 'package:ruya/models/birth_control/pills/pill_regimen.dart';
+import 'package:ruya/models/birth_control/pills/pill_intake.dart';
+import 'package:ruya/services/notification_service.dart';
 
-import 'package:menstrudel/widgets/pills/empty_pills_state.dart';
-import 'package:menstrudel/widgets/pills/pill_pack_visualiser.dart';
-import 'package:menstrudel/widgets/pills/pill_status_card.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_status_enum.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/widgets/pills/empty_pills_state.dart';
+import 'package:ruya/widgets/pills/pill_pack_visualiser.dart';
+import 'package:ruya/widgets/pills/pill_status_card.dart';
+import 'package:ruya/models/birth_control/pills/pill_status_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class PillsScreen extends StatefulWidget {
   const PillsScreen({super.key});

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:menstrudel/database/app_database.dart';
-import 'package:menstrudel/models/app/user_entry.dart';
+import 'package:ruya/database/app_database.dart';
+import 'package:ruya/models/app/user_entry.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sqflite/sqflite.dart';
 

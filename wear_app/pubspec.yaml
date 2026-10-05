@@ -1,5 +1,5 @@
-name: menstrudel
-description: "Your private, offline, menstrual cycle tracker."
+name: ruya
+description: "RUYA Wear OS companion."
 publish_to: 'none'
 
 version: 1.1.0+1005
@@ -28,17 +28,17 @@ flutter:
 flutter_native_splash:
   color: "#000000"
 
-  image: assets/icon/menstrudel.png
+  image: assets/icon/ruya_monochrome.png
 
   android_12:
     color: "#000000"
-    image: assets/icon/menstrudel.png
+    image: assets/icon/ruya_monochrome.png
 
 flutter_launcher_icons:
   android: true
   
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/icon/menstrudel.png"
-  adaptive_icon_monochrome: "assets/icon/menstrudel_monochrome.png"
+  adaptive_icon_background: "assets/icon/ruya_background.png"
+  adaptive_icon_foreground: "assets/icon/ruya_foreground.png"
+  adaptive_icon_monochrome: "assets/icon/ruya_monochrome.png"
   
-  image_path: "assets/icon/menstrudel_monochrome.png"
+  image_path: "assets/icon/ruya.png"

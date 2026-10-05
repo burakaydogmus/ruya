@@ -1,4 +1,4 @@
-import 'package:menstrudel/database/database_migrator.dart';
+import 'package:ruya/database/database_migrator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

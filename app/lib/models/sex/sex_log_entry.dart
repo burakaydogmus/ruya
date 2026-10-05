@@ -1,7 +1,7 @@
 
-import 'package:menstrudel/models/sex/sex_participation_type_enum.dart';
-import 'package:menstrudel/models/sex/sex_protection_type_enum.dart';
-import 'package:menstrudel/models/sex/sex_type_enum.dart';
+import 'package:ruya/models/sex/sex_participation_type_enum.dart';
+import 'package:ruya/models/sex/sex_protection_type_enum.dart';
+import 'package:ruya/models/sex/sex_type_enum.dart';
 
 class SexLogEntry {
   int? id;

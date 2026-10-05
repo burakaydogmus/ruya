@@ -1,4 +1,4 @@
-package com.whitticase.menstrudel 
+package com.burakaydogmus.ruya 
 
 import android.appwidget.AppWidgetManager
 import android.app.PendingIntent
@@ -33,7 +33,7 @@ class HomeScreenWidgetProvider : HomeWidgetProvider() {
             val pendingIntent = HomeWidgetLaunchIntent.getActivity(
                 context,
                 MainActivity::class.java,
-                Uri.parse("menstrudel://widget/home") 
+                Uri.parse("ruya://widget/home") 
             )
             
             views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)

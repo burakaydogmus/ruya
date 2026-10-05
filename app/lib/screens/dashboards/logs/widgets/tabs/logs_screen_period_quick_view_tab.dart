@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/cycle_phase/cycle_phase_enum.dart';
-import 'package:menstrudel/services/period_service.dart';
-import 'package:menstrudel/screens/dashboards/logs/widgets/basic_progress_circle.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/cycle_phase/cycle_phase_enum.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/screens/dashboards/logs/widgets/basic_progress_circle.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:provider/provider.dart';
 
 class LogsScreenPeriodQuickViewTab extends StatelessWidget {

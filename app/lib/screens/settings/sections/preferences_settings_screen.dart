@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/prefrences/day_of_week_enum.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/l10n/l10n.dart';
-import 'package:menstrudel/notifiers/locale_notifier.dart';
+import 'package:ruya/models/prefrences/day_of_week_enum.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/l10n/l10n.dart';
+import 'package:ruya/notifiers/locale_notifier.dart';
 import 'package:provider/provider.dart';
 
 class PreferencesSettingsScreen extends StatelessWidget {

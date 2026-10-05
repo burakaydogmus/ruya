@@ -1,9 +1,10 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 /// This class is a custom helper to build language selection dropdown.
 class L10n {
   static final Map<String, String> nativeLanguageNames = {
     'en': 'English',
+    'tr': 'Türkçe',
     'fr': 'Français',
     'de': 'Deutsch',
     'it': 'Italiano',

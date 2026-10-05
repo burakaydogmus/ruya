@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:menstrudel/database/app_database.dart';
-import 'package:menstrudel/database/validation/log_validator.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/utils/exceptions.dart';
+import 'package:ruya/database/app_database.dart';
+import 'package:ruya/database/validation/log_validator.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/utils/exceptions.dart';
 
 class LogsRepository {
   final dbProvider = AppDatabase.instance;

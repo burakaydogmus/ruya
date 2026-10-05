@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:menstrudel/models/watch_sync/shared_context.dart';
-import 'package:menstrudel/models/watch_sync/circle_data.dart';
+import 'package:ruya/models/watch_sync/shared_context.dart';
+import 'package:ruya/models/watch_sync/circle_data.dart';
 
 class WatchSyncService {
   final _watch = WatchConnectivity();

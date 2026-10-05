@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/themes/app_theme_mode_enum.dart';
-import 'package:menstrudel/notifiers/theme_notifier.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/themes/app_theme_mode_enum.dart';
+import 'package:ruya/notifiers/theme_notifier.dart';
+import 'package:ruya/services/settings_service.dart';
 
 class AppearanceSettingsScreen extends StatelessWidget {
   const AppearanceSettingsScreen({super.key});

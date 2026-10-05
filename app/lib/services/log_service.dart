@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/logs_repository.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
+import 'package:ruya/database/repositories/logs_repository.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
 
 class LogService extends ChangeNotifier {
   final LogsRepository _logRepo;

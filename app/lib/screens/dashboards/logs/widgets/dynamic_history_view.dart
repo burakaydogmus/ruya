@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/screens/dashboards/logs/widgets/journal_view.dart';
-import 'package:menstrudel/screens/dashboards/logs/widgets/list_view.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
+import 'package:ruya/screens/dashboards/logs/widgets/journal_view.dart';
+import 'package:ruya/screens/dashboards/logs/widgets/list_view.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:provider/provider.dart';
 
 class DynamicHistoryView extends StatelessWidget {

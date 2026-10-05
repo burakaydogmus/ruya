@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/services/user_service.dart';
-import 'package:menstrudel/widgets/goal_card.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/services/user_service.dart';
+import 'package:ruya/widgets/goal_card.dart';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/models/app/user_goal_types_enum.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/models/app/user_goal_types_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});

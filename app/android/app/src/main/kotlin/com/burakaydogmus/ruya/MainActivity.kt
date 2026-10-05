@@ -1,4 +1,4 @@
-package com.whitticase.menstrudel
+package com.burakaydogmus.ruya
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 class MainActivity: FlutterFragmentActivity() {}

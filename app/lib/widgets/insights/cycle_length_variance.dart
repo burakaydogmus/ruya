@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:menstrudel/models/periods/period.dart';
-import 'package:menstrudel/models/cycles/cycle_stats.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/widgets/insights/stat_chip.dart';
+import 'package:ruya/models/periods/period.dart';
+import 'package:ruya/models/cycles/cycle_stats.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/widgets/insights/stat_chip.dart';
 
 class CycleLengthVarianceWidget extends StatelessWidget {
   final List<Period> periods;

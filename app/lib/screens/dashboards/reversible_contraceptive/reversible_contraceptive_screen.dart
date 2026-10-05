@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/database/repositories/reversible_contraceptive_repository.dart';
-import 'package:menstrudel/screens/dashboards/reversible_contraceptive/widgets/reversible_contraceptive_log_card.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
-import 'package:menstrudel/services/notification_service.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/controllers/log_reversible_contraceptive_ui_controller.dart';
+import 'package:ruya/database/repositories/reversible_contraceptive_repository.dart';
+import 'package:ruya/screens/dashboards/reversible_contraceptive/widgets/reversible_contraceptive_log_card.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
+import 'package:ruya/services/notification_service.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/controllers/log_reversible_contraceptive_ui_controller.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class ReversibleContraceptiveScreen extends StatefulWidget {

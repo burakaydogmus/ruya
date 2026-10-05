@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/birth_control/pills/pill_status_enum.dart';
+import 'package:ruya/models/birth_control/pills/pill_status_enum.dart';
 
 class PillCircle extends StatelessWidget {
   final int dayNumber;

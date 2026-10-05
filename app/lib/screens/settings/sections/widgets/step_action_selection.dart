@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/screens/settings/sections/data_settings_screen.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/screens/settings/sections/data_settings_screen.dart';
 import 'data_menu_card.dart';
 
 class StepActionSelection extends StatelessWidget {

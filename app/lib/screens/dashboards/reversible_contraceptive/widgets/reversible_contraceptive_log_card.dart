@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_log_entry.dart';
 
 class ReversibleContraceptiveLogCard extends StatelessWidget {
   const ReversibleContraceptiveLogCard({

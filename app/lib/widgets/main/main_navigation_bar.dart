@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/services/settings_service.dart';
 import 'package:provider/provider.dart';
 
 class MainNavigationBar extends StatelessWidget {

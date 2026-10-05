@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/logs_repository.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/services/symptom_service.dart';
-import 'package:menstrudel/widgets/dialogs/custom_symptom_dialog.dart';
-import 'package:menstrudel/widgets/dialogs/delete_confirmation_dialog.dart';
+import 'package:ruya/database/repositories/logs_repository.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/services/symptom_service.dart';
+import 'package:ruya/widgets/dialogs/custom_symptom_dialog.dart';
+import 'package:ruya/widgets/dialogs/delete_confirmation_dialog.dart';
 import 'package:provider/provider.dart';
 
 class LogSettingsScreen extends StatelessWidget {

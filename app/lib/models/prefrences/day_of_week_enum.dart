@@ -1,4 +1,4 @@
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
 /// Enum representing the starting day of the week.
 /// Currently used for calendar displays.

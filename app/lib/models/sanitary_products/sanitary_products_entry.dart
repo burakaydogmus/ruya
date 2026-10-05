@@ -1,4 +1,4 @@
-import 'package:menstrudel/models/sanitary_products/sanitary_products_enum.dart';
+import 'package:ruya/models/sanitary_products/sanitary_products_enum.dart';
 
 class SanitaryProductsEntry {
   int? id;

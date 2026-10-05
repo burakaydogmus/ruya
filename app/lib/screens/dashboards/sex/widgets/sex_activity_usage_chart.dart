@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/sex/sex_log_entry.dart';
-import 'package:menstrudel/models/sex/sex_type_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/sex/sex_log_entry.dart';
+import 'package:ruya/models/sex/sex_type_enum.dart';
 
 class SexActivityUsageChart extends StatelessWidget {
   final List<SexLogEntry> historyEntries;

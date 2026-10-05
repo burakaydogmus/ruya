@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/sex/sex_participation_type_enum.dart';
-import 'package:menstrudel/models/sex/sex_protection_type_enum.dart';
-import 'package:menstrudel/models/sex/sex_type_enum.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/sex/sex_participation_type_enum.dart';
+import 'package:ruya/models/sex/sex_protection_type_enum.dart';
+import 'package:ruya/models/sex/sex_type_enum.dart';
 
 typedef SexActivitySaveCallback = void Function(
   DateTime date, 

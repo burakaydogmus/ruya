@@ -1,6 +1,6 @@
 {
     "@@locale": "no",
-    "appTitle": "Menstrudel",
+    "appTitle": "RUYA",
     "nextDue": "Next Due",
     "ongoing": "Ongoing",
     "overdue": "Overdue",
@@ -303,7 +303,7 @@
             }
         }
     },
-    "onboardingScreen_welcomeToMenstrudel": "Welcome to Menstrudel",
+    "onboardingScreen_welcomeToMenstrudel": "Welcome to RUYA",
     "@onboardingScreen_welcomeToMenstrudel": {
         "description": "Title for the onboarding screen."
     },
@@ -311,7 +311,7 @@
     "@onboardingScreen_welcomeToMenstrudelDescription": {
         "description": "Small into description for the onboarding screen."
     },
-    "onBoardingScreen_byUsingMenstrudelYouAgreeTo": "By using Menstrudel, you agree to our ",
+    "onBoardingScreen_byUsingMenstrudelYouAgreeTo": "By using RUYA, you agree to our ",
     "@onBoardingScreen_byUsingMenstrudelYouAgreeTo": {
         "description": "Part of the privacy policy agreement text on the onboarding screen."
     },
@@ -736,7 +736,7 @@
     "@aboutScreen_share": {
         "description": "Link button text for the share button on the about screen."
     },
-    "aboutScreen_shareText": "Check out Menstrudel, a private and offline period tracker app!",
+    "aboutScreen_shareText": "Check out RUYA, a private and offline period tracker app!",
     "@aboutScreen_shareText": {
         "description": "Text used when sharing the app from the about screen."
     },

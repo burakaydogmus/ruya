@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/screens/dashboards/sex/widgets/sex_insights_tab.dart';
-import 'package:menstrudel/screens/dashboards/sex/widgets/sex_logs_tab.dart';
+import 'package:ruya/screens/dashboards/sex/widgets/sex_insights_tab.dart';
+import 'package:ruya/screens/dashboards/sex/widgets/sex_logs_tab.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/database/repositories/sex_repository.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/sex/sex_log_entry.dart';
-import 'package:menstrudel/controllers/log_sex_ui_controller.dart';
+import 'package:ruya/database/repositories/sex_repository.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/sex/sex_log_entry.dart';
+import 'package:ruya/controllers/log_sex_ui_controller.dart';
 
 class SexScreen extends StatefulWidget {
   const SexScreen({super.key});

@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:wear_plus/wear_plus.dart';
 import 'dart:async';
 import 'package:watch_connectivity/watch_connectivity.dart';
-import 'package:menstrudel/models/phone_sync/circle_data.dart';
-import 'package:menstrudel/services/phone_sync_service.dart';
-import 'package:menstrudel/widgets/progress_circle.dart';
-import 'package:menstrudel/models/phone_sync/shared_context.dart';
-import 'package:menstrudel/models/phone_sync/log_request.dart';
+import 'package:ruya/models/phone_sync/circle_data.dart';
+import 'package:ruya/services/phone_sync_service.dart';
+import 'package:ruya/widgets/progress_circle.dart';
+import 'package:ruya/models/phone_sync/shared_context.dart';
+import 'package:ruya/models/phone_sync/log_request.dart';
 
 
 class HomeScreen extends StatefulWidget {

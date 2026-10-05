@@ -1,6 +1,6 @@
 {
     "@@locale": "th",
-    "appTitle": "Menstrudel",
+    "appTitle": "RUYA",
     "nextDue": "รอบถัดไป",
     "ongoing": "กำลังดำเนินอยู่",
     "overdue": "เลยกำหนด",
@@ -303,7 +303,7 @@
             }
         }
     },
-    "onboardingScreen_welcomeToMenstrudel": "ยินดีต้อนรับสู่ Menstrudel",
+    "onboardingScreen_welcomeToMenstrudel": "ยินดีต้อนรับสู่ RUYA",
     "@onboardingScreen_welcomeToMenstrudel": {
         "description": "Title for the onboarding screen."
     },
@@ -311,7 +311,7 @@
     "@onboardingScreen_welcomeToMenstrudelDescription": {
         "description": "Small into description for the onboarding screen."
     },
-    "onBoardingScreen_byUsingMenstrudelYouAgreeTo": "การใช้งาน Menstrudel ถือว่าคุณยอมรับ ",
+    "onBoardingScreen_byUsingMenstrudelYouAgreeTo": "การใช้งาน RUYA ถือว่าคุณยอมรับ ",
     "@onBoardingScreen_byUsingMenstrudelYouAgreeTo": {
         "description": "Part of the privacy policy agreement text on the onboarding screen."
     },
@@ -736,7 +736,7 @@
     "@aboutScreen_share": {
         "description": "Link button text for the share button on the about screen."
     },
-    "aboutScreen_shareText": "ลองใช้ Menstrudel แอปติดตามรอบเดือนแบบออฟไลน์และเป็นส่วนตัว!",
+    "aboutScreen_shareText": "ลองใช้ RUYA แอปติดตามรอบเดือนแบบออฟไลน์และเป็นส่วนตัว!",
     "@aboutScreen_shareText": {
         "description": "Text used when sharing the app from the about screen."
     },

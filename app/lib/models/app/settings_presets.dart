@@ -1,4 +1,4 @@
-import 'package:menstrudel/models/app/user_goal_types_enum.dart';
+import 'package:ruya/models/app/user_goal_types_enum.dart';
 
 /// Use to enable/disable settings based off app goal.
 /// Currently only the sexual tracking and sanitary tracking are automatically set.

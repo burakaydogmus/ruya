@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/sex_repository.dart';
-import 'package:menstrudel/models/sex/sex_log_entry.dart';
-import 'package:menstrudel/widgets/sex_activities/sheets/log_sex_activity_bottom_sheet.dart';
-import 'package:menstrudel/widgets/sex_activities/sheets/sex_activity_details_bottom_sheet.dart';
+import 'package:ruya/database/repositories/sex_repository.dart';
+import 'package:ruya/models/sex/sex_log_entry.dart';
+import 'package:ruya/widgets/sex_activities/sheets/log_sex_activity_bottom_sheet.dart';
+import 'package:ruya/widgets/sex_activities/sheets/sex_activity_details_bottom_sheet.dart';
 
 class LogSexUIController extends ChangeNotifier {
   final SexRepository _repo = SexRepository();

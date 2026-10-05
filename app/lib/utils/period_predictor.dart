@@ -1,9 +1,9 @@
-import 'package:menstrudel/models/periods/period.dart';
-import 'package:menstrudel/models/period_prediction_result.dart';
-import 'package:menstrudel/models/cycles/cycle_stats.dart';
-import 'package:menstrudel/models/periods/period_stats.dart';
-import 'package:menstrudel/models/cycles/monthly_cycle_data.dart';
-import 'package:menstrudel/utils/constants.dart';
+import 'package:ruya/models/periods/period.dart';
+import 'package:ruya/models/period_prediction_result.dart';
+import 'package:ruya/models/cycles/cycle_stats.dart';
+import 'package:ruya/models/periods/period_stats.dart';
+import 'package:ruya/models/cycles/monthly_cycle_data.dart';
+import 'package:ruya/utils/constants.dart';
 import 'dart:math';
 
 /// A utility class for calculating cycle statistics and predicting the next period

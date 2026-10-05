@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/utils/constants.dart';
-import 'package:menstrudel/models/themes/app_theme_mode_enum.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/utils/constants.dart';
+import 'package:ruya/models/themes/app_theme_mode_enum.dart';
 
 class ThemeNotifier with ChangeNotifier {
   late Color _themeColor;

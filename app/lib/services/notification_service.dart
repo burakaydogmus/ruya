@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart' as fln;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:menstrudel/utils/constants.dart';
-import 'package:menstrudel/utils/exceptions.dart';
+import 'package:ruya/utils/constants.dart';
+import 'package:ruya/utils/exceptions.dart';
 
 @pragma('vm:entry-point')
 void onDidReceiveNotificationResponse(fln.NotificationResponse notificationResponse) {

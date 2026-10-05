@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/coordinators/data_refresh_coordinator.dart';
-import 'package:menstrudel/services/symptom_service.dart';
-import 'package:menstrudel/widgets/sheets/period_details_bottom_sheet.dart';
+import 'package:ruya/coordinators/data_refresh_coordinator.dart';
+import 'package:ruya/services/symptom_service.dart';
+import 'package:ruya/widgets/sheets/period_details_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/utils/exceptions.dart';
-import 'package:menstrudel/services/log_service.dart';
-import 'package:menstrudel/services/period_service.dart';
-import 'package:menstrudel/services/settings_service.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/widgets/sheets/symptom_entry_sheet.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/utils/exceptions.dart';
+import 'package:ruya/services/log_service.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/services/settings_service.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/widgets/sheets/symptom_entry_sheet.dart';
 
 class LogUIController extends ChangeNotifier {
 

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/cycles/cycle_stats.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/models/periods/period.dart';
-import 'package:menstrudel/models/flows/flow_data.dart';
-import 'package:menstrudel/models/periods/period_stats.dart';
-import 'package:menstrudel/services/log_service.dart';
-import 'package:menstrudel/services/period_service.dart';
-import 'package:menstrudel/utils/period_predictor.dart';
-import 'package:menstrudel/widgets/insights/symptom_frequency.dart';
-import 'package:menstrudel/widgets/insights/cycle_length_variance.dart';
-import 'package:menstrudel/widgets/insights/period_duration.dart';
-import 'package:menstrudel/widgets/insights/flow_intensity.dart';
-import 'package:menstrudel/widgets/insights/pain_intensity.dart';
-import 'package:menstrudel/widgets/insights/log_summary_widget.dart';
-import 'package:menstrudel/widgets/insights/monthly_flow.dart';
+import 'package:ruya/models/cycles/cycle_stats.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/periods/period.dart';
+import 'package:ruya/models/flows/flow_data.dart';
+import 'package:ruya/models/periods/period_stats.dart';
+import 'package:ruya/services/log_service.dart';
+import 'package:ruya/services/period_service.dart';
+import 'package:ruya/utils/period_predictor.dart';
+import 'package:ruya/widgets/insights/symptom_frequency.dart';
+import 'package:ruya/widgets/insights/cycle_length_variance.dart';
+import 'package:ruya/widgets/insights/period_duration.dart';
+import 'package:ruya/widgets/insights/flow_intensity.dart';
+import 'package:ruya/widgets/insights/pain_intensity.dart';
+import 'package:ruya/widgets/insights/log_summary_widget.dart';
+import 'package:ruya/widgets/insights/monthly_flow.dart';
 
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class LogsScreenInsightsTab extends StatefulWidget {

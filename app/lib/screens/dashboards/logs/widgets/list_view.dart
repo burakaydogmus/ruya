@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:menstrudel/models/period_logs/log_day.dart';
-import 'package:menstrudel/models/period_logs/symptom.dart';
-import 'package:menstrudel/models/periods/period.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/flows/flow_enum.dart';
-import 'package:menstrudel/services/log_service.dart';
-import 'package:menstrudel/services/period_service.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/periods/period.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/services/log_service.dart';
+import 'package:ruya/services/period_service.dart';
 import 'package:provider/provider.dart';
 
 class PeriodListView extends StatelessWidget {

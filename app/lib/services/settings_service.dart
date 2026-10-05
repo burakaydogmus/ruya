@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/models/app/user_goal_types_enum.dart';
+import 'package:ruya/models/app/user_goal_types_enum.dart';
 import 'dart:convert';
-import 'package:menstrudel/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
-import 'package:menstrudel/services/notification_service.dart';
+import 'package:ruya/models/birth_control/reversible_contraceptives/reversible_contraceptive_types_enum.dart';
+import 'package:ruya/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:menstrudel/utils/constants.dart';
-import 'package:menstrudel/models/themes/app_theme_mode_enum.dart';
+import 'package:ruya/utils/constants.dart';
+import 'package:ruya/models/themes/app_theme_mode_enum.dart';
 
 enum PeriodHistoryView { list, journal }
 

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
+import 'package:ruya/l10n/app_localizations.dart';
 
-import 'package:menstrudel/screens/settings/sections/appearance_settings_screen.dart';
-import 'package:menstrudel/screens/settings/sections/birth_control_settings_screen.dart';
-import 'package:menstrudel/screens/settings/sections/log_settings_screen.dart';
-import 'package:menstrudel/screens/settings/sections/cycle_notifications_and_predictions_screen.dart';
-import 'package:menstrudel/screens/settings/sections/data_settings_screen.dart';
-import 'package:menstrudel/screens/settings/sections/security_settings_screen.dart';
-import 'package:menstrudel/screens/settings/sections/preferences_settings_screen.dart';
-import 'package:menstrudel/screens/settings/sections/about_screen.dart';
-import 'package:menstrudel/screens/settings/sections/user_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/appearance_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/birth_control_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/log_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/cycle_notifications_and_predictions_screen.dart';
+import 'package:ruya/screens/settings/sections/data_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/security_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/preferences_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/about_screen.dart';
+import 'package:ruya/screens/settings/sections/user_settings_screen.dart';
 import 'package:provider/provider.dart';
 
 

@@ -1,4 +1,4 @@
-import 'package:menstrudel/models/app/user_goal_types_enum.dart';
+import 'package:ruya/models/app/user_goal_types_enum.dart';
 
 class UserEntry {
   static const int singletonId = 1; // There can only ever be 1 user

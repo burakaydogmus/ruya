@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/database/repositories/user_repository.dart';
-import 'package:menstrudel/models/app/user_entry.dart';
+import 'package:ruya/database/repositories/user_repository.dart';
+import 'package:ruya/models/app/user_entry.dart';
 import 'package:age_calculator/age_calculator.dart';
-import 'package:menstrudel/models/app/user_goal_types_enum.dart';
-import 'package:menstrudel/services/settings_service.dart';
+import 'package:ruya/models/app/user_goal_types_enum.dart';
+import 'package:ruya/services/settings_service.dart';
 
 /// This app does not have users in the sense of logins and cloud. 
 /// In this case, a user is just the user of the app. 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:menstrudel/l10n/app_localizations.dart';
-import 'package:menstrudel/models/app/user_goal_types_enum.dart';
-import 'package:menstrudel/widgets/goal_card.dart';
+import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/app/user_goal_types_enum.dart';
+import 'package:ruya/widgets/goal_card.dart';
 
 class GoalStep extends StatelessWidget {
   final UserGoalTypes selectedGoal;
