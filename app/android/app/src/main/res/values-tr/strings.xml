@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Ajanda</string>
+    <string name="widget_label_small">Döngü · küçük</string>
+    <string name="widget_label_medium">Döngü · orta</string>
+    <string name="widget_label_large">Döngü · geniş</string>
+    <string name="widget_desc_small">Halkayla regle kalan süre</string>
+    <string name="widget_desc_medium">Kalan süre, faz ve beklenen tarih</string>
+    <string name="widget_desc_large">Kalan süre, halka ve seçtiğin tüm ayrıntılar</string>
 </resources>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">สมุดนัดหมาย</string>
+    <string name="widget_label_small">รอบเดือน · เล็ก</string>
+    <string name="widget_label_medium">รอบเดือน · กลาง</string>
+    <string name="widget_label_large">รอบเดือน · ใหญ่</string>
+    <string name="widget_desc_small">นับถอยหลังถึงประจำเดือนพร้อมวงแหวน</string>
+    <string name="widget_desc_medium">นับถอยหลัง ระยะ และวันที่คาดไว้</string>
+    <string name="widget_desc_large">นับถอยหลัง วงแหวน และรายละเอียดที่เลือก</string>
 </resources>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Agenda</string>
+    <string name="widget_label_small">Ciclo · pequeño</string>
+    <string name="widget_label_medium">Ciclo · mediano</string>
+    <string name="widget_label_large">Ciclo · grande</string>
+    <string name="widget_desc_small">Cuenta atrás hasta la regla con anillo</string>
+    <string name="widget_desc_medium">Cuenta atrás, fase y fecha prevista</string>
+    <string name="widget_desc_large">Cuenta atrás, anillo y todos los detalles que elijas</string>
 </resources>

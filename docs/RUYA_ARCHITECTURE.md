@@ -16,7 +16,7 @@ hiçbir React/TypeScript kodu taşınmaz, WebView kullanılmaz. Her iki proje de
 | Repolar | `LogsRepository`, `PeriodsRepository` (+ JSON export/import `Manager`), `PillsRepository`, `ReversibleContraceptiveRepository`, `SanitaryProductRepository`, `SexRepository`, `UserRepository` |
 | Tahmin | `PeriodPredictor` (son 180 gündeki geçerli döngülerin aritmetik ortalaması, 10–130 gün), `CyclePhasePredictor` (sabit 14 gün luteal; `PredictedCycle.getPhaseForDate`) |
 | Bildirim | `flutter_local_notifications` + `timezone`, 6 kanal (regl, hijyen, hap, LARC, kayıt hatırlatıcı, faz) |
-| Widget | `home_widget` + Kotlin `HomeScreenWidgetProvider` (dairesel ilerleme) |
+| Widget | `home_widget` + Kotlin `RuyaWidgetProvider` (küçük 2×2, orta 4×2, geniş 4×3); Ayarlar › Ana ekran widget'ı'ndan boyut, içerik, tema ve sabitleme; 35 günlük metin önceden hazırlanır, gece yarısı kendini yeniler |
 | Wear OS | ayrı Flutter `wear_app/`, `watch_connectivity` application-context senkronu; aynı applicationId zorunlu |
 | L10n | `gen-l10n`, 13 ARB (Türkçe yok), şablon `app_en.arb` |
 | Güvenlik | Sadece açılışta `local_auth` (biyometri/cihaz kilidi); PIN, şifreleme, yeniden kilitleme yok |

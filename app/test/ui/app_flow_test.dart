@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:ruya/coordinators/data_refresh_coordinator.dart';
 import 'package:ruya/database/app_database.dart';
+import 'package:ruya/import/import_service.dart';
 import 'package:ruya/database/repositories/logs_repository.dart';
 import 'package:ruya/database/repositories/periods_repository.dart';
 import 'package:ruya/database/repositories/user_repository.dart';
@@ -23,6 +26,7 @@ import 'package:ruya/services/symptom_service.dart';
 import 'package:ruya/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ruya/services/notification_service.dart';
+import 'package:ruya/screens/settings/sections/widget_settings_screen.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -39,6 +43,7 @@ void main() {
   for (final name in ['home_widget', 'watch_connectivity/methods']) {
     messenger.setMockMethodCallHandler(MethodChannel(name), (_) async => null);
   }
+
   messenger.setMockMethodCallHandler(
     const MethodChannel('dexterous.com/flutter/local_notifications'),
     (call) async => switch (call.method) {
@@ -60,6 +65,14 @@ void main() {
     },
   );
   WidgetController.hitTestWarningShouldBeFatal = true;
+
+  setUp(() {
+    // Home widget taps arrive on an event stream.
+    messenger.setMockStreamHandler(
+      const EventChannel('home_widget/updates'),
+      MockStreamHandler.inline(onListen: (_, _) {}),
+    );
+  });
 
   setUpAll(() async {
     tz_data.initializeTimeZones();
@@ -87,7 +100,8 @@ void main() {
     await logs.updateLogPeriodIds(mapping);
   }
 
-  Future<void> launch(WidgetTester tester, {String? pin, bool seed = true, Map<String, Object> initialPrefs = const {}}) async {
+  Future<void> launch(WidgetTester tester,
+      {String? pin, bool seed = true, Map<String, Object> initialPrefs = const {}, Future<void> Function()? beforeStart}) async {
     tester.view.physicalSize = const Size(1080, 2340);
     tester.view.devicePixelRatio = 2.75;
     addTearDown(tester.view.reset);
@@ -104,6 +118,7 @@ void main() {
       await AppDatabase.instance.init(inMemory: true);
       await UserRepository().saveUser(UserEntry(name: 'Test', primaryGoal: UserGoalTypes.general));
       if (seed) await seedHistory();
+      if (beforeStart != null) await beforeStart();
 
       final prefs = await SharedPreferences.getInstance();
       final settings = SettingsService(prefs);
@@ -257,6 +272,49 @@ void main() {
     expect(find.text('Dışa aktarma dosyası seç'), findsOneWidget);
   });
 
+  testWidgets('imported history shows up without restarting the app', (tester) async {
+    await launch(tester, seed: false);
+    expect(find.text('Henüz regl kaydın yok'), findsOneWidget);
+
+    final now = DateTime.now();
+    String day(int offset) {
+      final d = DateTime(now.year, now.month, now.day - offset);
+      return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+    }
+    final csv = StringBuffer('date,bleeding.value\n');
+    for (final start in [80, 52, 24]) {
+      for (var d = 0; d < 5; d++) {
+        csv.write('${day(start - d)},2\n');
+      }
+    }
+    final coordinator = tester.element(find.byType(NavigationBar)).read<DataRefreshCoordinator>();
+    await tester.runAsync(() async {
+      final service = ExternalImportService();
+      expect(await service.apply(ExternalImportService.parse(csv.toString())), 15);
+      // The import screen does exactly this after writing to the database.
+      await coordinator.onExternalLogsChanged();
+    });
+    await settle(tester);
+    expect(find.text('Henüz regl kaydın yok'), findsNothing);
+    expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
+  });
+
+  testWidgets('bleeding days without a period are grouped on start', (tester) async {
+    final now = DateTime.now();
+    final logs = <LogDay>[
+      for (final start in [80, 52, 24])
+        for (var d = 0; d < 5; d++)
+          LogDay(date: DateTime(now.year, now.month, now.day - start + d), flow: FlowRate.medium),
+    ];
+    // Earlier versions inserted imported days without assigning periods.
+    await launch(tester, seed: false, beforeStart: () async {
+      await LogsRepository().insertNewLogs(logs);
+      await LogsRepository().updateLogPeriodIds({});
+    });
+    expect(find.text('Henüz regl kaydın yok'), findsNothing);
+    expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
+  });
+
   testWidgets('clinical report screen is reachable from settings', (tester) async {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
@@ -375,6 +433,29 @@ void main() {
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Bugün')));
     await settle(tester);
     expect(find.textContaining('Gebelik ·'), findsOneWidget);
+  });
+
+  testWidgets('widget settings preview reacts to content and size choices', (tester) async {
+    await launch(tester);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    await tapVisible(tester, find.text("Ana ekran widget'ı"));
+    await settle(tester);
+    expect(find.byType(WidgetPreview), findsOneWidget);
+    expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
+    expect(find.textContaining('Döngünün'), findsNothing);
+
+    await tapVisible(tester, find.text('Döngü günü'));
+    await settle(tester);
+    expect(find.textContaining('Döngünün 25. günü'), findsOneWidget);
+
+    await tester.scrollUntilVisible(find.text('Küçük\n2×2'), -300);
+    await tapVisible(tester, find.text('Küçük\n2×2'));
+    await settle(tester);
+    expect(find.text('Regline 4 gün kaldı'), findsNothing); // small shows only the countdown
+    await tapVisible(tester, find.text("Ana ekrana ekle"));
+    await settle(tester);
+    expect(find.textContaining('uzun bas'), findsOneWidget); // pinning unsupported in tests
   });
 
   testWidgets('privacy settings are reachable from settings', (tester) async {

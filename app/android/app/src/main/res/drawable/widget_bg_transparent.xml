@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light scrim so white text stays readable on any wallpaper. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#59000000" />
+    <corners android:radius="22dp" />
+</shape>

@@ -2136,5 +2136,135 @@
     "calendar_legendPredictedBleed": "Expected bleed",
     "@calendar_legendPredictedBleed": {
         "description": "Calendar legend on birth control"
+    },
+    "widget_staleText": "Open RUYA to update",
+    "@widget_staleText": {
+        "description": "Home screen widget"
+    },
+    "widget_daysUnit": "{count, plural, =1{day} other{days}}",
+    "@widget_daysUnit": {
+        "description": "Home screen widget",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "widget_periodDayUnit": "period day",
+    "@widget_periodDayUnit": {
+        "description": "Home screen widget"
+    },
+    "widget_lateUnit": "days late",
+    "@widget_lateUnit": {
+        "description": "Home screen widget"
+    },
+    "settingsScreen_widget": "Home screen widget",
+    "@settingsScreen_widget": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_title": "Home screen widget",
+    "@widgetSettings_title": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_intro": "Choose a size, add it to your home screen and pick what it shows. The widget updates itself every day, even if you do not open the app.",
+    "@widgetSettings_intro": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_size": "Size",
+    "@widgetSettings_size": {
+        "description": "Home screen widget"
+    },
+    "widgetSize_small": "Small\n2×2",
+    "@widgetSize_small": {
+        "description": "Home screen widget"
+    },
+    "widgetSize_medium": "Medium\n4×2",
+    "@widgetSize_medium": {
+        "description": "Home screen widget"
+    },
+    "widgetSize_large": "Large\n4×3",
+    "@widgetSize_large": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_preview": "Preview",
+    "@widgetSettings_preview": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_add": "Add to home screen",
+    "@widgetSettings_add": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_addManual": "Your launcher cannot add widgets from apps. Long-press the home screen, open Widgets and choose RUYA.",
+    "@widgetSettings_addManual": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_addRequested": "Confirm in the dialog to place the widget.",
+    "@widgetSettings_addRequested": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_placed": "{count, plural, =1{1 widget of this size on your home screen} other{{count} widgets of this size on your home screen}}",
+    "@widgetSettings_placed": {
+        "description": "Home screen widget",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "widgetSettings_content": "Show on the widget",
+    "@widgetSettings_content": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_ring": "Progress ring",
+    "@widgetSettings_ring": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_nextDate": "Expected date",
+    "@widgetSettings_nextDate": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_phase": "Today's phase",
+    "@widgetSettings_phase": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_cycleDay": "Cycle day",
+    "@widgetSettings_cycleDay": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_fertility": "Fertile window, ovulation and PMS",
+    "@widgetSettings_fertility": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_quickLog": "Quick log button (+)",
+    "@widgetSettings_quickLog": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_theme": "Background",
+    "@widgetSettings_theme": {
+        "description": "Home screen widget"
+    },
+    "widgetTheme_system": "Follow system",
+    "@widgetTheme_system": {
+        "description": "Home screen widget"
+    },
+    "widgetTheme_light": "Light",
+    "@widgetTheme_light": {
+        "description": "Home screen widget"
+    },
+    "widgetTheme_dark": "Dark",
+    "@widgetTheme_dark": {
+        "description": "Home screen widget"
+    },
+    "widgetTheme_transparent": "Transparent",
+    "@widgetTheme_transparent": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_discreteNote": "Discrete mode is on: widgets only show a neutral number.",
+    "@widgetSettings_discreteNote": {
+        "description": "Home screen widget"
+    },
+    "widgetSettings_privacyNote": "Widgets are visible on the home screen even while RUYA is locked. Turn on discrete mode to show only a neutral number.",
+    "@widgetSettings_privacyNote": {
+        "description": "Home screen widget"
     }
 }

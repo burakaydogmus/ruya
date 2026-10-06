@@ -81,6 +81,15 @@ const String kidModeKey = "kid_mode";
 const String hormonalBirthControlSpansKey = "hormonal_bc_spans";
 const String pregnancySpansKey = "pregnancy_spans";
 
+// Home screen widget
+const String widgetShowRingKey = "widget_show_ring";
+const String widgetShowNextDateKey = "widget_show_next_date";
+const String widgetShowPhaseKey = "widget_show_phase";
+const String widgetShowCycleDayKey = "widget_show_cycle_day";
+const String widgetShowFertilityKey = "widget_show_fertility";
+const String widgetShowQuickLogKey = "widget_show_quick_log";
+const String widgetThemeKey = "widget_theme";
+
 
 // Notifications
 const String periodDueNotificationsEnabledKey = 'notifications_enabled';

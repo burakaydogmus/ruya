@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">日程</string>
+    <string name="widget_label_small">周期 · 小</string>
+    <string name="widget_label_medium">周期 · 中</string>
+    <string name="widget_label_large">周期 · 大</string>
+    <string name="widget_desc_small">带进度环的经期倒计时</string>
+    <string name="widget_desc_medium">倒计时、阶段和预计日期</string>
+    <string name="widget_desc_large">倒计时、进度环及所选的全部信息</string>
 </resources>

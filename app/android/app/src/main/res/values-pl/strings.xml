@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Terminarz</string>
+    <string name="widget_label_small">Cykl · mały</string>
+    <string name="widget_label_medium">Cykl · średni</string>
+    <string name="widget_label_large">Cykl · duży</string>
+    <string name="widget_desc_small">Odliczanie do miesiączki z pierścieniem</string>
+    <string name="widget_desc_medium">Odliczanie, faza i spodziewana data</string>
+    <string name="widget_desc_large">Odliczanie, pierścień i wszystkie wybrane szczegóły</string>
 </resources>

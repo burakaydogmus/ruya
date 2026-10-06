@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Agenda</string>
+    <string name="widget_label_small">Cycle · petit</string>
+    <string name="widget_label_medium">Cycle · moyen</string>
+    <string name="widget_label_large">Cycle · grand</string>
+    <string name="widget_desc_small">Compte à rebours jusqu\'aux règles avec anneau</string>
+    <string name="widget_desc_medium">Compte à rebours, phase et date prévue</string>
+    <string name="widget_desc_large">Compte à rebours, anneau et tous les détails choisis</string>
 </resources>

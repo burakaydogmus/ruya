@@ -10,6 +10,7 @@ import 'package:ruya/screens/settings/sections/privacy_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/external_import_screen.dart';
 import 'package:ruya/screens/settings/sections/clinical_report_screen.dart';
 import 'package:ruya/screens/settings/sections/life_stage_widgets.dart';
+import 'package:ruya/screens/settings/sections/widget_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/preferences_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/user_settings_screen.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +54,16 @@ class SettingsScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const AppearanceSettingsScreen()),
+            );
+          },
+        ),
+        _SettingsSectionButton(
+          title: l10n.settingsScreen_widget,
+          icon: Icons.widgets_outlined,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const WidgetSettingsScreen()),
             );
           },
         ),
