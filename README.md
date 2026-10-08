@@ -7,6 +7,17 @@
 * PIN kilidi, biyometrik kilit, ayarlanabilir kilit zaman aşımı, parola korumalı şifreli yedek.
 * Tahminler (regl, yumurtlama, doğurgan dönem, PMS) **yaklaşık** değerlerdir; tıbbi tavsiye değildir.
 
+## Ekran görüntüleri
+| Bugün | Takvim | Günlük kayıt | Karanlık tema |
+|---|---|---|---|
+| <img src="docs/screenshots/01_today.png" width="200" alt="Bugün ekranı"> | <img src="docs/screenshots/02_calendar.png" width="200" alt="Takvim"> | <img src="docs/screenshots/03_daily_log.png" width="200" alt="Günlük kayıt"> | <img src="docs/screenshots/08_today_dark.png" width="200" alt="Karanlık tema"> |
+
+| İçgörüler | Faza göre ruh hali | Gizlilik | PIN kilidi |
+|---|---|---|---|
+| <img src="docs/screenshots/04_insights.png" width="200" alt="İçgörüler"> | <img src="docs/screenshots/05_insights_mood.png" width="200" alt="Faza göre ruh hali ve döngü geçmişi"> | <img src="docs/screenshots/06_privacy.png" width="200" alt="Gizlilik ayarları"> | <img src="docs/screenshots/07_lock.png" width="200" alt="PIN kilidi"> |
+
+Görüntüler örnek verilerle üretilir; yenilemek için `app/` içinde `flutter test testing/readme_screenshots_test.dart`.
+
 ## Proje yapısı
 | Dizin | İçerik |
 |---|---|
