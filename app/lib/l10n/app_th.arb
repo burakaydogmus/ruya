@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "อยู่ข้าง ๆ คุณตรงนี้นะ",
     "companion_lineComfort2": "วันนี้อาจจะยากหน่อย แต่เราจะผ่านไปด้วยกัน",
     "companion_lineHappy1": "ฮิฮิ จั๊กจี้!",
-    "companion_lineHappy2": "เย้ คุณมาแล้ว!"
+    "companion_lineHappy2": "เย้ คุณมาแล้ว!",
+    "widgetSettings_companion": "เพื่อนของคุณ",
+    "widgetSettings_companionNote": "บนวิดเจ็ตขนาดกลางและขนาดใหญ่ ในวันที่มีประจำเดือนจะห่มผ้าอุ่น ๆ และนอนหลับตอนกลางคืน"
 }

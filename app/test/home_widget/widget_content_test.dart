@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:ruya/companion/companion.dart';
 import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/home_widget/widget_content.dart';
 import 'package:ruya/l10n/app_localizations.dart';
+import 'package:ruya/models/flows/flow_enum.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
+import 'package:ruya/models/period_logs/pain_level_enum.dart';
 import 'package:ruya/models/periods/period.dart';
 import 'package:ruya/services/settings_service.dart';
 import 'package:ruya/utils/cycle_phase_predictor.dart';
@@ -33,13 +37,21 @@ void main() {
     bool discrete = false,
     DateSpan? pregnancy,
     DateTime? today,
+    Companion? companion,
+    LogDay? todayLog,
   }) =>
       WidgetContentBuilder.build(
         periods: periods,
         predictedCycle: cycle,
         today: today ?? d(10, 25),
         l10n: l10n,
-        context: WidgetContext(options: options, discrete: discrete, pregnancy: pregnancy),
+        context: WidgetContext(
+          options: options,
+          discrete: discrete,
+          pregnancy: pregnancy,
+          companion: companion,
+          todayLog: todayLog,
+        ),
       );
 
   test('prepares one entry per day, keyed by local epoch day', () {
@@ -108,5 +120,28 @@ void main() {
     expect(payload.showRing, isFalse);
     expect(payload.showQuickLog, isFalse);
     expect(payload.theme, WidgetTheme.dark);
+  });
+
+  test('the companion follows today\'s log and never shows in discrete mode', () {
+    final calm = build(companion: Companion.lokum);
+    expect(calm.companion, Companion.lokum);
+    expect(calm.days.first.petMood, 'calm');
+    expect((jsonDecode(calm.daysJson) as List).first['pm'], 'calm');
+
+    final period = build(companion: Companion.lokum, todayLog: LogDay(date: d(10, 25), flow: FlowRate.medium));
+    expect(period.days.first.petMood, 'cozy');
+    expect(period.days[1].petMood, 'calm');
+
+    final pain = build(
+      companion: Companion.lokum,
+      todayLog: LogDay(date: d(10, 25), flow: FlowRate.none, painLevel: PainLevel.severe.index),
+    );
+    expect(pain.days.first.petMood, 'comfort');
+
+    final hidden = build(companion: Companion.lokum, discrete: true);
+    expect(hidden.companion, isNull);
+    expect(hidden.days.first.petMood, isNull);
+
+    expect(build().companion, isNull);
   });
 }

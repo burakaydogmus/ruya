@@ -2429,5 +2429,13 @@
     "companion_lineHappy2": "Yay, you're here!",
     "@companion_lineHappy2": {
         "description": "Companion speech bubble after being tapped"
+    },
+    "widgetSettings_companion": "Your companion",
+    "@widgetSettings_companion": {
+        "description": "Widget content switch: show the chosen companion (virtual pet) on the widget"
+    },
+    "widgetSettings_companionNote": "On the medium and large widgets. Cozy on period days, sleepy at night.",
+    "@widgetSettings_companionNote": {
+        "description": "Subtitle of the companion switch in widget settings"
     }
 }

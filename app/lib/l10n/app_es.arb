@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Estoy aquí contigo.",
     "companion_lineComfort2": "Hoy puede ser un día difícil. Lo pasaremos juntos.",
     "companion_lineHappy1": "¡Jiji, qué cosquillas!",
-    "companion_lineHappy2": "¡Bien, estás aquí!"
+    "companion_lineHappy2": "¡Bien, estás aquí!",
+    "widgetSettings_companion": "Tu compañero",
+    "widgetSettings_companionNote": "En los widgets mediano y grande. Los días de regla se acurruca en su manta y de noche duerme."
 }

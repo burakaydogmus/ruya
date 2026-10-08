@@ -716,5 +716,7 @@
     "companion_lineComfort1": "Yanındayım.",
     "companion_lineComfort2": "Zor bir gün olabilir. Birlikte geçer.",
     "companion_lineHappy1": "Hihi, gıdıklanıyorum!",
-    "companion_lineHappy2": "Yaşasın, buradasın!"
+    "companion_lineHappy2": "Yaşasın, buradasın!",
+    "widgetSettings_companion": "Arkadaşın",
+    "widgetSettings_companionNote": "Orta ve geniş widget'ta. Regl günlerinde battaniyesine sarılır, gece uyur."
 }

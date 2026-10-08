@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Ich bin hier bei dir.",
     "companion_lineComfort2": "Heute ist vielleicht ein schwerer Tag. Wir schaffen das zusammen.",
     "companion_lineHappy1": "Hihi, das kitzelt!",
-    "companion_lineHappy2": "Juhu, du bist da!"
+    "companion_lineHappy2": "Juhu, du bist da!",
+    "widgetSettings_companion": "Dein Begleiter",
+    "widgetSettings_companionNote": "Auf dem mittleren und großen Widget. An Periodentagen kuschelt er sich in die Decke, nachts schläft er."
 }

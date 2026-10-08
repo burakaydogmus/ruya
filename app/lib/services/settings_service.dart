@@ -22,6 +22,7 @@ class HomeWidgetOptions {
     this.showCycleDay = false,
     this.showFertility = true,
     this.showQuickLog = true,
+    this.showCompanion = true,
     this.theme = WidgetTheme.system,
   });
 
@@ -31,6 +32,9 @@ class HomeWidgetOptions {
   final bool showCycleDay;
   final bool showFertility;
   final bool showQuickLog;
+
+  /// The chosen companion on the medium and large widgets.
+  final bool showCompanion;
   final WidgetTheme theme;
 
   HomeWidgetOptions copyWith({
@@ -40,6 +44,7 @@ class HomeWidgetOptions {
     bool? showCycleDay,
     bool? showFertility,
     bool? showQuickLog,
+    bool? showCompanion,
     WidgetTheme? theme,
   }) =>
       HomeWidgetOptions(
@@ -49,6 +54,7 @@ class HomeWidgetOptions {
         showCycleDay: showCycleDay ?? this.showCycleDay,
         showFertility: showFertility ?? this.showFertility,
         showQuickLog: showQuickLog ?? this.showQuickLog,
+        showCompanion: showCompanion ?? this.showCompanion,
         theme: theme ?? this.theme,
       );
 }
@@ -290,6 +296,7 @@ class SettingsService extends ChangeNotifier {
       showCycleDay: _loadBool(widgetShowCycleDayKey, false),
       showFertility: _loadBool(widgetShowFertilityKey, true),
       showQuickLog: _loadBool(widgetShowQuickLogKey, true),
+      showCompanion: _loadBool(widgetShowCompanionKey, true),
       theme: WidgetTheme.values.firstWhere(
         (t) => t.name == _prefs.getString(widgetThemeKey),
         orElse: () => WidgetTheme.system,
@@ -712,6 +719,7 @@ class SettingsService extends ChangeNotifier {
       _prefs.setBool(widgetShowCycleDayKey, o.showCycleDay),
       _prefs.setBool(widgetShowFertilityKey, o.showFertility),
       _prefs.setBool(widgetShowQuickLogKey, o.showQuickLog),
+      _prefs.setBool(widgetShowCompanionKey, o.showCompanion),
       _prefs.setString(widgetThemeKey, o.theme.name),
     ]);
     notifyListeners();

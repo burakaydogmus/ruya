@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Ik ben hier bij je.",
     "companion_lineComfort2": "Vandaag is misschien zwaar. Samen komen we erdoor.",
     "companion_lineHappy1": "Hihi, dat kriebelt!",
-    "companion_lineHappy2": "Joepie, je bent er!"
+    "companion_lineHappy2": "Joepie, je bent er!",
+    "widgetSettings_companion": "Je maatje",
+    "widgetSettings_companionNote": "Op de middelgrote en grote widget. Op menstruatiedagen kruipt het onder een dekentje, 's nachts slaapt het."
 }

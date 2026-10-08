@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Jestem tuż obok ciebie.",
     "companion_lineComfort2": "Dziś może być ciężko. Przejdziemy przez to razem.",
     "companion_lineHappy1": "Hihi, łaskocze!",
-    "companion_lineHappy2": "Hura, jesteś tu!"
+    "companion_lineHappy2": "Hura, jesteś tu!",
+    "widgetSettings_companion": "Twój przyjaciel",
+    "widgetSettings_companionNote": "Na średnim i dużym widżecie. W dni okresu otula się kocykiem, a w nocy śpi."
 }

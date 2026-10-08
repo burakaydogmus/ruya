@@ -484,9 +484,17 @@ void main() {
     expect(find.byType(WidgetPreview), findsOneWidget);
     expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
     expect(find.textContaining('Döngünün'), findsNothing);
+    final petInPreview = find.descendant(of: find.byType(WidgetPreview), matching: find.byType(CompanionFrame));
+    expect(petInPreview, findsOneWidget); // the medium widget shows the companion
+
+    await scrollToTap(tester, find.text('Arkadaşın'), within: WidgetSettingsScreen);
+    await settle(tester);
+    await tester.scrollUntilVisible(find.byType(WidgetPreview), -300);
+    expect(petInPreview, findsNothing);
 
     await tapVisible(tester, find.text('Döngü günü'));
     await settle(tester);
+    await tester.scrollUntilVisible(find.byType(WidgetPreview), -300);
     expect(find.textContaining('Döngünün 25. günü'), findsOneWidget);
 
     await tester.scrollUntilVisible(find.text('Küçük\n2×2'), -300);

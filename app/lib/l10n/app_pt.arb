@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Estou bem aqui com você.",
     "companion_lineComfort2": "Hoje pode ser difícil. Vamos passar por isso juntos.",
     "companion_lineHappy1": "Hihi, que cócegas!",
-    "companion_lineHappy2": "Oba, você está aqui!"
+    "companion_lineHappy2": "Oba, você está aqui!",
+    "widgetSettings_companion": "Seu amiguinho",
+    "widgetSettings_companionNote": "Nos widgets médio e grande. Nos dias de menstruação ele se enrola na mantinha e à noite dorme."
 }

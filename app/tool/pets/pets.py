@@ -1,7 +1,7 @@
 """RUYA companions: Pamuk, Fıstık, Tarçın, Lokum, Mehtap, Boncuk.
 
 Run with Pillow and NumPy installed:
-    python tool/pets/pets.py            # writes assets/pets/<id>.png
+    python tool/pets/pets.py            # writes assets/pets/<id>.png and the widget drawables
     python tool/pets/pets.py --preview out.png
 
 Each sprite sheet is one row of 64×64 frames in FRAMES order.
@@ -673,6 +673,20 @@ def preview(path: str, scale: int = 6):
     out.save(path)
 
 
+# Home screen widget pictures: RemoteViews cannot animate or crop a sheet, so
+# each state is its own drawable, pre-scaled ×4 with nearest neighbour.
+WIDGET_STATES = {'idle': 'idle0', 'sleep': 'sleep0', 'cozy': 'cozy0', 'comfort': 'comfort0'}
+
+
+def android_drawables(dest: Path):
+    dest.mkdir(parents=True, exist_ok=True)
+    for p in PETS:
+        pet = p()
+        for state, frame in WIDGET_STATES.items():
+            img = pet.frame(frame).resize((SIZE * 4, SIZE * 4), Image.NEAREST)
+            img.save(dest / f'pet_{p.id}_{state}.png', optimize=True)
+
+
 if __name__ == '__main__':
     if len(sys.argv) > 2 and sys.argv[1] == '--preview':
         preview(sys.argv[2])
@@ -682,3 +696,6 @@ if __name__ == '__main__':
         for p in PETS:
             build(p).save(dest / f'{p.id}.png')
             print('wrote', dest / f'{p.id}.png')
+        res = Path(__file__).resolve().parents[2] / 'android' / 'app' / 'src' / 'main' / 'res' / 'drawable-nodpi'
+        android_drawables(res)
+        print('wrote widget drawables to', res)

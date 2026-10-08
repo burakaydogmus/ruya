@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ruya/companion/companion.dart';
+import 'package:ruya/companion/companion_sprite.dart';
+import 'package:ruya/companion/companion_service.dart';
 import 'package:provider/provider.dart';
 import 'package:ruya/home_widget/widget_content.dart';
 import 'package:ruya/l10n/app_localizations.dart';
@@ -91,13 +94,16 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> with Widget
     final theme = Theme.of(context);
     final settings = context.watch<SettingsService>();
     final periods = context.watch<PeriodService>();
+    context.watch<CompanionService>(); // the preview shows the chosen companion
     final o = settings.widgetOptions;
     final payload = periods.buildWidgetPayload(l10n, options: o);
     final discrete = settings.isDiscreteModeEnabled;
 
-    Widget toggle(String title, bool value, HomeWidgetOptions Function(bool) next, {bool enabled = true}) =>
+    Widget toggle(String title, bool value, HomeWidgetOptions Function(bool) next,
+            {bool enabled = true, String? subtitle}) =>
         SwitchListTile(
           title: Text(title),
+          subtitle: subtitle == null ? null : Text(subtitle),
           value: value,
           onChanged: enabled && !discrete ? (v) => _update(next(v)) : null,
         );
@@ -166,6 +172,8 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> with Widget
           toggle(l10n.widgetSettings_cycleDay, o.showCycleDay, (v) => o.copyWith(showCycleDay: v)),
           toggle(l10n.widgetSettings_fertility, o.showFertility, (v) => o.copyWith(showFertility: v)),
           toggle(l10n.widgetSettings_quickLog, o.showQuickLog, (v) => o.copyWith(showQuickLog: v)),
+          toggle(l10n.widgetSettings_companion, o.showCompanion, (v) => o.copyWith(showCompanion: v),
+              subtitle: l10n.widgetSettings_companionNote),
           _Header(l10n.widgetSettings_theme),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -282,13 +290,22 @@ class WidgetPreview extends StatelessWidget {
           ),
         );
 
+    final companion = payload.companion;
+    final hour = DateTime.now().hour;
+    final petFrame = switch (day.petMood) {
+      'comfort' => CompanionFrames.comfort0,
+      'cozy' => CompanionFrames.cozy0,
+      _ => hour >= 22 || hour < 6 ? CompanionFrames.sleep0 : CompanionFrames.idle0,
+    };
+    Widget pet(double d) => CompanionFrame(companion: companion!, frame: petFrame, size: d);
+
     final Widget child = switch (size) {
       WidgetSize.small => Stack(children: [
           Center(child: ring(120, 34)),
           Positioned(right: 0, bottom: 0, child: quickLog()),
         ]),
       WidgetSize.medium => Row(children: [
-          ring(116, 32),
+          if (companion != null) pet(116) else ring(116, 32),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -310,7 +327,10 @@ class WidgetPreview extends StatelessWidget {
           ]),
           Expanded(
             child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ring(128, 36),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                if (companion != null) pet(116),
+                ring(128, 36),
+              ]),
               const SizedBox(height: 8),
               if (day.headline.isNotEmpty) text(day.headline, head: true),
               for (final l in lines) Padding(padding: const EdgeInsets.only(top: 3), child: text(l)),

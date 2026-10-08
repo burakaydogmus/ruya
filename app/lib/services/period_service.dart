@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ruya/cycle/cycle_snapshot.dart';
+import 'package:ruya/companion/companion_service.dart';
 import 'package:ruya/home_widget/widget_content.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase.dart';
 import 'package:ruya/models/flows/flow_data.dart';
@@ -110,6 +111,10 @@ class PeriodService extends ChangeNotifier {
       await _calculatePrediction();
       _updateUiState();
       _buildTimelineItems(currentLogs: currentLogs);
+      final today = DateTime.now();
+      widgetTodayLog = currentLogs
+          .where((l) => l.date.year == today.year && l.date.month == today.month && l.date.day == today.day)
+          .firstOrNull;
 
       if (l10n != null) {
         _updateWidgetData(l10n, widgetController);
@@ -227,16 +232,26 @@ class PeriodService extends ChangeNotifier {
   }
 
   /// Widget content for today and the next weeks (also used by the settings preview).
+  /// Set by the coordinator so the widgets can show the chosen companion.
+  CompanionService? companions;
+
+  /// Today's log for the companion's mood on the widget.
+  LogDay? widgetTodayLog;
+
   WidgetPayload buildWidgetPayload(AppLocalizations l10n, {HomeWidgetOptions? options}) {
     final settings = _settingsService;
+    final opts = options ?? settings.widgetOptions;
+    final c = companions;
     return WidgetContentBuilder.build(
       periods: _periodEntries,
       predictedCycle: _predictedCurrentCycle,
       today: DateTime.now(),
       l10n: l10n,
       context: WidgetContext(
-        options: options ?? settings.widgetOptions,
+        options: opts,
         discrete: settings.isDiscreteModeEnabled,
+        companion: opts.showCompanion && c != null && c.isLoaded ? c.selected : null,
+        todayLog: widgetTodayLog,
         showPhases: settings.isNaturalCycle && settings.arePhasePredictionsEnabled,
         showFertileWindow: settings.displayFertileChance,
         onBirthControl: settings.isOnHormonalBirthControl,

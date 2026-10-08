@@ -1,3 +1,4 @@
+import 'package:ruya/companion/companion_service.dart';
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:ruya/services/log_service.dart';
@@ -12,13 +13,30 @@ class DataRefreshCoordinator {
   AppLocalizations? _l10n;
   bool _hasTriggeredInitialRefresh = false;
 
+  final CompanionService? companionService;
+
   DataRefreshCoordinator({
     required this.logService,
     required this.periodService,
     required this.widgetController,
+    this.companionService,
   }) {
     logService.addListener(_onLogServiceChanged);
+    periodService.companions = companionService;
+    companionService?.addListener(_onCompanionChanged);
   }
+
+  /// A different companion (or its first load) redraws the home screen widgets.
+  void _onCompanionChanged() {
+    final l10n = _l10n;
+    final c = companionService!;
+    final key = '${c.isLoaded}:${c.selected.name}';
+    if (l10n == null || key == _lastCompanionKey) return;
+    _lastCompanionKey = key;
+    periodService.refreshWidgets(l10n, widgetController);
+  }
+
+  String? _lastCompanionKey;
 
   void registerL10n(AppLocalizations l10n) {
     _l10n = l10n;
@@ -84,5 +102,6 @@ class DataRefreshCoordinator {
 
   void dispose() {
     logService.removeListener(_onLogServiceChanged);
+    companionService?.removeListener(_onCompanionChanged);
   }
 }

@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "我就在你身边。",
     "companion_lineComfort2": "今天也许不太容易，我们一起慢慢度过。",
     "companion_lineHappy1": "嘻嘻，好痒！",
-    "companion_lineHappy2": "耶，你来啦！"
+    "companion_lineHappy2": "耶，你来啦！",
+    "widgetSettings_companion": "你的小伙伴",
+    "widgetSettings_companionNote": "显示在中号和大号小组件上。经期时会裹着小毯子，夜里会睡觉。"
 }

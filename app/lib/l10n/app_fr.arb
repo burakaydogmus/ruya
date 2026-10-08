@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Je suis juste là, avec toi.",
     "companion_lineComfort2": "Aujourd'hui sera peut-être difficile. On va traverser ça ensemble.",
     "companion_lineHappy1": "Hihi, ça chatouille !",
-    "companion_lineHappy2": "Youpi, tu es là !"
+    "companion_lineHappy2": "Youpi, tu es là !",
+    "widgetSettings_companion": "Ton compagnon",
+    "widgetSettings_companionNote": "Sur les widgets moyen et grand. Les jours de règles, il se blottit sous sa couverture ; la nuit, il dort."
 }

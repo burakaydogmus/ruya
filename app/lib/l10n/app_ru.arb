@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Я рядом с тобой.",
     "companion_lineComfort2": "Сегодня может быть непросто. Вместе справимся.",
     "companion_lineHappy1": "Хи-хи, щекотно!",
-    "companion_lineHappy2": "Ура, ты здесь!"
+    "companion_lineHappy2": "Ура, ты здесь!",
+    "widgetSettings_companion": "Твой друг",
+    "widgetSettings_companionNote": "На среднем и большом виджете. В дни месячных кутается в плед, а ночью спит."
 }

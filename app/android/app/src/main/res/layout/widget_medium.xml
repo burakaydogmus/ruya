@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Medium widget (4×2): ring left, details right. -->
+<!-- Medium widget (4×2): ring (or the companion) left, details right. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/w_root"
     android:layout_width="match_parent"
@@ -8,6 +8,14 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/w_pet"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/w_ring_box"

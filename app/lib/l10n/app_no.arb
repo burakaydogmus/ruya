@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Jeg er her hos deg.",
     "companion_lineComfort2": "I dag kan bli tungt. Vi kommer gjennom det sammen.",
     "companion_lineHappy1": "Hihi, det kiler!",
-    "companion_lineHappy2": "Hurra, du er her!"
+    "companion_lineHappy2": "Hurra, du er her!",
+    "widgetSettings_companion": "Vennen din",
+    "widgetSettings_companionNote": "På den middels store og store widgeten. På mensdager kryper den inn i pleddet, om natten sover den."
 }

@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Sono proprio qui con te.",
     "companion_lineComfort2": "Oggi forse è dura. Ce la faremo insieme.",
     "companion_lineHappy1": "Ihih, mi fai il solletico!",
-    "companion_lineHappy2": "Evviva, sei qui!"
+    "companion_lineHappy2": "Evviva, sei qui!",
+    "widgetSettings_companion": "Il tuo amico",
+    "widgetSettings_companionNote": "Nei widget medio e grande. Nei giorni del ciclo si avvolge nella coperta, di notte dorme."
 }

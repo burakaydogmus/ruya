@@ -14,6 +14,7 @@ import es.antonborri.home_widget.HomeWidgetPlugin
 import es.antonborri.home_widget.HomeWidgetProvider
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.Calendar
 import java.util.TimeZone
 
 /**
@@ -90,6 +91,19 @@ abstract class RuyaWidgetProvider(private val layoutId: Int, private val maxLine
                 if (i < maxLines) setLine(views, viewId, lines.getOrNull(i) ?: "", muted)
             }
         }
+        // Companion (medium / large). In the medium widget it takes the ring's place.
+        if (maxLines > 0) {
+            val pet = companionDrawable(data.getString("ruya_w_pet", "") ?: "", day?.optString("pm", "") ?: "")
+            if (pet != 0) {
+                views.setImageViewResource(R.id.w_pet, pet)
+                views.setViewVisibility(R.id.w_pet, View.VISIBLE)
+            } else {
+                views.setViewVisibility(R.id.w_pet, View.GONE)
+            }
+            if (layoutId == R.layout.widget_medium) {
+                views.setViewVisibility(R.id.w_ring_box, if (pet != 0) View.GONE else View.VISIBLE)
+            }
+        }
         if (layoutId == R.layout.widget_large) {
             views.setTextViewText(R.id.w_title, data.getString("ruya_w_title", "RUYA"))
             views.setTextColor(R.id.w_title, fg)
@@ -117,6 +131,21 @@ abstract class RuyaWidgetProvider(private val layoutId: Int, private val maxLine
         views.setViewVisibility(id, if (text.isEmpty()) View.GONE else View.VISIBLE)
     }
 
+    /**
+     * Picture for the companion: cozy or comforting when today's log says so,
+     * otherwise sleepy at night and calm by day (same rule as the app).
+     * Returns 0 when no companion should be shown.
+     */
+    private fun companionDrawable(pet: String, mood: String): Int {
+        if (pet.isEmpty()) return 0
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val state = when (mood) {
+            "cozy", "comfort" -> mood
+            else -> if (hour >= 22 || hour < 6) "sleep" else "idle"
+        }
+        return PET_DRAWABLES[pet]?.get(state) ?: 0
+    }
+
     /** The entry for the current local day, or null if the app was not opened for weeks. */
     private fun todayEntry(data: SharedPreferences): JSONObject? {
         val raw = data.getString("ruya_w_days", null) ?: return null
@@ -130,6 +159,22 @@ abstract class RuyaWidgetProvider(private val layoutId: Int, private val maxLine
         }
     }
 }
+
+/** Explicit references so resource shrinking keeps every picture. */
+private val PET_DRAWABLES: Map<String, Map<String, Int>> = mapOf(
+    "pamuk" to mapOf("idle" to R.drawable.pet_pamuk_idle, "sleep" to R.drawable.pet_pamuk_sleep,
+        "cozy" to R.drawable.pet_pamuk_cozy, "comfort" to R.drawable.pet_pamuk_comfort),
+    "fistik" to mapOf("idle" to R.drawable.pet_fistik_idle, "sleep" to R.drawable.pet_fistik_sleep,
+        "cozy" to R.drawable.pet_fistik_cozy, "comfort" to R.drawable.pet_fistik_comfort),
+    "tarcin" to mapOf("idle" to R.drawable.pet_tarcin_idle, "sleep" to R.drawable.pet_tarcin_sleep,
+        "cozy" to R.drawable.pet_tarcin_cozy, "comfort" to R.drawable.pet_tarcin_comfort),
+    "lokum" to mapOf("idle" to R.drawable.pet_lokum_idle, "sleep" to R.drawable.pet_lokum_sleep,
+        "cozy" to R.drawable.pet_lokum_cozy, "comfort" to R.drawable.pet_lokum_comfort),
+    "mehtap" to mapOf("idle" to R.drawable.pet_mehtap_idle, "sleep" to R.drawable.pet_mehtap_sleep,
+        "cozy" to R.drawable.pet_mehtap_cozy, "comfort" to R.drawable.pet_mehtap_comfort),
+    "boncuk" to mapOf("idle" to R.drawable.pet_boncuk_idle, "sleep" to R.drawable.pet_boncuk_sleep,
+        "cozy" to R.drawable.pet_boncuk_cozy, "comfort" to R.drawable.pet_boncuk_comfort),
+)
 
 /** 2×2. Keeps Menstrudel's class name so widgets placed by older versions keep working. */
 class HomeScreenWidgetProvider : RuyaWidgetProvider(R.layout.widget_small, maxLines = 0)

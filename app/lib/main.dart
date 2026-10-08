@@ -153,6 +153,7 @@ Widget buildRuyaApp({
       ChangeNotifierProvider(
         create: (context) => LogService(context.read<LogsRepository>()),
       ),
+      ChangeNotifierProvider(create: (_) => CompanionService(CompanionRepository())..load()),
       ChangeNotifierProvider(
         create: (context) => PeriodService(
           context.read<SettingsService>(),
@@ -164,11 +165,11 @@ Widget buildRuyaApp({
           logService: context.read<LogService>(),
           periodService: context.read<PeriodService>(),
           widgetController: context.read<WidgetController>(),
+          companionService: context.read<CompanionService>(),
         ),
       ),
 
       // --- Controllers ---
-      ChangeNotifierProvider(create: (_) => CompanionService(CompanionRepository())..load()),
       ChangeNotifierProvider(create: (_) => LogUIController()),
       ChangeNotifierProvider(create: (_) => LogSanitaryUIController()),
       ChangeNotifierProvider(create: (_) => LogSexUIController()),

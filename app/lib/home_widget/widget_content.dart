@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:ruya/companion/companion.dart';
 import 'package:ruya/cycle/cycle_snapshot.dart';
 import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase_enum.dart';
+import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/periods/period.dart';
 import 'package:ruya/services/settings_service.dart';
 
@@ -23,6 +25,7 @@ class WidgetDay {
     this.fertility,
     this.progress = 0,
     this.max = 0,
+    this.petMood,
   });
 
   /// Days since 1970-01-01 (local date), matches Java's LocalDate.toEpochDay().
@@ -37,6 +40,10 @@ class WidgetDay {
   final int progress;
   final int max;
 
+  /// Companion state from the day's log ('calm', 'cozy' or 'comfort'); the
+  /// widget switches to the sleepy picture at night by itself.
+  final String? petMood;
+
   Map<String, Object?> toJson() => {
         'd': epochDay,
         'big': big,
@@ -48,6 +55,7 @@ class WidgetDay {
         if (fertility != null) 'fert': fertility,
         'p': progress,
         'm': max,
+        if (petMood != null) 'pm': petMood,
       };
 }
 
@@ -62,6 +70,8 @@ class WidgetContext {
     this.pregnancy,
     this.lutealPhaseLength = 14,
     this.pmsDays = 5,
+    this.companion,
+    this.todayLog,
   });
 
   final HomeWidgetOptions options;
@@ -74,6 +84,12 @@ class WidgetContext {
   final DateSpan? pregnancy;
   final int lutealPhaseLength;
   final int pmsDays;
+
+  /// Companion to draw, or null when it must not appear (option off, discrete mode).
+  final Companion? companion;
+
+  /// Today's log, which decides whether the companion is cozy or comforting.
+  final LogDay? todayLog;
 }
 
 /// Data written to the widget's shared preferences.
@@ -85,6 +101,7 @@ class WidgetPayload {
     required this.theme,
     required this.showRing,
     required this.showQuickLog,
+    this.companion,
   });
 
   final List<WidgetDay> days;
@@ -95,6 +112,7 @@ class WidgetPayload {
   final WidgetTheme theme;
   final bool showRing;
   final bool showQuickLog;
+  final Companion? companion;
 
   String get daysJson => jsonEncode(days.map((d) => d.toJson()).toList());
 }
@@ -118,7 +136,7 @@ class WidgetContentBuilder {
     final start = DateTime(today.year, today.month, today.day);
     final days = <WidgetDay>[
       for (var i = 0; i < daysAhead; i++)
-        _day(
+        _withPet(context, i == 0, _day(
           day: DateTime(start.year, start.month, start.day + i),
           snapshot: CycleSnapshot.compute(
             periods: periods,
@@ -132,7 +150,7 @@ class WidgetContentBuilder {
           l10n: l10n,
           ctx: context,
           isToday: i == 0,
-        ),
+        )),
     ];
     return WidgetPayload(
       days: days,
@@ -141,6 +159,28 @@ class WidgetContentBuilder {
       theme: context.options.theme,
       showRing: context.options.showRing,
       showQuickLog: context.options.showQuickLog,
+      companion: context.discrete ? null : context.companion,
+    );
+  }
+
+  /// Only today's log is known; later days start calm.
+  static WidgetDay _withPet(WidgetContext ctx, bool isToday, WidgetDay d) {
+    if (ctx.companion == null || ctx.discrete) return d;
+    final mood = isToday
+        ? companionMoodFor(now: DateTime(2000, 1, 1, 12), todayLog: ctx.todayLog)
+        : CompanionMood.calm;
+    return WidgetDay(
+      epochDay: d.epochDay,
+      big: d.big,
+      unit: d.unit,
+      headline: d.headline,
+      phase: d.phase,
+      cycleDay: d.cycleDay,
+      nextDate: d.nextDate,
+      fertility: d.fertility,
+      progress: d.progress,
+      max: d.max,
+      petMood: mood.name,
     );
   }
 

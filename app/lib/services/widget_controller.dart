@@ -29,6 +29,7 @@ class WidgetController {
   static const String themeKey = 'ruya_w_theme';
   static const String ringKey = 'ruya_w_ring';
   static const String quickLogKey = 'ruya_w_quick';
+  static const String petKey = 'ruya_w_pet';
 
   WidgetPayload? _last;
 
@@ -44,6 +45,7 @@ class WidgetController {
       await HomeWidget.saveWidgetData<String>(themeKey, payload.theme.name);
       await HomeWidget.saveWidgetData<bool>(ringKey, payload.showRing);
       await HomeWidget.saveWidgetData<bool>(quickLogKey, payload.showQuickLog);
+      await HomeWidget.saveWidgetData<String>(petKey, payload.companion?.name ?? '');
       for (final size in WidgetSize.values) {
         await HomeWidget.updateWidget(qualifiedAndroidName: size.provider);
       }

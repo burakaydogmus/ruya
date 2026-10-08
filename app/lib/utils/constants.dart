@@ -89,6 +89,7 @@ const String widgetShowCycleDayKey = "widget_show_cycle_day";
 const String widgetShowFertilityKey = "widget_show_fertility";
 const String widgetShowQuickLogKey = "widget_show_quick_log";
 const String widgetThemeKey = "widget_theme";
+const String widgetShowCompanionKey = "widget_show_companion";
 
 
 // Notifications

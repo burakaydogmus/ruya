@@ -1180,5 +1180,7 @@
     "companion_lineComfort1": "Jsem tu s tebou.",
     "companion_lineComfort2": "Dnešek může být těžký. Zvládneme ho spolu.",
     "companion_lineHappy1": "Hihi, to lechtá!",
-    "companion_lineHappy2": "Jé, ty jsi tady!"
+    "companion_lineHappy2": "Jé, ty jsi tady!",
+    "widgetSettings_companion": "Tvůj kamarád",
+    "widgetSettings_companionNote": "Na středním a velkém widgetu. Ve dnech menstruace se zachumlá do deky, v noci spí."
 }
