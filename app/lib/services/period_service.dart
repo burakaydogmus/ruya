@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ruya/cycle/cycle_snapshot.dart';
+import 'package:ruya/home_widget/widget_content.dart';
 import 'package:ruya/models/cycle_phase/cycle_phase.dart';
 import 'package:ruya/models/flows/flow_data.dart';
 import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:collection/collection.dart';
-import 'package:intl/intl.dart';
 import 'package:ruya/database/repositories/periods_repository.dart';
 import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/periods/period.dart';
@@ -223,35 +223,33 @@ class PeriodService extends ChangeNotifier {
 
   /// Updates the home screen widget.
   void _updateWidgetData(AppLocalizations l10n, WidgetController controller) {
-    final pregnancy = _cycleSnapshot.pregnancy;
-    if (pregnancy != null) {
-      final week = _cycleSnapshot.pregnancyWeek!;
-      controller.saveAndAndUpdateCircle(
-        currentValue: week.clamp(0, 40),
-        maxValue: 40,
-        largeText: '$week',
-        smallText: l10n.pregnancy_weekShort,
-        predictionDate: '',
-      );
-      return;
-    }
-    String largeText = '$_circleCurrentValue';
-    String smallText = l10n.periodPredictionCircle_days(_circleCurrentValue);
+    controller.publish(buildWidgetPayload(l10n));
+  }
 
-    String dateText = '';
-    // Discrete mode: the widget shows only a neutral countdown.
-    if (_upcomingPeriodPrediction != null && !_settingsService.isDiscreteModeEnabled) {
-      dateText =
-          '${l10n.logScreen_nextPeriodEstimate}:\n ${DateFormat('MMM d').format(_upcomingPeriodPrediction!.estimatedStartDate)}';
-    }
-    controller.saveAndAndUpdateCircle(
-      currentValue: _circleCurrentValue,
-      maxValue: _circleMaxValue,
-      largeText: largeText,
-      smallText: smallText,
-      predictionDate: dateText,
+  /// Widget content for today and the next weeks (also used by the settings preview).
+  WidgetPayload buildWidgetPayload(AppLocalizations l10n, {HomeWidgetOptions? options}) {
+    final settings = _settingsService;
+    return WidgetContentBuilder.build(
+      periods: _periodEntries,
+      predictedCycle: _predictedCurrentCycle,
+      today: DateTime.now(),
+      l10n: l10n,
+      context: WidgetContext(
+        options: options ?? settings.widgetOptions,
+        discrete: settings.isDiscreteModeEnabled,
+        showPhases: settings.isNaturalCycle && settings.arePhasePredictionsEnabled,
+        showFertileWindow: settings.displayFertileChance,
+        onBirthControl: settings.isOnHormonalBirthControl,
+        pregnancy: settings.activePregnancy,
+        lutealPhaseLength: settings.lutealPhaseLength,
+        pmsDays: settings.showPmsWindow ? settings.pmsDays : 0,
+      ),
     );
   }
+
+  /// Re-publishes the widgets after a widget setting changed.
+  Future<void> refreshWidgets(AppLocalizations l10n, WidgetController controller) =>
+      controller.publish(buildWidgetPayload(l10n));
 
   /// Schedules period due and overdue notifications.
   Future<void> _schedulePeriodNotifications(AppLocalizations l10n) async {

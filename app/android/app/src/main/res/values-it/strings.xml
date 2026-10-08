@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Agenda</string>
+    <string name="widget_label_small">Ciclo · piccolo</string>
+    <string name="widget_label_medium">Ciclo · medio</string>
+    <string name="widget_label_large">Ciclo · grande</string>
+    <string name="widget_desc_small">Conto alla rovescia al ciclo con anello</string>
+    <string name="widget_desc_medium">Conto alla rovescia, fase e data prevista</string>
+    <string name="widget_desc_large">Conto alla rovescia, anello e tutti i dettagli scelti</string>
 </resources>

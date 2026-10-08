@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Planlegger</string>
+    <string name="widget_label_small">Syklus · liten</string>
+    <string name="widget_label_medium">Syklus · middels</string>
+    <string name="widget_label_large">Syklus · stor</string>
+    <string name="widget_desc_small">Nedtelling til mensen med ring</string>
+    <string name="widget_desc_medium">Nedtelling, fase og forventet dato</string>
+    <string name="widget_desc_large">Nedtelling, ring og alle valgte detaljer</string>
 </resources>

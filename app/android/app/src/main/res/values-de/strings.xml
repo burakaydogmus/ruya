@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Planer</string>
+    <string name="widget_label_small">Zyklus · klein</string>
+    <string name="widget_label_medium">Zyklus · mittel</string>
+    <string name="widget_label_large">Zyklus · groß</string>
+    <string name="widget_desc_small">Countdown bis zur Periode mit Ring</string>
+    <string name="widget_desc_medium">Countdown, Phase und erwartetes Datum</string>
+    <string name="widget_desc_large">Countdown, Ring und alle gewählten Details</string>
 </resources>

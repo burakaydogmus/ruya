@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Diář</string>
+    <string name="widget_label_small">Cyklus · malý</string>
+    <string name="widget_label_medium">Cyklus · střední</string>
+    <string name="widget_label_large">Cyklus · velký</string>
+    <string name="widget_desc_small">Odpočet do menstruace s kruhem</string>
+    <string name="widget_desc_medium">Odpočet, fáze a očekávané datum</string>
+    <string name="widget_desc_large">Odpočet, kruh a všechny zvolené údaje</string>
 </resources>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Agenda</string>
+    <string name="widget_label_small">Ciclo · pequeno</string>
+    <string name="widget_label_medium">Ciclo · médio</string>
+    <string name="widget_label_large">Ciclo · grande</string>
+    <string name="widget_desc_small">Contagem até a menstruação com anel</string>
+    <string name="widget_desc_medium">Contagem, fase e data prevista</string>
+    <string name="widget_desc_large">Contagem, anel e todos os detalhes escolhidos</string>
 </resources>

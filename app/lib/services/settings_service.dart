@@ -10,6 +10,49 @@ import 'package:ruya/models/themes/app_theme_mode_enum.dart';
 
 enum PeriodHistoryView { list, journal }
 
+/// Home screen widget background.
+enum WidgetTheme { system, light, dark, transparent }
+
+/// What the home screen widgets show (shared by every widget size).
+class HomeWidgetOptions {
+  const HomeWidgetOptions({
+    this.showRing = true,
+    this.showNextDate = true,
+    this.showPhase = true,
+    this.showCycleDay = false,
+    this.showFertility = true,
+    this.showQuickLog = true,
+    this.theme = WidgetTheme.system,
+  });
+
+  final bool showRing;
+  final bool showNextDate;
+  final bool showPhase;
+  final bool showCycleDay;
+  final bool showFertility;
+  final bool showQuickLog;
+  final WidgetTheme theme;
+
+  HomeWidgetOptions copyWith({
+    bool? showRing,
+    bool? showNextDate,
+    bool? showPhase,
+    bool? showCycleDay,
+    bool? showFertility,
+    bool? showQuickLog,
+    WidgetTheme? theme,
+  }) =>
+      HomeWidgetOptions(
+        showRing: showRing ?? this.showRing,
+        showNextDate: showNextDate ?? this.showNextDate,
+        showPhase: showPhase ?? this.showPhase,
+        showCycleDay: showCycleDay ?? this.showCycleDay,
+        showFertility: showFertility ?? this.showFertility,
+        showQuickLog: showQuickLog ?? this.showQuickLog,
+        theme: theme ?? this.theme,
+      );
+}
+
 class SettingsService extends ChangeNotifier {
   final SharedPreferences _prefs;
 
@@ -48,6 +91,7 @@ class SettingsService extends ChangeNotifier {
   bool _kidMode = kDefaultKidMode;
   List<DateSpan> _birthControlSpans = [];
   List<DateSpan> _pregnancySpans = [];
+  HomeWidgetOptions _widgetOptions = const HomeWidgetOptions();
 
   // Notifications
   bool _periodDueNotificationsEnabled = kDefaultPeriodDueNotificationsEnabled;
@@ -146,6 +190,8 @@ class SettingsService extends ChangeNotifier {
 
   bool get isPregnancyModeActive => activePregnancy != null;
 
+  HomeWidgetOptions get widgetOptions => _widgetOptions;
+
   CycleClassifier get cycleClassifier =>
       CycleClassifier(birthControl: _birthControlSpans, pregnancies: _pregnancySpans);
 
@@ -237,6 +283,18 @@ class SettingsService extends ChangeNotifier {
     _kidMode = _loadBool(kidModeKey, kDefaultKidMode);
     _birthControlSpans = DateSpan.decodeList(_prefs.getString(hormonalBirthControlSpansKey));
     _pregnancySpans = DateSpan.decodeList(_prefs.getString(pregnancySpansKey));
+    _widgetOptions = HomeWidgetOptions(
+      showRing: _loadBool(widgetShowRingKey, true),
+      showNextDate: _loadBool(widgetShowNextDateKey, true),
+      showPhase: _loadBool(widgetShowPhaseKey, true),
+      showCycleDay: _loadBool(widgetShowCycleDayKey, false),
+      showFertility: _loadBool(widgetShowFertilityKey, true),
+      showQuickLog: _loadBool(widgetShowQuickLogKey, true),
+      theme: WidgetTheme.values.firstWhere(
+        (t) => t.name == _prefs.getString(widgetThemeKey),
+        orElse: () => WidgetTheme.system,
+      ),
+    );
 
     // Notifications
     _periodDueNotificationsEnabled = _loadBool(periodDueNotificationsEnabledKey, kDefaultPeriodDueNotificationsEnabled);
@@ -642,6 +700,20 @@ class SettingsService extends ChangeNotifier {
   Future<void> endPregnancy(DateTime end) async {
     _pregnancySpans = [for (final s in _pregnancySpans) s.isOngoing ? s.closedAt(end) : s];
     await _prefs.setString(pregnancySpansKey, DateSpan.encodeList(_pregnancySpans));
+    notifyListeners();
+  }
+
+  Future<void> setWidgetOptions(HomeWidgetOptions o) async {
+    _widgetOptions = o;
+    await Future.wait([
+      _prefs.setBool(widgetShowRingKey, o.showRing),
+      _prefs.setBool(widgetShowNextDateKey, o.showNextDate),
+      _prefs.setBool(widgetShowPhaseKey, o.showPhase),
+      _prefs.setBool(widgetShowCycleDayKey, o.showCycleDay),
+      _prefs.setBool(widgetShowFertilityKey, o.showFertility),
+      _prefs.setBool(widgetShowQuickLogKey, o.showQuickLog),
+      _prefs.setString(widgetThemeKey, o.theme.name),
+    ]);
     notifyListeners();
   }
 }

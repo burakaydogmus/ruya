@@ -73,7 +73,9 @@ class _ExternalImportScreenState extends State<ExternalImportScreen> {
     try {
       final added = await service.apply(preview.result);
       if (!mounted) return;
-      coordinator.onLogsChanged(l10n);
+      // The import wrote straight to the database, so reload before recalculating.
+      await coordinator.onExternalLogsChanged(l10n);
+      if (!mounted) return;
       _snack(l10n.import_done(added));
     } catch (e) {
       debugPrint('External import apply failed: $e');

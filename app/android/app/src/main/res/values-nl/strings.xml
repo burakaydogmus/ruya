@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Planner</string>
+    <string name="widget_label_small">Cyclus · klein</string>
+    <string name="widget_label_medium">Cyclus · middel</string>
+    <string name="widget_label_large">Cyclus · groot</string>
+    <string name="widget_desc_small">Aftellen tot je menstruatie met ring</string>
+    <string name="widget_desc_medium">Aftellen, fase en verwachte datum</string>
+    <string name="widget_desc_large">Aftellen, ring en alle gekozen details</string>
 </resources>

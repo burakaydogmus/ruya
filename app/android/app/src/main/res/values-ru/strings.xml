@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="discrete_app_name">Ежедневник</string>
+    <string name="widget_label_small">Цикл · малый</string>
+    <string name="widget_label_medium">Цикл · средний</string>
+    <string name="widget_label_large">Цикл · большой</string>
+    <string name="widget_desc_small">Обратный отсчёт до месячных с кольцом</string>
+    <string name="widget_desc_medium">Отсчёт, фаза и ожидаемая дата</string>
+    <string name="widget_desc_large">Отсчёт, кольцо и все выбранные детали</string>
 </resources>

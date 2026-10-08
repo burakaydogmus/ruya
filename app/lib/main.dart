@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
+import 'package:home_widget/home_widget.dart';
+import 'dart:async';
 import 'package:ruya/controllers/log_reversible_contraceptive_ui_controller.dart';
 import 'package:ruya/controllers/log_sanitary_ui_controller.dart';
 import 'package:ruya/controllers/log_sex_ui_controller.dart';
@@ -38,6 +40,9 @@ import 'dart:ui' show PlatformDispatcher;
 
 final watchService = WatchSyncService();
 final logsRepository = LogsRepository();
+
+/// Navigator of the app, used to open screens from home-widget taps.
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 /// Bumped when data changes outside the UI (Wear OS quick log) so the app refreshes.
 final externalLogChanges = ValueNotifier<int>(0);
@@ -186,11 +191,38 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     externalLogChanges.addListener(_onExternalLogChange);
+    HomeWidget.initiallyLaunchedFromHomeWidget().then(_onWidgetLaunch);
+    _widgetClicks = HomeWidget.widgetClicked.listen(_onWidgetLaunch);
+  }
+
+  StreamSubscription<Uri?>? _widgetClicks;
+
+  /// The widget's "+" button opens today's daily log (`ruya://widget/log`);
+  /// any other tap just opens the app.
+  void _onWidgetLaunch(Uri? uri) {
+    if (uri == null || uri.host != 'widget' || uri.path != '/log') return;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Wait until onboarding is done and the main screen is shown.
+      for (var i = 0; i < 20; i++) {
+        final ctx = rootNavigatorKey.currentContext;
+        if (ctx != null && ctx.mounted && ctx.read<UserService>().user != null && !ctx.read<LogService>().isLoading) {
+          await ctx.read<LogUIController>().handleCreateNewLog(
+                context: ctx,
+                selectedDate: DateTime.now(),
+                symptomService: ctx.read(),
+                age: ctx.read<UserService>().age,
+              );
+          return;
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+      }
+    });
   }
 
   @override
   void dispose() {
     externalLogChanges.removeListener(_onExternalLogChange);
+    _widgetClicks?.cancel();
     super.dispose();
   }
 
@@ -222,6 +254,7 @@ class _MainAppState extends State<MainApp> {
         }
 
         return MaterialApp(
+          navigatorKey: rootNavigatorKey,
           debugShowCheckedModeBanner: false,
           locale: localeNotifier.locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,

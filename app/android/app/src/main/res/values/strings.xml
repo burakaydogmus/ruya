@@ -3,4 +3,10 @@
     <string name="app_name" translatable="false">RUYA</string>
     <!-- Neutral launcher name used by discrete mode. -->
     <string name="discrete_app_name">Planner</string>
+    <string name="widget_label_small">Cycle · small</string>
+    <string name="widget_label_medium">Cycle · medium</string>
+    <string name="widget_label_large">Cycle · large</string>
+    <string name="widget_desc_small">Countdown to your period with a ring</string>
+    <string name="widget_desc_medium">Countdown, phase and expected date</string>
+    <string name="widget_desc_large">Countdown, ring and every detail you choose</string>
 </resources>
