@@ -11,6 +11,7 @@ import 'package:ruya/screens/settings/sections/external_import_screen.dart';
 import 'package:ruya/screens/settings/sections/clinical_report_screen.dart';
 import 'package:ruya/screens/settings/sections/life_stage_widgets.dart';
 import 'package:ruya/screens/settings/sections/widget_settings_screen.dart';
+import 'package:ruya/screens/settings/sections/companion_album_screen.dart';
 import 'package:ruya/screens/settings/sections/preferences_settings_screen.dart';
 import 'package:ruya/screens/settings/sections/user_settings_screen.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +68,17 @@ class SettingsScreen extends StatelessWidget {
             );
           },
         ),
+        if (!context.watch<SettingsService>().isDiscreteModeEnabled)
+          _SettingsSectionButton(
+            title: l10n.companion_album,
+            icon: Icons.pets_outlined,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CompanionAlbumScreen()),
+              );
+            },
+          ),
         _SettingsSectionButton(
           title: l10n.settingsScreen_privacy,
           icon: Icons.shield_outlined,

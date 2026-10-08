@@ -4,6 +4,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:ruya/companion/companion_card.dart';
+import 'package:ruya/companion/companion_sprite.dart';
+import 'package:ruya/screens/settings/sections/companion_album_screen.dart';
+import 'package:ruya/screens/settings/settings_screen.dart';
 import 'package:ruya/coordinators/data_refresh_coordinator.dart';
 import 'package:ruya/database/app_database.dart';
 import 'package:ruya/import/import_service.dart';
@@ -105,6 +109,10 @@ void main() {
     tester.view.physicalSize = const Size(1080, 2340);
     tester.view.devicePixelRatio = 2.75;
     addTearDown(tester.view.reset);
+    // Companion animations run on timers; tests use the reduced-motion path.
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
 
     await tester.runAsync(() async {
       SharedPreferences.setMockInitialValues({'language': 'tr', ...initialPrefs});
@@ -264,7 +272,7 @@ void main() {
     await launch(tester);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
     await settle(tester);
-    await tapVisible(tester, find.text('Diğer uygulamalardan aktar'));
+    await scrollToTap(tester, find.text('Diğer uygulamalardan aktar'), within: SettingsScreen);
     await settle(tester);
     expect(find.text('Flo'), findsOneWidget);
     expect(find.text('Clue'), findsOneWidget);
@@ -344,6 +352,11 @@ void main() {
     await settle(tester);
     expect(find.text('Ajanda'), findsOneWidget);
     expect(find.text('RUYA'), findsNothing);
+    // The companion would give the app away, so it is gone everywhere.
+    expect(find.byType(CompanionCard), findsNothing);
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    expect(find.text('Arkadaşlar'), findsNothing);
 
     // Turning it off restores RUYA.
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
@@ -354,6 +367,33 @@ void main() {
     await settle(tester);
     expect(launcherDiscrete, isFalse);
     expect(NotificationService.isDiscrete, isFalse);
+  });
+
+  testWidgets('the companion greets on Today and the album shows who is still coming', (tester) async {
+    await launch(tester);
+    expect(find.byType(CompanionCard), findsOneWidget);
+    expect(find.text('Pamuk'), findsOneWidget);
+
+    await tester.tap(find.byType(CompanionSprite));
+    await settle(tester);
+    expect(
+      find.text('Hihi, gıdıklanıyorum!').evaluate().isNotEmpty ||
+          find.text('Yaşasın, buradasın!').evaluate().isNotEmpty,
+      isTrue,
+    );
+
+    await tester.tap(find.byTooltip('Arkadaşlar'));
+    await settle(tester);
+    expect(find.text('Bugün tanıştık'), findsOneWidget);
+    expect(find.text('Arkadaşın'), findsOneWidget);
+    expect(find.text('7 gün sonra geliyor'), findsOneWidget);
+    expect(find.text('365 gün sonra geliyor'), findsOneWidget);
+
+    await scrollToTap(tester, find.text('Bugün ekranında göster'), within: CompanionAlbumScreen);
+    await settle(tester);
+    tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+    await settle(tester);
+    expect(find.byType(CompanionCard), findsNothing);
   });
 
   testWidgets('insights show overview, mood by phase and cycle history', (tester) async {
@@ -471,6 +511,17 @@ void main() {
     await settle(tester);
     expect(find.text('Şifreli yedek oluştur'), findsWidgets);
   });
+}
+
+/// Scrolls the lazy list inside [within] until [finder] is built, then taps it.
+Future<void> scrollToTap(WidgetTester tester, Finder finder, {required Type within}) async {
+  await tester.scrollUntilVisible(
+    finder,
+    250,
+    scrollable: find.descendant(of: find.byType(within), matching: find.byType(Scrollable)).first,
+  );
+  await tester.pumpAndSettle();
+  await tester.tap(finder);
 }
 
 Future<void> tapVisible(WidgetTester tester, Finder finder) async {

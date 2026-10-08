@@ -2266,5 +2266,168 @@
     "widgetSettings_privacyNote": "Widgets are visible on the home screen even while RUYA is locked. Turn on discrete mode to show only a neutral number.",
     "@widgetSettings_privacyNote": {
         "description": "Home screen widget"
+    },
+    "companion_album": "Companions",
+    "@companion_album": {
+        "description": "Title of the companion (virtual pet) album and its settings entry"
+    },
+    "companion_albumIntro": "Friends arrive over time. You don't need to open the app every day: the days passing are enough.",
+    "@companion_albumIntro": {
+        "description": "Intro text of the companion album. Must not pressure the user."
+    },
+    "companion_daysTogether": "{count, plural, =0{We met today} =1{Together for 1 day} other{Together for {count} days}}",
+    "@companion_daysTogether": {
+        "description": "Days since the app was first opened",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "companion_arrivesIn": "{count, plural, =1{Arrives tomorrow} other{Arrives in {count} days}}",
+    "@companion_arrivesIn": {
+        "description": "A locked companion arrives in this many days",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "companion_showOnToday": "Show on the Today screen",
+    "@companion_showOnToday": {
+        "description": "Switch to show or hide the companion"
+    },
+    "companion_privacyNote": "Companions are stored only on this device, encrypted, and are part of the encrypted backup. They never appear in discrete mode.",
+    "@companion_privacyNote": {
+        "description": "Privacy note at the bottom of the companion album"
+    },
+    "companion_rename": "Rename",
+    "@companion_rename": {
+        "description": "Give the companion your own name"
+    },
+    "companion_resetName": "Default name",
+    "@companion_resetName": {
+        "description": "Button that restores the companion's default name"
+    },
+    "companion_selected": "Your friend",
+    "@companion_selected": {
+        "description": "Chip on the companion currently shown on Today"
+    },
+    "companion_choose": "Choose",
+    "@companion_choose": {
+        "description": "Button that makes this companion the one shown on Today"
+    },
+    "companion_makeFriend": "Be my friend",
+    "@companion_makeFriend": {
+        "description": "Button in the new-companion dialog that picks it"
+    },
+    "companion_later": "Later",
+    "@companion_later": {
+        "description": "Close the new-companion dialog without picking it"
+    },
+    "companion_arrivedTitle": "A new friend arrived!",
+    "@companion_arrivedTitle": {
+        "description": "Title of the dialog introducing a newly unlocked companion"
+    },
+    "companion_tapHint": "{name}. Tap to pet.",
+    "@companion_tapHint": {
+        "description": "Screen reader label of the companion",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "companion_pamuk": "Cotton",
+    "@companion_pamuk": {
+        "description": "Name of a white cloud cat. Turkish 'Pamuk' means cotton; use a short, cute pet name meaning cotton or fluff in your language."
+    },
+    "companion_fistik": "Peanut",
+    "@companion_fistik": {
+        "description": "Name of a squirrel. Turkish 'Fıstık' means pistachio/peanut and is a cute nickname; use a short cute equivalent."
+    },
+    "companion_tarcin": "Cinnamon",
+    "@companion_tarcin": {
+        "description": "Name of a fox kit. Means cinnamon."
+    },
+    "companion_lokum": "Lokum",
+    "@companion_lokum": {
+        "description": "Name of a pink bunny, after rose Turkish delight (lokum). Keep 'Lokum' or use your language's word for Turkish delight if it is short and cute."
+    },
+    "companion_mehtap": "Moonbeam",
+    "@companion_mehtap": {
+        "description": "Name of an owl. Turkish 'Mehtap' means moonlight."
+    },
+    "companion_boncuk": "Bead",
+    "@companion_boncuk": {
+        "description": "Name of a turtle with a bead-patterned shell. Turkish 'Boncuk' means bead and is a common cute pet name; use a short cute equivalent."
+    },
+    "companion_pamukAbout": "A cloud-soft, slightly sleepy cat.",
+    "@companion_pamukAbout": {
+        "description": "Companion description"
+    },
+    "companion_fistikAbout": "A curious squirrel who shares her acorn only with you.",
+    "@companion_fistikAbout": {
+        "description": "Companion description"
+    },
+    "companion_tarcinAbout": "A fox kit with the warmest heart.",
+    "@companion_tarcinAbout": {
+        "description": "Companion description"
+    },
+    "companion_lokumAbout": "A rose-coloured bunny dusted with powdered sugar.",
+    "@companion_lokumAbout": {
+        "description": "Companion description"
+    },
+    "companion_mehtapAbout": "A wise owl who loves the night sky.",
+    "@companion_mehtapAbout": {
+        "description": "Companion description"
+    },
+    "companion_boncukAbout": "A turtle with a bead-patterned shell who never rushes.",
+    "@companion_boncukAbout": {
+        "description": "Companion description"
+    },
+    "companion_lineCalm1": "It's nice to be here with you today.",
+    "@companion_lineCalm1": {
+        "description": "Companion speech bubble. Warm, never about health, dates or predictions."
+    },
+    "companion_lineCalm2": "I'm here. No rush.",
+    "@companion_lineCalm2": {
+        "description": "Companion speech bubble"
+    },
+    "companion_lineCalm3": "I'm happy to see you!",
+    "@companion_lineCalm3": {
+        "description": "Companion speech bubble"
+    },
+    "companion_lineSleepy1": "I'm getting sleepy… Good night.",
+    "@companion_lineSleepy1": {
+        "description": "Companion speech bubble at night"
+    },
+    "companion_lineSleepy2": "I'm counting stars. You rest too.",
+    "@companion_lineSleepy2": {
+        "description": "Companion speech bubble at night"
+    },
+    "companion_lineCozy1": "The blanket is ready and the tea is warm.",
+    "@companion_lineCozy1": {
+        "description": "Companion speech bubble on a logged period day (it holds a mug of herbal tea, ıhlamur = linden tea)"
+    },
+    "companion_lineCozy2": "You can be gentle with yourself today.",
+    "@companion_lineCozy2": {
+        "description": "Companion speech bubble on a logged period day"
+    },
+    "companion_lineComfort1": "I'm right here with you.",
+    "@companion_lineComfort1": {
+        "description": "Companion speech bubble when pain or a low mood was logged"
+    },
+    "companion_lineComfort2": "Today might be hard. We'll get through it together.",
+    "@companion_lineComfort2": {
+        "description": "Companion speech bubble when pain or a low mood was logged"
+    },
+    "companion_lineHappy1": "Hehe, that tickles!",
+    "@companion_lineHappy1": {
+        "description": "Companion speech bubble after being tapped"
+    },
+    "companion_lineHappy2": "Yay, you're here!",
+    "@companion_lineHappy2": {
+        "description": "Companion speech bubble after being tapped"
     }
 }

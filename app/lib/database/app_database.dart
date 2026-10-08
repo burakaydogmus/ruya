@@ -8,7 +8,7 @@ class AppDatabase {
   static Database? _database;
 
   /// Current schema version. v1-v11 are Menstrudel, v12+ are RUYA.
-  static const int schemaVersion = 12;
+  static const int schemaVersion = 13;
 
   AppDatabase._init();
 
@@ -65,6 +65,7 @@ class AppDatabase {
     // RUYA additions are applied exactly like the upgrade path so a fresh
     // install and a migrated database always end up with the same schema.
     await DatabaseMigrator.applyDailyLogV12(db);
+    await DatabaseMigrator.applyCompanionV13(db);
   }
 
   Future<void> close() async {

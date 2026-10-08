@@ -50,6 +50,20 @@ class DatabaseMigrator {
       }
     // RUYA v1.0: extended daily log
     if (oldVersion < 12) await applyDailyLogV12(db);
+    // RUYA v1.3: companions
+    if (oldVersion < 13) await applyCompanionV13(db);
+  }
+
+  /// RUYA schema v13: key/value state of the companions (days together,
+  /// chosen companion, nicknames). Kept here rather than in preferences so it
+  /// is encrypted and travels with the encrypted backup.
+  static Future<void> applyCompanionV13(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS companion (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )
+      ''');
   }
 
   /// RUYA schema v12: extended daily log (mood, discharge, libido, sex,

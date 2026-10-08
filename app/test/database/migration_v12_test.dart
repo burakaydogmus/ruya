@@ -99,7 +99,8 @@ void main() {
       ),
     );
 
-    expect(await db.getVersion(), 12);
+    expect(await db.getVersion(), AppDatabase.schemaVersion);
+    expect(await db.query('companion'), isEmpty);
     final logs = await db.query('period_logs', orderBy: 'date');
     expect(logs.length, 2);
     expect(logs.first['flow'], FlowRate.heavy.index);

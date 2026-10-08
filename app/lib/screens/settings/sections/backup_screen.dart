@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ruya/companion/companion_service.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -123,11 +124,13 @@ class _BackupScreenState extends State<BackupScreen> {
     final coordinator = context.read<DataRefreshCoordinator>();
     final settings = context.read<SettingsService>();
     final symptoms = context.read<SymptomService>();
+    final companions = context.read<CompanionService>();
     setState(() => _busyText = l10n.backup_restoring);
     try {
       await service.restoreReplacingAll(payload);
       await settings.loadSettings();
       await symptoms.load();
+      await companions.load();
       await coordinator.resetAllData();
       _snack(l10n.backup_restored);
     } catch (e) {

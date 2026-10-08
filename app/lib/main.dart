@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
+import 'package:ruya/companion/companion_service.dart';
 import 'package:home_widget/home_widget.dart';
 import 'dart:async';
 import 'package:ruya/controllers/log_reversible_contraceptive_ui_controller.dart';
@@ -167,6 +168,7 @@ Widget buildRuyaApp({
       ),
 
       // --- Controllers ---
+      ChangeNotifierProvider(create: (_) => CompanionService(CompanionRepository())..load()),
       ChangeNotifierProvider(create: (_) => LogUIController()),
       ChangeNotifierProvider(create: (_) => LogSanitaryUIController()),
       ChangeNotifierProvider(create: (_) => LogSexUIController()),

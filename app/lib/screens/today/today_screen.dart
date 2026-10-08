@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:ruya/companion/companion_card.dart';
+import 'package:ruya/companion/companion_service.dart';
 import 'package:ruya/controllers/log_ui_controller.dart';
 import 'package:ruya/cycle/cycle_snapshot.dart';
 import 'package:ruya/l10n/app_localizations.dart';
@@ -25,6 +27,7 @@ class TodayScreen extends StatelessWidget {
     final periodService = context.watch<PeriodService>();
     final logService = context.watch<LogService>();
     final settings = context.watch<SettingsService>();
+    final companions = context.watch<CompanionService>();
 
     if (!logService.hasLoadedOnce) {
       return const Center(child: CircularProgressIndicator());
@@ -33,10 +36,17 @@ class TodayScreen extends StatelessWidget {
     final snapshot = periodService.cycleSnapshot;
     final todayLog = logService.logMap[DateUtils.dateOnly(DateTime.now())];
     final showPhases = settings.isNaturalCycle && settings.arePhasePredictionsEnabled;
+    // Discrete mode must not show anything that hints at the app's purpose.
+    final showCompanion =
+        !settings.isDiscreteModeEnabled && companions.isLoaded && !companions.isHidden;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
       children: [
+        if (showCompanion) ...[
+          CompanionCard(todayLog: todayLog),
+          const SizedBox(height: 12),
+        ],
         if (snapshot.pregnancy != null)
           _PregnancyCard(snapshot: snapshot)
         else
