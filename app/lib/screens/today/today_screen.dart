@@ -286,10 +286,7 @@ class _CountdownCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               headline,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: scheme.onPrimaryContainer,
-                fontWeight: FontWeight.w600,
-              ),
+              style: theme.textTheme.headlineMedium?.copyWith(color: scheme.onPrimaryContainer),
             ),
             if (!snapshot.isPeriodOngoing) ...[
               const SizedBox(height: 4),
@@ -348,10 +345,7 @@ class _PregnancyCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               l10n.pregnancy_status(snapshot.pregnancyWeek!, snapshot.pregnancyDayOfWeek!),
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: scheme.onTertiaryContainer,
-                fontWeight: FontWeight.w600,
-              ),
+              style: theme.textTheme.headlineSmall?.copyWith(color: scheme.onTertiaryContainer),
             ),
             const SizedBox(height: 6),
             Text(l10n.pregnancy_dueDate(due), style: TextStyle(color: scheme.onTertiaryContainer)),

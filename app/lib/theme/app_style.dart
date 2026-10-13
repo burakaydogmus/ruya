@@ -256,14 +256,18 @@ ThemeData buildRuyaTheme({
   final display = pixel ? kPixelFont : kBodyFont;
   TextStyle? head(TextStyle? s, {FontWeight w = FontWeight.w700}) =>
       s?.copyWith(fontFamily: display, fontWeight: pixel ? FontWeight.w700 : w, letterSpacing: pixel ? 0.2 : null);
+  // Sentences and numbers (the countdown, questions, statistics) stay in the
+  // body face in every pack: the pixel face is only legible for short titles.
+  TextStyle? plain(TextStyle? s, {FontWeight w = FontWeight.w700}) =>
+      s?.copyWith(fontFamily: kBodyFont, fontWeight: w);
   final t = base.textTheme;
   final textTheme = t.copyWith(
-    displayLarge: head(t.displayLarge),
-    displayMedium: head(t.displayMedium),
-    displaySmall: head(t.displaySmall),
-    headlineLarge: head(t.headlineLarge, w: FontWeight.w800),
-    headlineMedium: head(t.headlineMedium, w: FontWeight.w800),
-    headlineSmall: head(t.headlineSmall, w: FontWeight.w800),
+    displayLarge: plain(t.displayLarge),
+    displayMedium: plain(t.displayMedium),
+    displaySmall: plain(t.displaySmall),
+    headlineLarge: plain(t.headlineLarge, w: FontWeight.w800),
+    headlineMedium: plain(t.headlineMedium, w: FontWeight.w800),
+    headlineSmall: plain(t.headlineSmall, w: FontWeight.w800),
     titleLarge: head(t.titleLarge, w: FontWeight.w800),
     titleMedium: t.titleMedium?.copyWith(fontWeight: FontWeight.w700),
     titleSmall: t.titleSmall?.copyWith(fontWeight: FontWeight.w700),
