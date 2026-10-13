@@ -26,6 +26,7 @@ class WidgetDay {
     this.progress = 0,
     this.max = 0,
     this.petMood,
+    this.petAccessory,
   });
 
   /// Days since 1970-01-01 (local date), matches Java's LocalDate.toEpochDay().
@@ -44,6 +45,9 @@ class WidgetDay {
   /// widget switches to the sleepy picture at night by itself.
   final String? petMood;
 
+  /// Accessory for this day only (the party hat on special days).
+  final String? petAccessory;
+
   Map<String, Object?> toJson() => {
         'd': epochDay,
         'big': big,
@@ -56,6 +60,7 @@ class WidgetDay {
         'p': progress,
         'm': max,
         if (petMood != null) 'pm': petMood,
+        if (petAccessory != null) 'pa': petAccessory,
       };
 }
 
@@ -71,6 +76,9 @@ class WidgetContext {
     this.lutealPhaseLength = 14,
     this.pmsDays = 5,
     this.companion,
+    this.sticker,
+    this.accessory,
+    this.isSpecialDate,
     this.todayLog,
   });
 
@@ -88,6 +96,15 @@ class WidgetContext {
   /// Companion to draw, or null when it must not appear (option off, discrete mode).
   final Companion? companion;
 
+  /// Companion for the sticker widget; it does not depend on the widget options.
+  final Companion? sticker;
+
+  /// What the chosen companion wears.
+  final Accessory? accessory;
+
+  /// Birthdays and anniversaries, when the companion wears the party hat.
+  final bool Function(DateTime day)? isSpecialDate;
+
   /// Today's log, which decides whether the companion is cozy or comforting.
   final LogDay? todayLog;
 }
@@ -102,6 +119,9 @@ class WidgetPayload {
     required this.showRing,
     required this.showQuickLog,
     this.companion,
+    this.sticker,
+    this.accessory,
+    this.neutral = false,
   });
 
   final List<WidgetDay> days;
@@ -113,6 +133,11 @@ class WidgetPayload {
   final bool showRing;
   final bool showQuickLog;
   final Companion? companion;
+  final Companion? sticker;
+  final Accessory? accessory;
+
+  /// Discrete mode: the sticker widget shows the neutral icon.
+  final bool neutral;
 
   String get daysJson => jsonEncode(days.map((d) => d.toJson()).toList());
 }
@@ -136,7 +161,7 @@ class WidgetContentBuilder {
     final start = DateTime(today.year, today.month, today.day);
     final days = <WidgetDay>[
       for (var i = 0; i < daysAhead; i++)
-        _withPet(context, i == 0, _day(
+        _withPet(context, i == 0, DateTime(start.year, start.month, start.day + i), _day(
           day: DateTime(start.year, start.month, start.day + i),
           snapshot: CycleSnapshot.compute(
             periods: periods,
@@ -160,12 +185,15 @@ class WidgetContentBuilder {
       showRing: context.options.showRing,
       showQuickLog: context.options.showQuickLog,
       companion: context.discrete ? null : context.companion,
+      sticker: context.discrete ? null : context.sticker,
+      accessory: context.discrete ? null : context.accessory,
+      neutral: context.discrete,
     );
   }
 
   /// Only today's log is known; later days start calm.
-  static WidgetDay _withPet(WidgetContext ctx, bool isToday, WidgetDay d) {
-    if (ctx.companion == null || ctx.discrete) return d;
+  static WidgetDay _withPet(WidgetContext ctx, bool isToday, DateTime date, WidgetDay d) {
+    if ((ctx.companion == null && ctx.sticker == null) || ctx.discrete) return d;
     final mood = isToday
         ? companionMoodFor(now: DateTime(2000, 1, 1, 12), todayLog: ctx.todayLog)
         : CompanionMood.calm;
@@ -181,6 +209,7 @@ class WidgetContentBuilder {
       progress: d.progress,
       max: d.max,
       petMood: mood.name,
+      petAccessory: ctx.isSpecialDate?.call(date) ?? false ? Accessory.party.name : null,
     );
   }
 

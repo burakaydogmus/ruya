@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Contagem até a menstruação com anel</string>
     <string name="widget_desc_medium">Contagem, fase e data prevista</string>
     <string name="widget_desc_large">Contagem, anel e todos os detalhes escolhidos</string>
+    <string name="widget_label_sticker">Adesivo</string>
+    <string name="widget_desc_sticker">Só seu amiguinho, sem texto</string>
 </resources>

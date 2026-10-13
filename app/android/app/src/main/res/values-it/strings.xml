@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Conto alla rovescia al ciclo con anello</string>
     <string name="widget_desc_medium">Conto alla rovescia, fase e data prevista</string>
     <string name="widget_desc_large">Conto alla rovescia, anello e tutti i dettagli scelti</string>
+    <string name="widget_label_sticker">Adesivo</string>
+    <string name="widget_desc_sticker">Solo il tuo amico, niente testo</string>
 </resources>

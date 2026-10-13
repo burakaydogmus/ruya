@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Обратный отсчёт до месячных с кольцом</string>
     <string name="widget_desc_medium">Отсчёт, фаза и ожидаемая дата</string>
     <string name="widget_desc_large">Отсчёт, кольцо и все выбранные детали</string>
+    <string name="widget_label_sticker">Наклейка</string>
+    <string name="widget_desc_sticker">Только твой друг, без текста</string>
 </resources>

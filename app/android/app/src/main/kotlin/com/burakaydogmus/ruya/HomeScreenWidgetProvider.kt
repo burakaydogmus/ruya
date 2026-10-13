@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -93,15 +94,15 @@ abstract class RuyaWidgetProvider(private val layoutId: Int, private val maxLine
         }
         // Companion (medium / large). In the medium widget it takes the ring's place.
         if (maxLines > 0) {
-            val pet = companionDrawable(data.getString("ruya_w_pet", "") ?: "", day?.optString("pm", "") ?: "")
-            if (pet != 0) {
-                views.setImageViewResource(R.id.w_pet, pet)
+            val pet = companionBitmap(context, data, day, data.getString("ruya_w_pet", "") ?: "", scale = 4)
+            if (pet != null) {
+                views.setImageViewBitmap(R.id.w_pet, pet)
                 views.setViewVisibility(R.id.w_pet, View.VISIBLE)
             } else {
                 views.setViewVisibility(R.id.w_pet, View.GONE)
             }
             if (layoutId == R.layout.widget_medium) {
-                views.setViewVisibility(R.id.w_ring_box, if (pet != 0) View.GONE else View.VISIBLE)
+                views.setViewVisibility(R.id.w_ring_box, if (pet != null) View.GONE else View.VISIBLE)
             }
         }
         if (layoutId == R.layout.widget_large) {
@@ -130,51 +131,31 @@ abstract class RuyaWidgetProvider(private val layoutId: Int, private val maxLine
         views.setTextColor(id, color)
         views.setViewVisibility(id, if (text.isEmpty()) View.GONE else View.VISIBLE)
     }
-
-    /**
-     * Picture for the companion: cozy or comforting when today's log says so,
-     * otherwise sleepy at night and calm by day (same rule as the app).
-     * Returns 0 when no companion should be shown.
-     */
-    private fun companionDrawable(pet: String, mood: String): Int {
-        if (pet.isEmpty()) return 0
-        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        val state = when (mood) {
-            "cozy", "comfort" -> mood
-            else -> if (hour >= 22 || hour < 6) "sleep" else "idle"
-        }
-        return PET_DRAWABLES[pet]?.get(state) ?: 0
-    }
-
-    /** The entry for the current local day, or null if the app was not opened for weeks. */
-    private fun todayEntry(data: SharedPreferences): JSONObject? {
-        val raw = data.getString("ruya_w_days", null) ?: return null
-        val now = System.currentTimeMillis()
-        val today = (now + TimeZone.getDefault().getOffset(now)) / 86_400_000L
-        return try {
-            val days = JSONArray(raw)
-            (0 until days.length()).map { days.getJSONObject(it) }.firstOrNull { it.optLong("d") == today }
-        } catch (e: Exception) {
-            null
-        }
-    }
 }
 
-/** Explicit references so resource shrinking keeps every picture. */
-private val PET_DRAWABLES: Map<String, Map<String, Int>> = mapOf(
-    "pamuk" to mapOf("idle" to R.drawable.pet_pamuk_idle, "sleep" to R.drawable.pet_pamuk_sleep,
-        "cozy" to R.drawable.pet_pamuk_cozy, "comfort" to R.drawable.pet_pamuk_comfort),
-    "fistik" to mapOf("idle" to R.drawable.pet_fistik_idle, "sleep" to R.drawable.pet_fistik_sleep,
-        "cozy" to R.drawable.pet_fistik_cozy, "comfort" to R.drawable.pet_fistik_comfort),
-    "tarcin" to mapOf("idle" to R.drawable.pet_tarcin_idle, "sleep" to R.drawable.pet_tarcin_sleep,
-        "cozy" to R.drawable.pet_tarcin_cozy, "comfort" to R.drawable.pet_tarcin_comfort),
-    "lokum" to mapOf("idle" to R.drawable.pet_lokum_idle, "sleep" to R.drawable.pet_lokum_sleep,
-        "cozy" to R.drawable.pet_lokum_cozy, "comfort" to R.drawable.pet_lokum_comfort),
-    "mehtap" to mapOf("idle" to R.drawable.pet_mehtap_idle, "sleep" to R.drawable.pet_mehtap_sleep,
-        "cozy" to R.drawable.pet_mehtap_cozy, "comfort" to R.drawable.pet_mehtap_comfort),
-    "boncuk" to mapOf("idle" to R.drawable.pet_boncuk_idle, "sleep" to R.drawable.pet_boncuk_sleep,
-        "cozy" to R.drawable.pet_boncuk_cozy, "comfort" to R.drawable.pet_boncuk_comfort),
-)
+/**
+ * The companion for [pet] in today's pose, wearing the chosen accessory (the
+ * party hat on special days). Null when no companion should be shown.
+ */
+internal fun companionBitmap(context: Context, data: SharedPreferences, day: JSONObject?, pet: String, scale: Int): Bitmap? {
+    if (pet.isEmpty()) return null
+    val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    val accessory = day?.optString("pa", "")?.takeIf { it.isNotEmpty() } ?: data.getString("ruya_w_acc", "") ?: ""
+    return PetArt.render(context, pet, PetArt.pose(day?.optString("pm", "") ?: "", hour), accessory, scale)
+}
+
+/** The entry for the current local day, or null if the app was not opened for weeks. */
+internal fun todayEntry(data: SharedPreferences): JSONObject? {
+    val raw = data.getString("ruya_w_days", null) ?: return null
+    val now = System.currentTimeMillis()
+    val today = (now + TimeZone.getDefault().getOffset(now)) / 86_400_000L
+    return try {
+        val days = JSONArray(raw)
+        (0 until days.length()).map { days.getJSONObject(it) }.firstOrNull { it.optLong("d") == today }
+    } catch (e: Exception) {
+        null
+    }
+}
 
 /** 2×2. Keeps Menstrudel's class name so widgets placed by older versions keep working. */
 class HomeScreenWidgetProvider : RuyaWidgetProvider(R.layout.widget_small, maxLines = 0)
@@ -184,3 +165,32 @@ class RuyaWidgetMedium : RuyaWidgetProvider(R.layout.widget_medium, maxLines = 3
 
 /** 4×3. */
 class RuyaWidgetLarge : RuyaWidgetProvider(R.layout.widget_large, maxLines = 4)
+
+/**
+ * Sticker: only the companion, no text and no frame. In discrete mode (or when
+ * the companion is hidden) it shows the launcher icon instead.
+ */
+class RuyaWidgetSticker : HomeWidgetProvider() {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray,
+        widgetData: SharedPreferences,
+    ) {
+        val views = RemoteViews(context.packageName, R.layout.widget_sticker)
+        val pet = companionBitmap(
+            context, widgetData, todayEntry(widgetData), widgetData.getString("ruya_w_sticker", "") ?: "", scale = 6,
+        )
+        if (pet != null) {
+            views.setImageViewBitmap(R.id.w_pet, pet)
+        } else {
+            val neutral = widgetData.getBoolean("ruya_w_neutral", false)
+            views.setImageViewResource(R.id.w_pet, if (neutral) R.mipmap.ic_launcher_discrete else R.mipmap.ic_launcher)
+        }
+        views.setOnClickPendingIntent(
+            R.id.w_root,
+            HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("ruya://widget/home")),
+        )
+        appWidgetIds.forEach { id -> appWidgetManager.updateAppWidget(id, views) }
+    }
+}

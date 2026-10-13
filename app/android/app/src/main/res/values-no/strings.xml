@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Nedtelling til mensen med ring</string>
     <string name="widget_desc_medium">Nedtelling, fase og forventet dato</string>
     <string name="widget_desc_large">Nedtelling, ring og alle valgte detaljer</string>
+    <string name="widget_label_sticker">Klistremerke</string>
+    <string name="widget_desc_sticker">Bare vennen din, ingen tekst</string>
 </resources>

@@ -7,4 +7,6 @@
     <string name="widget_desc_small">นับถอยหลังถึงประจำเดือนพร้อมวงแหวน</string>
     <string name="widget_desc_medium">นับถอยหลัง ระยะ และวันที่คาดไว้</string>
     <string name="widget_desc_large">นับถอยหลัง วงแหวน และรายละเอียดที่เลือก</string>
+    <string name="widget_label_sticker">สติกเกอร์</string>
+    <string name="widget_desc_sticker">มีแค่เพื่อนของคุณ ไม่มีข้อความ</string>
 </resources>

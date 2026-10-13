@@ -26,11 +26,11 @@ class DataRefreshCoordinator {
     companionService?.addListener(_onCompanionChanged);
   }
 
-  /// A different companion (or its first load) redraws the home screen widgets.
+  /// A different companion or outfit (or the first load) redraws the home screen widgets.
   void _onCompanionChanged() {
     final l10n = _l10n;
     final c = companionService!;
-    final key = '${c.isLoaded}:${c.selected.name}';
+    final key = '${c.isLoaded}:${c.selected.name}:${c.isHidden}:${c.chosenAccessory(c.selected)?.name}';
     if (l10n == null || key == _lastCompanionKey) return;
     _lastCompanionKey = key;
     periodService.refreshWidgets(l10n, widgetController);

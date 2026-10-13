@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ruya/companion/companion.dart';
 import 'package:ruya/coordinators/data_refresh_coordinator.dart';
 import 'package:ruya/database/repositories/pills_repository.dart';
 import 'package:ruya/database/repositories/sanitary_product_repository.dart';
@@ -7,6 +8,30 @@ import 'package:ruya/l10n/app_localizations.dart';
 import 'package:ruya/services/notification_service.dart';
 import 'package:ruya/services/period_service.dart';
 import 'package:ruya/services/settings_service.dart';
+
+/// Launcher icons the user can choose (Settings › Appearance). The name under
+/// the icon stays "RUYA"; discrete mode overrides the choice with its neutral
+/// name and icon. Companion icons become available when the companion arrives.
+enum AppIcon {
+  ruya('Default', 'assets/icon/ruya.png'),
+  pamuk('Pamuk', 'assets/icon/app_pamuk.png', companion: Companion.pamuk, background: Color(0xFFE6DBFF)),
+  tarcin('Tarcin', 'assets/icon/app_tarcin.png', companion: Companion.tarcin, background: Color(0xFFFFE2C4)),
+  lokum('Lokum', 'assets/icon/app_lokum.png', companion: Companion.lokum, background: Color(0xFFD8F3E6)),
+  ay('Ay', 'assets/icon/app_ay.png', background: Color(0xFF2B2560)),
+  lale('Lale', 'assets/icon/app_lale.png', background: Color(0xFFFFE9D6));
+
+  const AppIcon(this.alias, this.asset, {this.companion, this.background});
+
+  /// Android activity-alias suffix, see AndroidManifest.xml (`.Launcher<alias>`).
+  final String alias;
+
+  /// Picture for the in-app picker (pixel art except for the RUYA logo).
+  final String asset;
+  final Companion? companion;
+  final Color? background;
+
+  static AppIcon byName(String? name) => values.firstWhere((i) => i.name == name, orElse: () => AppIcon.ruya);
+}
 
 /// Discrete mode: makes RUYA's visible identity neutral.
 ///
@@ -22,6 +47,8 @@ import 'package:ruya/services/settings_service.dart';
 /// Android limits (cannot be changed by an app at runtime): the name in
 /// Settings › Apps and the app name printed by the system above notifications
 /// stay "RUYA", and some launchers need a few seconds or a restart to refresh.
+/// Android also closes a task when the alias it was started from is disabled,
+/// so MainActivity switches the alias only once the app is left.
 class DiscreteModeController {
   DiscreteModeController(this._settings);
 
@@ -67,13 +94,23 @@ class DiscreteModeController {
     await _reschedulePillAndSanitary(l10n);
   }
 
+  /// Changes the launcher icon. In discrete mode the choice is only saved and
+  /// takes effect when discrete mode is turned off.
+  Future<void> setIcon(AppIcon icon) async {
+    await _settings.setAppIcon(icon.name);
+    await _setLauncherIdentity(_settings.isDiscreteModeEnabled);
+  }
+
+  AppIcon get icon => AppIcon.byName(_settings.appIcon);
+
   Future<void> _setLauncherIdentity(bool discrete, {bool onlyIfDifferent = false}) async {
+    final alias = discrete ? 'Discrete' : icon.alias;
     try {
       if (onlyIfDifferent) {
-        final current = await _channel.invokeMethod<bool>('isDiscrete');
-        if (current == discrete) return;
+        final current = await _channel.invokeMethod<String>('currentLauncher');
+        if (current == alias) return;
       }
-      await _channel.invokeMethod<bool>('setDiscrete', {'enabled': discrete});
+      await _channel.invokeMethod<String>('setLauncher', {'alias': alias});
     } on MissingPluginException {
       // Not on Android (tests, other platforms).
     } on PlatformException catch (e) {

@@ -19,7 +19,7 @@ from pixel import (SIZE, Part, Sprite, circle, ellipse, grow, half, hexc, inter,
                    rrect, sheet, sub, superellipse, tube, union)
 
 FRAMES = ['idle0', 'idle1', 'blink', 'sleep0', 'sleep1', 'cozy0', 'cozy1',
-          'comfort0', 'comfort1', 'happy0', 'happy1']
+          'comfort0', 'comfort1', 'happy0', 'happy1', 'tea0', 'tea1']
 
 SHADOW = hexc('#2a1f4a', 60)
 
@@ -151,6 +151,14 @@ class Pet:
     blush_lx = 16
     hold_y = 49
     neck_y = 36
+    # accessory anchors
+    top = 15            # y of the top of the head
+    cap_rx = 14.2       # half width of a hat
+    scarf_y = 37.8
+    bow_x = 43
+    flower_x = 18
+    crown_spread = 1.0  # how wide a flower crown sits
+    wearing = None      # accessory id drawn by frame()
     toes_y = 58
     toes_lx = 24
     paw_y = 52
@@ -233,6 +241,8 @@ class Pet:
         s.shadow(ellipse(32, 59.6, 17, 2.4), SHADOW)
         hd = 1 if name == 'idle1' else 0
         self.body(s, hd)
+        if self.wearing:
+            ACCESSORIES[self.wearing](self, s, hd)
         state = name.rstrip('01')
         f = int(name[-1]) if name[-1].isdigit() else 0
         if state in ('idle', 'blink', 'happy', 'sleep'):
@@ -242,10 +252,12 @@ class Pet:
         if state == 'cozy':
             self.blanket(s)
             self.mug(s, f)
+        if state == 'tea':
+            self.mug(s, f)
         if state == 'comfort':
             self.plush(s)
         expr = {'idle': 'open', 'blink': 'blink', 'sleep': 'sleep', 'cozy': 'soft',
-                'comfort': 'soft', 'happy': 'happy'}[state]
+                'comfort': 'soft', 'happy': 'happy', 'tea': 'soft'}[state]
         self.face(s, expr, hd)
         if state == 'sleep':
             s.stamp(47, 12 - f, Z_BIG, FX)
@@ -310,6 +322,8 @@ class Pet:
 class Pamuk(Pet):
     """Cloud cat: snow-white fur, a cloud tuft on the forehead and a cloud-puff tail."""
     id = 'pamuk'
+    top = 14
+    scarf_y = 37.6
     FUR = ramp('#3f3568', '#9d97d4', '#c3c0ee', '#eceefe', '#ffffff', ol='#6a60a0')
     EAR_IN = ramp('#3f3568', '#d9739f', '#ee98bd', '#f8b9d5', '#ffd9ea')
 
@@ -356,6 +370,7 @@ class Pamuk(Pet):
 class Fistik(Pet):
     """Squirrel with a big bushy tail, ear tufts, buck teeth and an acorn."""
     id = 'fistik'
+    scarf_y = 38
     FUR = ramp('#4a2418', '#9b5531', '#c47442', '#e3995e', '#f6bf86', hi='#ffe1b8', ol='#7a3d26')
     CREAM = ramp('#4a2418', '#d9ad84', '#ebc59e', '#f9e0c0', '#fff3e0')
     ACORN = ramp('#3a2414', '#9c6a3a', '#b98048', '#d39c5c', '#ebbd80')
@@ -472,6 +487,8 @@ class Tarcin(Pet):
 class Lokum(Pet):
     """Rose-lokum bunny dusted with powdered sugar; one ear flops over."""
     id = 'lokum'
+    cap_rx = 13.4
+    scarf_y = 38.6
     FUR = ramp('#5e2443', '#c66e97', '#e090b3', '#f6b8d1', '#ffd9e8', hi='#fff1f7', ol='#8a3f68')
     INNER = ramp('#5e2443', '#d45a8a', '#e877a1', '#f797b8', '#ffb6cd')
     TAIL = ramp('#7a4a66', '#e3cbd8', '#f2e2eb', '#fff7fb', '#ffffff')
@@ -517,6 +534,7 @@ class Lokum(Pet):
 class Mehtap(Pet):
     """Owl in moonlit indigo with a cream face disc and golden eyes."""
     id = 'mehtap'
+    scarf_y = 40.2
     FUR = ramp('#211a4a', '#3f3888', '#5650a8', '#706ac4', '#8f89dc', hi='#b7b2f0', ol='#352d72')
     FACE = ramp('#211a4a', '#d3c19f', '#e6d7b8', '#f6ecd8', '#fffaf0', ol='#5a4a3a')
     BELLY = ramp('#211a4a', '#7c76c8', '#948fdc', '#aea9ec', '#c9c5f7')
@@ -606,6 +624,11 @@ class Mehtap(Pet):
 class Boncuk(Pet):
     """Turtle with a blue bead-patterned shell."""
     id = 'boncuk'
+    cap_rx = 12.6
+    scarf_y = 38.2
+    bow_x = 39
+    flower_x = 22
+    crown_spread = 0.78
     SKIN = ramp('#1f3d2a', '#4f9a5c', '#6cb876', '#8fd394', '#b5ebb3', hi='#dcf9d6', ol='#2f5c3e')
     SHELL = ramp('#142a5c', '#1f4fa8', '#2c6ccf', '#3f8ae6', '#6fb0f5', hi='#a8d6ff', ol='#1e3c80')
     PLASTRON = ramp('#4a3a1a', '#d4ad57', '#e6c673', '#f6df9a', '#fff1c4', ol='#6e5626')
@@ -654,6 +677,92 @@ PETS = [Pamuk, Fistik, Tarcin, Lokum, Mehtap, Boncuk]
 
 
 
+# ---------------------------------------------------------------- accessories
+
+ACC_PINK = PLUSH
+ACC_TEAL = ramp('#123f4a', '#1f7f8c', '#2fa3ad', '#59c7c9', '#93e3df', ol='#1d5c68')
+ACC_GOLD = ramp('#5a3a0c', '#b98318', '#dba526', '#f2c445', '#ffe07e', ol='#7a5212')
+ACC_WHITE = ramp('#4a4470', '#b9b6dc', '#d9d7f0', '#f6f5ff', '#ffffff', ol='#6a6496')
+ACC_RED = ramp('#5c1220', '#a81f35', '#d0334a', '#ee5466', '#ff8c96', ol='#7a1a2c')
+ACC_FX = {'w': hexc('#ffffff'), 'y': hexc('#ffd84a'), 'g': hexc('#58a862'), 'p': hexc('#ff96bd'),
+          'P': hexc('#e0527f')}
+
+
+def acc_bow(pet, s, hd):
+    x, y = pet.bow_x, pet.top + 0.5 + hd
+    s.add(Part('bow_l', poly([(x - 5.8, y - 4), (x - 5.8, y + 4), (x, y)]), ACC_PINK, 8, group='bow', R=2))
+    s.add(Part('bow_r', poly([(x + 5.8, y - 4), (x + 5.8, y + 4), (x, y)]), ACC_PINK, 8, group='bow', R=2))
+    s.add(Part('bow_k', circle(x, y, 1.9), ACC_PINK, 8.2, group='bowk', R=1.2))
+
+
+def acc_beanie(pet, s, hd):
+    t = pet.top + hd
+    cap = inter(superellipse(32, t + 5.5, pet.cap_rx, 9, 2.2), half(y1=t + 6.5))
+    s.add(Part('cap', cap, ACC_TEAL, 8, R=4))
+    s.add(Part('band', inter(cap, half(y0=t + 3.6)), ACC_WHITE, 8.2, decal_of='cap', line=True,
+               outline=True, group='capband'))
+    s.add(Part('pom', circle(32, t - 4.8, 3.4), ACC_WHITE, 8.4, R=2.4))
+
+
+def acc_scarf(pet, s, hd):
+    y = pet.scarf_y
+    band = rrect(32, y, 11.5, 2.7, 2.2)
+    tail = rrect(38.5, y + 4.9, 2.6, 5, 1.2)
+    s.add(Part('scarf', band, ACC_RED, 4.6, R=2))
+    s.add(Part('scarf_t', tail, ACC_RED, 4.7, group='scarf', R=1.6))
+    stripes = lambda x, yy: np.abs(((x + 1) % 5) - 2.5) - 0.9
+    s.add(Part('scarf_s', inter(union(band, tail), stripes), ACC_WHITE, 4.8, decal_of='scarf',
+               line=False, outline=False, group='scarf'))
+
+
+def acc_daisy(pet, s, hd):
+    t = pet.top + hd
+    k = pet.crown_spread
+    edge = 3 if k == 1.0 else 4
+    for i, (dx, dy) in enumerate([(-12, edge), (-7, 0), (-1, -1), (5, 0), (10, edge)]):
+        petals = ['.w.', 'wyw', '.w.'] if i % 2 == 0 else ['.p.', 'pyp', '.p.']
+        s.stamp(round(31 + dx * k), t + dy, petals, ACC_FX)
+    for dx, dy in [(-9, edge), (-4, 1), (2, 1), (8, edge)]:
+        s.stamp(round(32 + dx * k), t + dy, ['g'], ACC_FX)
+
+
+def acc_party(pet, s, hd):
+    t = pet.top + hd
+    hat = poly([(25.5, t + 1.5), (32, t - 13.5), (38.5, t + 1.5)])
+    s.add(Part('hat', hat, ACC_GOLD, 8, R=3))
+    stripes = lambda x, y: np.abs(((y + x * 0.5) % 5) - 2.5) - 1.0
+    s.add(Part('hat_s', inter(hat, stripes), ACC_PINK, 8.1, decal_of='hat', line=False,
+               outline=False, group='hat'))
+    s.add(Part('hat_p', circle(32, t - 12.4, 2.2), ACC_WHITE, 8.3, R=1.4))
+
+
+def acc_flower(pet, s, hd):
+    t = pet.top + hd
+    s.stamp(pet.flower_x, t - 1, ['.P.P.', 'PpPpP', '.PyP.', 'PpPpP', '.P.P.'], ACC_FX)
+    s.stamp(pet.flower_x + 5, t + 3, ['g', 'g'], ACC_FX)
+
+
+ACCESSORIES = {'bow': acc_bow, 'beanie': acc_beanie, 'scarf': acc_scarf, 'daisy': acc_daisy,
+               'party': acc_party, 'flower': acc_flower}
+
+
+def overlay_sheet(pet_cls, acc: str) -> Image.Image:
+    """Only the pixels the accessory changes, so the app can stack it on the plain sheet."""
+    plain, dressed = pet_cls(), pet_cls()
+    dressed.wearing = acc
+    frames = []
+    for n in FRAMES:
+        a = np.array(plain.frame(n))
+        b = np.array(dressed.frame(n))
+        diff = (a != b).any(axis=2)
+        out = np.zeros_like(b)
+        out[diff] = b[diff]
+        # a pixel the accessory makes transparent cannot be expressed as an overlay
+        assert not (diff & (b[..., 3] == 0)).any(), (pet_cls.id, acc, n)
+        frames.append(Image.fromarray(out))
+    return sheet(frames)
+
+
 def build(pet_cls) -> Image.Image:
     pet = pet_cls()
     return sheet([pet.frame(n) for n in FRAMES])
@@ -673,29 +782,14 @@ def preview(path: str, scale: int = 6):
     out.save(path)
 
 
-# Home screen widget pictures: RemoteViews cannot animate or crop a sheet, so
-# each state is its own drawable, pre-scaled ×4 with nearest neighbour.
-WIDGET_STATES = {'idle': 'idle0', 'sleep': 'sleep0', 'cozy': 'cozy0', 'comfort': 'comfort0'}
-
-
-def android_drawables(dest: Path):
-    dest.mkdir(parents=True, exist_ok=True)
-    for p in PETS:
-        pet = p()
-        for state, frame in WIDGET_STATES.items():
-            img = pet.frame(frame).resize((SIZE * 4, SIZE * 4), Image.NEAREST)
-            img.save(dest / f'pet_{p.id}_{state}.png', optimize=True)
-
-
 if __name__ == '__main__':
     if len(sys.argv) > 2 and sys.argv[1] == '--preview':
         preview(sys.argv[2])
     else:
         dest = Path(__file__).resolve().parents[2] / 'assets' / 'pets'
-        dest.mkdir(parents=True, exist_ok=True)
+        (dest / 'acc').mkdir(parents=True, exist_ok=True)
         for p in PETS:
-            build(p).save(dest / f'{p.id}.png')
-            print('wrote', dest / f'{p.id}.png')
-        res = Path(__file__).resolve().parents[2] / 'android' / 'app' / 'src' / 'main' / 'res' / 'drawable-nodpi'
-        android_drawables(res)
-        print('wrote widget drawables to', res)
+            build(p).save(dest / f'{p.id}.png', optimize=True)
+            for acc in ACCESSORIES:
+                overlay_sheet(p, acc).save(dest / 'acc' / f'{p.id}_{acc}.png', optimize=True)
+            print('wrote', p.id)

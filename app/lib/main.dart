@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
+import 'package:ruya/services/bag_service.dart';
+import 'package:ruya/services/feedback_service.dart';
+import 'package:ruya/theme/app_style.dart';
 import 'package:ruya/companion/companion_service.dart';
 import 'package:home_widget/home_widget.dart';
 import 'dart:async';
@@ -148,6 +151,8 @@ Widget buildRuyaApp({
 
       // --- Integrations ---
       Provider(create: (_) => WidgetController()),
+      Provider(create: (context) => FeedbackService(context.read<SettingsService>())),
+      ChangeNotifierProvider(create: (_) => BagService()),
 
       // --- Domain services ---
       ChangeNotifierProvider(
@@ -276,10 +281,17 @@ class _MainAppState extends State<MainApp> {
             });
             return AppLockGate(child: child!);
           },
-          theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkColorScheme,
+          theme: buildRuyaTheme(
+            style: themeNotifier.style,
+            brightness: Brightness.light,
+            klasikScheme: lightColorScheme,
+            discrete: discrete,
+          ),
+          darkTheme: buildRuyaTheme(
+            style: themeNotifier.style,
+            brightness: Brightness.dark,
+            klasikScheme: darkColorScheme,
+            discrete: discrete,
           ),
           themeMode: themeNotifier.themeMode.getThemeMode(),
           home: const RootGate(),

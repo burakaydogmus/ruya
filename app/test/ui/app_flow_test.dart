@@ -4,10 +4,18 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:ruya/companion/companion.dart';
 import 'package:ruya/companion/companion_card.dart';
+import 'package:ruya/companion/companion_scene.dart';
+import 'package:ruya/companion/companion_service.dart';
+import 'package:ruya/models/period_logs/symptom.dart';
+import 'package:ruya/models/period_logs/symptom_type_enum.dart';
+import 'package:ruya/screens/settings/sections/appearance_settings_screen.dart';
+import 'package:ruya/screens/today/today_customize_screen.dart';
+import 'package:ruya/theme/app_style.dart';
 import 'package:ruya/companion/companion_sprite.dart';
-import 'package:ruya/screens/settings/sections/companion_album_screen.dart';
 import 'package:ruya/screens/settings/settings_screen.dart';
+import 'package:ruya/screens/today/today_screen.dart';
 import 'package:ruya/coordinators/data_refresh_coordinator.dart';
 import 'package:ruya/database/app_database.dart';
 import 'package:ruya/import/import_service.dart';
@@ -59,18 +67,20 @@ void main() {
 
   late InMemorySecureKeyValueStore store;
   final identityCalls = <MethodCall>[];
-  var launcherDiscrete = false;
+  var launcherAlias = 'Default';
   messenger.setMockMethodCallHandler(
     const MethodChannel('com.burakaydogmus.ruya/app_identity'),
     (call) async {
       identityCalls.add(call);
-      if (call.method == 'setDiscrete') launcherDiscrete = (call.arguments as Map)['enabled'] as bool;
-      return launcherDiscrete;
+      if (call.method == 'setHideInRecents') return null;
+      if (call.method == 'setLauncher') launcherAlias = (call.arguments as Map)['alias'] as String;
+      return launcherAlias;
     },
   );
   WidgetController.hitTestWarningShouldBeFatal = true;
 
   setUp(() {
+    launcherAlias = 'Default';
     // Home widget taps arrive on an event stream.
     messenger.setMockStreamHandler(
       const EventChannel('home_widget/updates'),
@@ -158,15 +168,17 @@ void main() {
     expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
     expect(find.text('Bugün: Luteal faz'), findsOneWidget);
     expect(find.text('Beklenen PMS dönemi'), findsOneWidget);
-    expect(find.text('Bugün nasıl hissediyorsun?'), findsOneWidget);
-    await tester.scrollUntilVisible(find.textContaining('tıbbi tavsiye'), 300);
-    expect(find.text('Hızlı kayıt'), findsOneWidget);
+    await revealOnToday(tester, find.text('Bugün nasıl hissediyorsun?'));
+    await revealOnToday(tester, find.text('Hızlı kayıt'));
+    await revealOnToday(tester, find.textContaining('tıbbi tavsiye'));
   });
 
   testWidgets('mood quick entry and flow quick log are saved', (tester) async {
     await launch(tester);
+    await revealOnToday(tester, find.text('Sakin'));
     await tapVisible(tester, find.text('Sakin'));
     await settle(tester);
+    await revealOnToday(tester, find.text('Hafif'));
     await tapVisible(tester, find.text('Hafif'));
     await settle(tester);
 
@@ -175,6 +187,7 @@ void main() {
     expect(today.flow, FlowRate.light);
 
     // Toggling the mood again removes it but keeps the flow.
+    await tester.scrollUntilVisible(find.text('Sakin'), -200, scrollable: todayScrollable());
     await tapVisible(tester, find.text('Sakin'));
     await settle(tester);
     final after = await tester.runAsync(() => LogsRepository().readLogForDate(DateTime.now()));
@@ -250,7 +263,7 @@ void main() {
   testWidgets('PIN lock blocks the app until the right PIN is entered', (tester) async {
     await launch(tester, pin: '2580');
     expect(find.text('RUYA kilitli'), findsOneWidget);
-    expect(find.text('Bugün nasıl hissediyorsun?'), findsNothing);
+    expect(find.text('Regline 4 gün kaldı'), findsNothing);
 
     Future<void> enter(String pin) async {
       for (final d in pin.split('')) {
@@ -265,7 +278,7 @@ void main() {
     expect(find.text('Yanlış PIN. 4 deneme hakkın kaldı.'), findsOneWidget);
     await enter('2580');
     expect(find.text('RUYA kilitli'), findsNothing);
-    expect(find.text('Bugün nasıl hissediyorsun?'), findsOneWidget);
+    expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
   });
 
   testWidgets('import from other apps is reachable from settings', (tester) async {
@@ -343,7 +356,7 @@ void main() {
     await settle(tester);
     await tapVisible(tester, find.text('Gizli mod').last);
     await settle(tester);
-    expect(identityCalls.where((c) => c.method == 'setDiscrete').single.arguments, {'enabled': true});
+    expect(identityCalls.where((c) => c.method == 'setLauncher').single.arguments, {'alias': 'Discrete'});
     expect(NotificationService.isDiscrete, isTrue);
 
     tester.state<NavigatorState>(find.byType(Navigator).first).pop();
@@ -365,7 +378,7 @@ void main() {
     await settle(tester);
     await tapVisible(tester, find.text('Gizli mod').last);
     await settle(tester);
-    expect(launcherDiscrete, isFalse);
+    expect(launcherAlias, 'Default');
     expect(NotificationService.isDiscrete, isFalse);
   });
 
@@ -389,11 +402,168 @@ void main() {
     expect(find.text('7 gün sonra geliyor'), findsOneWidget);
     expect(find.text('365 gün sonra geliyor'), findsOneWidget);
 
-    await scrollToTap(tester, find.text('Bugün ekranında göster'), within: CompanionAlbumScreen);
+    await tester.scrollUntilVisible(
+      find.text('Bugün ekranında göster'),
+      250,
+      scrollable: find.descendant(of: find.byKey(const ValueKey('albumList')), matching: find.byType(Scrollable)).first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Bugün ekranında göster'));
     await settle(tester);
     tester.state<NavigatorState>(find.byType(Navigator).first).pop();
     await settle(tester);
     expect(find.byType(CompanionCard), findsNothing);
+  });
+
+  testWidgets('wardrobe, room and hide and seek open up as the days pass', (tester) async {
+    await launch(tester, beforeStart: () async {
+      final now = DateTime.now();
+      final today = DateTime.utc(now.year, now.month, now.day).millisecondsSinceEpoch ~/ 86400000;
+      await CompanionRepository().write({
+        'first_seen_day': '${today - 100}',
+        'max_seen_day': '$today',
+        'announced': 'pamuk,fistik,tarcin,lokum',
+      });
+    });
+    final companions = tester.element(find.byType(TodayScreen)).read<CompanionService>();
+    expect(companions.unlocked, hasLength(4));
+
+    await tester.tap(find.byTooltip('Arkadaşlar'));
+    await settle(tester);
+    await tester.tap(find.text('Gardırop'));
+    await settle(tester);
+    expect(find.text('Doğum gününde ya da ilk yıl dönümünde gelir'), findsOneWidget);
+    await tapVisible(tester, find.text('Fiyonk'));
+    await settle(tester);
+    expect(companions.wearing(Companion.pamuk), Accessory.bow);
+    await tapVisible(tester, find.text('Doğum gününde ya da ilk yıl dönümünde gelir')); // not there yet
+    await settle(tester);
+    expect(companions.wearing(Companion.pamuk), Accessory.bow);
+
+    await tester.tap(find.text('Oda'));
+    await settle(tester);
+    final scene = find.byType(CompanionScene);
+    expect(find.descendant(of: scene, matching: find.byType(CompanionSprite)), findsOneWidget);
+    // Hide and seek: one of the three spots is right, the others say so kindly.
+    await tapVisible(tester, find.text('Saklambaç oyna'));
+    await settle(tester);
+    expect(find.text('Pamuk nerede?'), findsOneWidget);
+    final box = tester.getRect(scene);
+    final u = box.width / CompanionScene.artWidth;
+    for (final (x, y) in const [(22.0, 72.0), (139.0, 70.0), (36.0, 33.0)]) {
+      if (find.text('Buldun beni!').evaluate().isNotEmpty) break;
+      await tester.tapAt(box.topLeft + Offset(x * u, y * u));
+      await settle(tester);
+    }
+    expect(find.text('Buldun beni!'), findsOneWidget);
+    expect(find.text('Saklambaç oyna'), findsOneWidget);
+
+    await tapVisible(tester, find.text('Hepsi birlikte'));
+    await settle(tester);
+    expect(find.descendant(of: scene, matching: find.byType(CompanionSprite)), findsNWidgets(4));
+  });
+
+  testWidgets('the bag checklist ticks from Today and counts what is ready', (tester) async {
+    await launch(tester);
+    await revealOnToday(tester, find.text('Çantam'));
+    expect(find.text('0 / 5 hazır'), findsOneWidget);
+    await tapVisible(tester, find.text('Çantam'));
+    await settle(tester);
+    expect(find.text('Ped ya da tampon'), findsOneWidget);
+    await tapVisible(tester, find.text('Çikolata'));
+    await settle(tester);
+    await tester.enterText(find.byType(TextField), 'Şarj aleti');
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await settle(tester);
+    expect(find.text('Şarj aleti'), findsOneWidget);
+    tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+    await settle(tester);
+    expect(find.text('1 / 6 hazır'), findsOneWidget);
+  });
+
+  testWidgets('Today tiles can be hidden; the countdown always stays', (tester) async {
+    await launch(tester);
+    await revealOnToday(tester, find.text('Bugün ekranını düzenle'));
+    await tapVisible(tester, find.text('Bugün ekranını düzenle'));
+    await settle(tester);
+    expect(find.byType(TodayCustomizeScreen), findsOneWidget);
+    Switch switchOf(String label) =>
+        tester.widget(find.descendant(of: find.widgetWithText(ListTile, label), matching: find.byType(Switch)));
+    expect(switchOf('Geri sayım').onChanged, isNull);
+    await tester.tap(find.descendant(of: find.widgetWithText(ListTile, 'Ruh hali'), matching: find.byType(Switch)));
+    await settle(tester);
+    expect(switchOf('Ruh hali').value, isFalse);
+    final settings = tester.element(find.byType(TodayCustomizeScreen)).read<SettingsService>();
+    expect(settings.hiddenTodayTiles, {TodayTile.mood});
+
+    tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+    await settle(tester);
+    await revealOnToday(tester, find.text('Hızlı kayıt'));
+    expect(find.text('Bugün nasıl hissediyorsun?'), findsNothing);
+    await tester.scrollUntilVisible(find.text('Regline 4 gün kaldı'), -200, scrollable: todayScrollable());
+    expect(find.text('Regline 4 gün kaldı'), findsOneWidget);
+  });
+
+  testWidgets('look packs restyle the app and the icon choice reaches the launcher', (tester) async {
+    await launch(tester);
+    RuyaStyle style() => RuyaStyle.of(tester.element(find.byType(SettingsScreen, skipOffstage: false)));
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Ayarlar')));
+    await settle(tester);
+    expect(style().style, AppStyle.piksel);
+    expect(style().pixel, isTrue);
+    await tester.tap(find.text('Görünüm'));
+    await settle(tester);
+    await tapVisible(tester, find.widgetWithText(StylePackTile, 'Bahçe'));
+    await settle(tester);
+    expect(style().style, AppStyle.bahce);
+    expect(style().pixel, isFalse);
+
+    identityCalls.clear();
+    await scrollToTap(tester, find.text('Pamuk'), within: AppearanceSettingsScreen);
+    await settle(tester);
+    expect(identityCalls.where((c) => c.method == 'setLauncher').single.arguments, {'alias': 'Pamuk'});
+    // Tarçın has not arrived yet, so its icon waits with it.
+    expect(find.text('30 gün sonra'), findsOneWidget);
+    expect(find.text('Tarçın'), findsNothing);
+
+    // Discrete mode takes the icon over and gives the choice back afterwards.
+    tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+    await settle(tester);
+    await tester.tap(find.text('Gizlilik'));
+    await settle(tester);
+    await tapVisible(tester, find.text('Gizli mod').last);
+    await settle(tester);
+    expect(launcherAlias, 'Discrete');
+    expect(style().discrete, isTrue);
+    await tapVisible(tester, find.text('Gizli mod').last);
+    await settle(tester);
+    expect(launcherAlias, 'Pamuk');
+  });
+
+  testWidgets('what repeated across cycles shows on Today and in the insights', (tester) async {
+    await launch(tester, beforeStart: () async {
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final logs = LogsRepository();
+      for (final startOffset in [80, 52, 24]) {
+        final day = today.subtract(Duration(days: startOffset - 1));
+        final existing = await logs.readLogForDate(day);
+        await logs.upsertLog(LogDay(
+          id: existing!.id,
+          date: day,
+          flow: FlowRate.medium,
+          periodId: existing.periodId,
+          symptoms: [Symptom(type: SymptomType.headache)],
+        ));
+      }
+    });
+    await revealOnToday(tester, find.text('2. gün: Baş ağrısı'));
+    await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('İçgörüler')));
+    await settle(tester);
+    final outer = find.byType(Scrollable).first;
+    await tester.scrollUntilVisible(find.textContaining('yalnızca gözlemdir'), 300, scrollable: outer);
+    expect(find.text('2. gün: Baş ağrısı'), findsOneWidget);
+    expect(find.textContaining('Son 3 döngünün 3 tanesinde'), findsOneWidget);
   });
 
   testWidgets('insights show overview, mood by phase and cycle history', (tester) async {
@@ -501,6 +671,11 @@ void main() {
     await tapVisible(tester, find.text('Küçük\n2×2'));
     await settle(tester);
     expect(find.text('Regline 4 gün kaldı'), findsNothing); // small shows only the countdown
+    // The sticker is only the companion and does not follow the "companion" switch above.
+    await tapVisible(tester, find.text('Çıkartma\n2×2'));
+    await settle(tester);
+    expect(petInPreview, findsOneWidget);
+    expect(find.textContaining('yazı, sayı ve çerçeve yok'), findsOneWidget);
     await tapVisible(tester, find.text("Ana ekrana ekle"));
     await settle(tester);
     expect(find.textContaining('uzun bas'), findsOneWidget); // pinning unsupported in tests
@@ -530,6 +705,15 @@ Future<void> scrollToTap(WidgetTester tester, Finder finder, {required Type with
   );
   await tester.pumpAndSettle();
   await tester.tap(finder);
+}
+
+Finder todayScrollable() => find.descendant(of: find.byType(TodayScreen), matching: find.byType(Scrollable)).first;
+
+/// The Today screen is a lazy list; scroll until [finder] is built and on screen.
+Future<void> revealOnToday(WidgetTester tester, Finder finder) async {
+  await tester.scrollUntilVisible(finder, 200, scrollable: todayScrollable());
+  await tester.pumpAndSettle();
+  expect(finder, findsWidgets);
 }
 
 Future<void> tapVisible(WidgetTester tester, Finder finder) async {

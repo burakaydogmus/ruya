@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Compte à rebours jusqu\'aux règles avec anneau</string>
     <string name="widget_desc_medium">Compte à rebours, phase et date prévue</string>
     <string name="widget_desc_large">Compte à rebours, anneau et tous les détails choisis</string>
+    <string name="widget_label_sticker">Autocollant</string>
+    <string name="widget_desc_sticker">Juste ton compagnon, sans texte</string>
 </resources>

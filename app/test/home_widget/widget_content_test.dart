@@ -38,6 +38,9 @@ void main() {
     DateSpan? pregnancy,
     DateTime? today,
     Companion? companion,
+    Companion? sticker,
+    Accessory? accessory,
+    bool Function(DateTime)? isSpecialDate,
     LogDay? todayLog,
   }) =>
       WidgetContentBuilder.build(
@@ -50,6 +53,9 @@ void main() {
           discrete: discrete,
           pregnancy: pregnancy,
           companion: companion,
+          sticker: sticker,
+          accessory: accessory,
+          isSpecialDate: isSpecialDate,
           todayLog: todayLog,
         ),
       );
@@ -143,5 +149,27 @@ void main() {
     expect(hidden.days.first.petMood, isNull);
 
     expect(build().companion, isNull);
+  });
+
+  test('the sticker widget has its own companion, with the outfit and the party hat on special days', () {
+    final payload = build(
+      sticker: Companion.pamuk,
+      accessory: Accessory.scarf,
+      isSpecialDate: (day) => day == d(10, 27),
+    );
+    expect(payload.companion, isNull); // the info widgets keep following their own option
+    expect(payload.sticker, Companion.pamuk);
+    expect(payload.accessory, Accessory.scarf);
+    expect(payload.neutral, isFalse);
+    final days = jsonDecode(payload.daysJson) as List;
+    expect(days[0]['pm'], 'calm');
+    expect(days[0].containsKey('pa'), isFalse);
+    expect(days[2]['pa'], 'party');
+
+    final discrete = build(sticker: Companion.pamuk, accessory: Accessory.scarf, discrete: true);
+    expect(discrete.sticker, isNull);
+    expect(discrete.accessory, isNull);
+    expect(discrete.neutral, isTrue);
+    expect(discrete.days.first.petAccessory, isNull);
   });
 }

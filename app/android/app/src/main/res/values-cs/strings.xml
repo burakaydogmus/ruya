@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Odpočet do menstruace s kruhem</string>
     <string name="widget_desc_medium">Odpočet, fáze a očekávané datum</string>
     <string name="widget_desc_large">Odpočet, kruh a všechny zvolené údaje</string>
+    <string name="widget_label_sticker">Nálepka</string>
+    <string name="widget_desc_sticker">Jen tvůj kamarád, žádný text</string>
 </resources>

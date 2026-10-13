@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:ruya/theme/ruya_card.dart';
 import 'package:ruya/companion/companion_card.dart';
 import 'package:ruya/companion/companion_service.dart';
 import 'package:ruya/controllers/log_ui_controller.dart';
@@ -11,10 +12,16 @@ import 'package:ruya/models/flows/flow_enum.dart';
 import 'package:ruya/models/period_logs/daily_log_enums.dart';
 import 'package:ruya/models/period_logs/log_day.dart';
 import 'package:ruya/models/period_logs/pain_level_enum.dart';
+import 'package:ruya/insights/pattern_detector.dart';
+import 'package:ruya/screens/today/bag_screen.dart';
+import 'package:ruya/screens/today/today_customize_screen.dart';
+import 'package:ruya/services/bag_service.dart';
+import 'package:ruya/services/feedback_service.dart';
 import 'package:ruya/services/log_service.dart';
 import 'package:ruya/services/period_service.dart';
 import 'package:ruya/services/settings_service.dart';
 import 'package:ruya/services/user_service.dart';
+import 'package:ruya/widgets/insights/patterns.dart';
 
 /// RUYA home: days until the expected period, today's estimated phase,
 /// a mood quick entry and a quick log. Deliberately free of statistics.
@@ -40,27 +47,73 @@ class TodayScreen extends StatelessWidget {
     final showCompanion =
         !settings.isDiscreteModeEnabled && companions.isLoaded && !companions.isHidden;
 
+    final discrete = settings.isDiscreteModeEnabled;
+    final patterns = PatternDetector.detect(periods: periodService.periodEntries, logs: logService.logs, limit: 1);
+    final bag = context.watch<BagService>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bag.ensureDefaults(defaultBagItems(l10n));
+      bag.syncCycle(snapshot.cycle?.nextPeriodStart.toIso8601String());
+    });
+
+    Widget? build(TodayTile tile) => switch (tile) {
+          TodayTile.companion => showCompanion ? CompanionCard(todayLog: todayLog) : null,
+          TodayTile.countdown => snapshot.pregnancy != null
+              ? _PregnancyCard(snapshot: snapshot)
+              : _CountdownCard(snapshot: snapshot, todayLog: todayLog),
+          TodayTile.phase => !snapshot.hasData
+              ? null
+              : showPhases
+                  ? _PhaseCard(snapshot: snapshot, showFertility: settings.displayFertileChance)
+                  : _InfoCard(text: l10n.today_phasesHidden),
+          TodayTile.bag => discrete || !snapshot.hasData || snapshot.pregnancy != null || !bag.isReady
+              ? null
+              : _BagTile(snapshot: snapshot),
+          TodayTile.mood => _MoodCard(todayLog: todayLog),
+          TodayTile.pattern => patterns.isEmpty ? null : _PatternTile(pattern: patterns.first),
+          TodayTile.quickLog => _QuickLogCard(todayLog: todayLog),
+        };
+
+    // Half tiles sit side by side when two of them follow each other.
+    final visible = <(TodayTile, Widget)>[
+      for (final t in settings.todayTiles)
+        if (!settings.hiddenTodayTiles.contains(t))
+          if (build(t) case final Widget w) (t, w),
+    ];
+    final rows = <Widget>[];
+    for (var i = 0; i < visible.length; i++) {
+      final (tile, widget) = visible[i];
+      // the info card that replaces hidden phases needs the full width
+      final half = tile.half && !(tile == TodayTile.phase && !showPhases);
+      final next = i + 1 < visible.length ? visible[i + 1] : null;
+      final nextHalf = next != null && next.$1.half && !(next.$1 == TodayTile.phase && !showPhases);
+      if (half && nextHalf) {
+        rows.add(IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [Expanded(child: widget), const SizedBox(width: 10), Expanded(child: next.$2)],
+          ),
+        ));
+        i++;
+      } else {
+        rows.add(widget);
+      }
+    }
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
       children: [
-        if (showCompanion) ...[
-          CompanionCard(todayLog: todayLog),
-          const SizedBox(height: 12),
-        ],
-        if (snapshot.pregnancy != null)
-          _PregnancyCard(snapshot: snapshot)
-        else
-          _CountdownCard(snapshot: snapshot, todayLog: todayLog),
-        const SizedBox(height: 12),
-        if (snapshot.hasData)
-          showPhases
-              ? _PhaseCard(snapshot: snapshot, showFertility: settings.displayFertileChance)
-              : _InfoCard(text: l10n.today_phasesHidden),
-        const SizedBox(height: 12),
-        _MoodCard(todayLog: todayLog),
-        const SizedBox(height: 12),
-        _QuickLogCard(todayLog: todayLog),
-        const SizedBox(height: 20),
+        for (final r in rows) ...[r, const SizedBox(height: 12)],
+        Center(
+          child: TextButton.icon(
+            icon: const Icon(Icons.dashboard_customize_outlined, size: 18),
+            label: Text(l10n.today_customize),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const TodayCustomizeScreen()),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
         Text(
           l10n.today_disclaimer,
           textAlign: TextAlign.center,
@@ -73,7 +126,83 @@ class TodayScreen extends StatelessWidget {
   }
 }
 
+/// "Pack your bag": progress of the checklist, highlighted when the period is near.
+class _BagTile extends StatelessWidget {
+  const _BagTile({required this.snapshot});
+
+  final CycleSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final bag = context.watch<BagService>();
+    final items = bag.items ?? const <String>[];
+    final days = snapshot.daysUntilNextPeriod;
+    final soon = !snapshot.isPeriodOngoing && days != null && days >= 0 && days <= 2;
+    final done = bag.doneCount;
+    return RuyaCard(
+      color: soon ? theme.colorScheme.primaryContainer : theme.colorScheme.surfaceContainer,
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BagScreen())),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.backpack_outlined, size: 20),
+              const SizedBox(width: 6),
+              Expanded(child: Text(l10n.bag_title, style: theme.textTheme.titleSmall)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(l10n.bag_ready(done, items.length), style: theme.textTheme.titleMedium),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(value: items.isEmpty ? 0 : done / items.length, minHeight: 6),
+          ),
+          if (soon) ...[
+            const SizedBox(height: 8),
+            Text(l10n.bag_soon(days), style: theme.textTheme.bodySmall),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// The clearest thing that repeated across the user's own cycles.
+class _PatternTile extends StatelessWidget {
+  const _PatternTile({required this.pattern});
+
+  final CyclePattern pattern;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return RuyaCard(
+      color: theme.colorScheme.surfaceContainer,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.pattern_title, style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          const SizedBox(height: 4),
+          Text(pattern.title(l10n), style: theme.textTheme.titleMedium),
+          const SizedBox(height: 4),
+          Text(pattern.sentence(l10n), style: theme.textTheme.bodyMedium),
+          const SizedBox(height: 8),
+          PatternDots(pattern: pattern),
+        ],
+      ),
+    );
+  }
+}
+
 Future<void> _quick(BuildContext context, LogDay Function(LogDay) update) {
+  context.read<FeedbackService>().select();
   return context.read<LogUIController>().quickUpdate(
         context: context,
         date: DateTime.now(),
@@ -103,8 +232,7 @@ class _CountdownCard extends StatelessWidget {
     final scheme = theme.colorScheme;
 
     if (!snapshot.hasData) {
-      return Card(
-        elevation: 0,
+      return RuyaCard(
         color: scheme.primaryContainer,
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -141,8 +269,7 @@ class _CountdownCard extends StatelessWidget {
     final expected = DateFormat.MMMMd(l10n.localeName).format(snapshot.cycle!.nextPeriodStart);
     final isPeriodToday = todayLog != null && todayLog!.flow != FlowRate.none;
 
-    return Card(
-      elevation: 0,
+    return RuyaCard(
       color: scheme.primaryContainer,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
@@ -206,8 +333,7 @@ class _PregnancyCard extends StatelessWidget {
     final due = DateFormat.yMMMMd(l10n.localeName).format(snapshot.estimatedDueDate!);
     final progress = (snapshot.pregnancyDays! / CycleSnapshot.pregnancyLengthDays).clamp(0.0, 1.0);
 
-    return Card(
-      elevation: 0,
+    return RuyaCard(
       color: scheme.tertiaryContainer,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
@@ -265,8 +391,7 @@ class _PhaseCard extends StatelessWidget {
       if (snapshot.isInPmsWindow) _StatusChip(icon: Icons.cloud_outlined, label: l10n.today_pmsChip),
     ];
 
-    return Card(
-      elevation: 0,
+    return RuyaCard(
       color: theme.colorScheme.surfaceContainerHigh,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -280,19 +405,20 @@ class _PhaseCard extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(14),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundColor: phase.color.withValues(alpha: 0.25),
-                child: Icon(phase.icon, color: theme.colorScheme.onSurface),
-              ),
-              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundColor: phase.color.withValues(alpha: 0.25),
+                      child: Icon(phase.icon, size: 18, color: theme.colorScheme.onSurface),
+                    ),
+                    const SizedBox(height: 8),
                     Text(
                       l10n.today_phaseToday(phase.getPhaseName(l10n)),
                       style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -328,8 +454,7 @@ class _MoodCard extends StatelessWidget {
     final theme = Theme.of(context);
     final selected = todayLog?.moods ?? const <Mood>[];
 
-    return Card(
-      elevation: 0,
+    return RuyaCard(
       color: theme.colorScheme.surfaceContainer,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -380,8 +505,7 @@ class _QuickLogCard extends StatelessWidget {
     final pain = todayLog?.painLevel;
     final symptomCount = todayLog?.symptoms.length ?? 0;
 
-    return Card(
-      elevation: 0,
+    return RuyaCard(
       color: theme.colorScheme.surfaceContainer,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -457,8 +581,7 @@ class _InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
+    return RuyaCard(
       color: Theme.of(context).colorScheme.surfaceContainerHigh,
       child: ListTile(leading: const Icon(Icons.info_outline), title: Text(text)),
     );

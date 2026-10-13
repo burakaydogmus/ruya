@@ -2,4 +2,10 @@
 <resources>
     <color name="ic_launcher_background">#ffffff</color>
     <color name="ic_launcher_discrete_background">#546E7A</color>
+    <!-- Launcher icon choices, see tool/pets/icons.py. -->
+    <color name="ic_app_pamuk_background">#E6DBFF</color>
+    <color name="ic_app_tarcin_background">#FFE2C4</color>
+    <color name="ic_app_lokum_background">#D8F3E6</color>
+    <color name="ic_app_ay_background">#2B2560</color>
+    <color name="ic_app_lale_background">#FFE9D6</color>
 </resources>

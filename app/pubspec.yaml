@@ -2,7 +2,7 @@ name: ruya
 description: "RUYA - your private, offline cycle tracker."
 publish_to: 'none'
 
-version: 1.3.1+7
+version: 1.4.0+8
 
 environment:
   sdk: ^3.8.1
@@ -51,9 +51,33 @@ flutter:
   generate: true
   assets:
     - assets/icon/ruya.png
+    - assets/icon/app_pamuk.png
+    - assets/icon/app_tarcin.png
+    - assets/icon/app_lokum.png
+    - assets/icon/app_ay.png
+    - assets/icon/app_lale.png
     - assets/pets/
+    - assets/pets/acc/
+    - assets/room/
     - assets/fonts/Roboto-Regular.ttf
     - assets/fonts/Roboto-Bold.ttf
+    - assets/fonts/OFL-Nunito.txt
+    - assets/fonts/OFL-PixelifySans.txt
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
+          weight: 800
+    - family: PixelifySans
+      fonts:
+        - asset: assets/fonts/PixelifySans-Regular.ttf
+        - asset: assets/fonts/PixelifySans-Bold.ttf
+          weight: 700
 
 flutter_launcher_icons:
   android: true

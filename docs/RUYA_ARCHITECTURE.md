@@ -243,6 +243,31 @@ Notlar:
 * Yeni çeviriler (12 dil) makine destekli; yayından önce anadili konuşan birinin gözden geçirmesi önerilir. Çekçe dosyasında Menstrudel'den kalan resmi "Vy" ile yeni samimi "ty" hitabı karışık.
 * Düz dosyanın silinmesi flash bellekte güvenli silme garantisi vermez (Android'in dosya tabanlı şifrelemesi bu riski azaltır).
 
+## Sürüm 1.4.0 — görünüm, arkadaşların odası, yeni kartlar
+
+Fikir panosundan seçilen 18 madde. Hepsi çevrimdışı çalışır; hiçbiri hesap, ağ ya da izleme gerektirmez.
+
+| Alan | Uygulama |
+|---|---|
+| Görünüm paketleri | `lib/theme/app_style.dart`: `AppStyle` (Piksel Rüya, Ay, Bahçe, Şeker, Lale, Klasik), `RuyaStyle` tema uzantısı, `buildRuyaTheme`. Piksel pakette 2 px çerçeve, sert gölge (`RuyaCard`), başlıklarda Pixelify Sans, gövdede Nunito (ikisi de OFL, Türkçe ve Kiril glifleri tam). Gizli modda paket ne olursa olsun nötr "Ajanda" paleti kullanılır |
+| Bugün ekranı | Kutucuklar `TodayTile` listesinden kurulur; sıra ve görünürlük `SettingsService.setTodayTiles` ile saklanır, `TodayCustomizeScreen` sürükle-bırak ve anahtarlarla düzenler. Geri sayım kapatılamaz |
+| Uygulama simgesi | Manifestte her seçenek için bir `activity-alias` (`.LauncherDefault/Pamuk/Tarcin/Lokum/Ay/Lale/Discrete`). `MainActivity` takma adı ancak uygulamadan çıkılınca değiştirir: Android, başlatıldığı takma ad devre dışı kalan görevi kapatır. Gizli mod her zaman `Discrete` takma adını seçer; arkadaş simgeleri arkadaş gelince açılır. Çizimler `tool/pets/icons.py` |
+| Kutlama, ses, titreşim | `Confetti.burst`, `FeedbackService` (dokunsal geri bildirim + `SoundPool` kanalı `com.burakaydogmus.ruya/sfx`, sesler `tool/sfx.py` ile üretilir). Sesler varsayılan olarak kapalı; gizli modda ve azaltılmış harekette sessiz |
+| Açılış | `SplashGate`: 1,1 sn selamlama; gizli modda nötr, azaltılmış harekette atlanır |
+| Oda | `CompanionScene`: 160×100 piksellik ızgara, tam sayı ölçek; altı sabit yer (pencere, duvar, ışık, bitki, halı, yastık), eşyalar `tool/pets/room.py` → `assets/room/` + `room_catalog.g.dart`. Koyu temada ya da 21:00–06:00 arası gece odası |
+| Gardırop | Aksesuarlar ayrı katman sayfalarıdır (`assets/pets/acc/<arkadaş>_<aksesuar>.png`, yalnızca değişen pikseller); uygulama ve widget ana sayfanın üstüne çizer |
+| Özel günler | Doğum günü (profildeki tarih) ve tanışma yıl dönümü: bir kez gösterilen kutlama, o gün herkes parti şapkası takar |
+| Arkadaş kartları, saklambaç, yan yana | Albüm sekmesindeki çevrilebilen kartlar; Oda sekmesinde üç saklanma yeri; "Hepsi birlikte" anahtarı |
+| Örüntü kartları | `PatternDetector`: son 6 döngü, en az 3 döngü ve %60; regl günleri 1–3 ve regl öncesi 3 gün. Yalnızca sayım, cihazda; metin gözlemdir, tavsiye değildir. Bugün kutucuğu + İçgörüler'de `PatternsWidget` |
+| Çanta | `BagService` (SharedPreferences): varsayılan liste, kullanıcı maddeleri, her döngüde sıfırlanan işaretler |
+| Widget'lar | Arkadaş artık Kotlin'de (`PetArt.kt`) uygulamanın kendi sprite sayfalarından çizilir; aksesuar ve saat pozları (06–10 neşeli, 18–22 çay, 22–06 uyku; kayda bağlı battaniye/teselli önceliklidir) widget'ta da görünür. Yeni çıkartma widget'ı (`RuyaWidgetSticker`): yalnızca arkadaş, gizli modda nötr simge |
+
+Arkadaş kuralları değişmedi: kilitler yalnızca ilk açılıştan bu yana geçen takvim günleriyle açılır, seri yoktur,
+arkadaş hiç üzülmez ya da aç kalmaz, bildirim göndermez, sağlık ya da tahmin hakkında konuşmaz ve gizli modda hiçbir yerde görünmez.
+
+Doğrulama: `flutter analyze` (yalnızca eski deprecation info'ları), `flutter test` (birim + arayüz), Android emülatöründe
+tema paketleri, oda (gündüz/gece), gardırop, saklambaç, Bugün düzeni, çanta, simge değişimi, dört widget ve gizli mod.
+
 ## Sonraki adımlar (öneri)
 * Upstream `deprecated_member_use` uyarıları (Radio/RadioGroup, `year2023`).
 * Menstrudel'in mevcut İngilizce kalan eski metinlerinin (pt/ru vb.) tamamlanması.

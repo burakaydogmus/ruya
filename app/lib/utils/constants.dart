@@ -54,6 +54,13 @@ const String biometricEnabledKey = 'biometric_enabled';
 const String dynamicColorKey = 'dynamic_color';
 const String themeColorKey = 'theme_color';
 const String themeModeKey = 'theme_mode';
+const String appIconKey = 'app_icon';
+const String appStyleKey = 'app_style';
+const String todayTilesKey = 'today_tiles';
+const String todayHiddenTilesKey = 'today_hidden_tiles';
+const String feedbackHapticsKey = 'feedback_haptics';
+const String feedbackSoundsKey = 'feedback_sounds';
+const String feedbackPetSoundsKey = 'feedback_pet_sounds';
 const String startingDayOfWeekKey = 'starting_day_of_week';
 const String historyViewKey = 'history_view';
 

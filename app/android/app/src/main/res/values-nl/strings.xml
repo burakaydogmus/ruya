@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Aftellen tot je menstruatie met ring</string>
     <string name="widget_desc_medium">Aftellen, fase en verwachte datum</string>
     <string name="widget_desc_large">Aftellen, ring en alle gekozen details</string>
+    <string name="widget_label_sticker">Sticker</string>
+    <string name="widget_desc_sticker">Alleen je maatje, geen tekst</string>
 </resources>

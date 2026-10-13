@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Halkayla regle kalan süre</string>
     <string name="widget_desc_medium">Kalan süre, faz ve beklenen tarih</string>
     <string name="widget_desc_large">Kalan süre, halka ve seçtiğin tüm ayrıntılar</string>
+    <string name="widget_label_sticker">Çıkartma</string>
+    <string name="widget_desc_sticker">Yalnızca arkadaşın, yazı yok</string>
 </resources>

@@ -21,6 +21,7 @@ import 'package:ruya/models/period_logs/daily_log_enums.dart';
 import 'package:ruya/insights/insight_calculators.dart';
 import 'package:ruya/cycle/life_stage.dart';
 import 'package:ruya/widgets/insights/extended_insights.dart';
+import 'package:ruya/widgets/insights/patterns.dart';
 import 'package:ruya/database/repositories/pills_repository.dart';
 import 'package:ruya/services/settings_service.dart';
 
@@ -208,6 +209,10 @@ class _LogsScreenInsightsTab extends State<LogsScreenInsightsTab> {
                 const SizedBox(height: 16.0),
 
                 MoodFrequencyWidget(moodCounts: moodCounts),
+
+                const SizedBox(height: 16.0),
+
+                PatternsWidget(periods: periodService.periodEntries, logs: logsService.logs),
 
                 if (settings.isNaturalCycle) ...[
                   const SizedBox(height: 16.0),

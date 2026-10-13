@@ -12,10 +12,18 @@ class CompanionFrame extends StatelessWidget {
     required this.frame,
     required this.size,
     this.silhouette,
+    this.accessory,
+    this.exact = false,
   });
 
   final Companion companion;
   final int frame;
+
+  /// Accessory drawn on top (ignored for silhouettes).
+  final Accessory? accessory;
+
+  /// Use [size] as given; the caller already snapped it to whole pixels.
+  final bool exact;
 
   /// Wanted logical size; the actual size snaps down to a whole pixel scale.
   final double size;
@@ -31,11 +39,9 @@ class CompanionFrame extends StatelessWidget {
     return scale * artSize / dpr;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final s = snappedSize(context, size);
+  Widget _sheet(String asset, double s, {Color? tint}) {
     Widget image = Image.asset(
-      companion.asset,
+      asset,
       width: s * CompanionFrames.count,
       height: s,
       fit: BoxFit.fill,
@@ -44,20 +50,32 @@ class CompanionFrame extends StatelessWidget {
       gaplessPlayback: true,
       excludeFromSemantics: true,
     );
-    if (silhouette != null) {
-      image = ColorFiltered(colorFilter: ColorFilter.mode(silhouette!, BlendMode.srcIn), child: image);
+    if (tint != null) {
+      image = ColorFiltered(colorFilter: ColorFilter.mode(tint, BlendMode.srcIn), child: image);
     }
+    return ClipRect(
+      child: OverflowBox(
+        alignment: Alignment.topLeft,
+        minWidth: 0,
+        maxWidth: s * CompanionFrames.count,
+        child: Transform.translate(offset: Offset(-frame * s, 0), child: image),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = exact ? size : snappedSize(context, size);
+    final acc = accessory;
     return SizedBox(
       width: s,
       height: s,
-      child: ClipRect(
-        child: OverflowBox(
-          alignment: Alignment.topLeft,
-          minWidth: 0,
-          maxWidth: s * CompanionFrames.count,
-          child: Transform.translate(offset: Offset(-frame * s, 0), child: image),
-        ),
-      ),
+      child: acc == null || silhouette != null
+          ? _sheet(companion.asset, s, tint: silhouette)
+          : Stack(
+              fit: StackFit.expand,
+              children: [_sheet(companion.asset, s), _sheet(companion.overlayAsset(acc), s)],
+            ),
     );
   }
 }
@@ -72,11 +90,15 @@ class CompanionSprite extends StatefulWidget {
     required this.size,
     this.onTap,
     this.semanticLabel,
+    this.accessory,
+    this.exact = false,
   });
 
   final Companion companion;
   final CompanionMood mood;
   final double size;
+  final Accessory? accessory;
+  final bool exact;
   final VoidCallback? onTap;
   final String? semanticLabel;
 
@@ -157,7 +179,13 @@ class CompanionSpriteState extends State<CompanionSprite> {
     final mood = _current;
     final loop = CompanionFrames.loop(mood);
     final frame = _animate ? loop[_step % loop.length].$1 : CompanionFrames.still(mood);
-    final child = CompanionFrame(companion: widget.companion, frame: frame, size: widget.size);
+    final child = CompanionFrame(
+      companion: widget.companion,
+      frame: frame,
+      size: widget.size,
+      accessory: widget.accessory,
+      exact: widget.exact,
+    );
     return Semantics(
       label: widget.semanticLabel,
       button: widget.onTap != null,

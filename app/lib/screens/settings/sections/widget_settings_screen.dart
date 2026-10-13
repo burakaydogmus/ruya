@@ -79,6 +79,7 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> with Widget
         WidgetSize.small => l10n.widgetSize_small,
         WidgetSize.medium => l10n.widgetSize_medium,
         WidgetSize.large => l10n.widgetSize_large,
+        WidgetSize.sticker => l10n.widgetSize_sticker,
       };
 
   String _themeName(AppLocalizations l10n, WidgetTheme t) => switch (t) {
@@ -136,6 +137,11 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> with Widget
           ),
           _Header(l10n.widgetSettings_preview),
           Center(child: WidgetPreview(size: _size, payload: payload)),
+          if (_size == WidgetSize.sticker)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: Text(l10n.widgetSettings_stickerNote, textAlign: TextAlign.center, style: theme.textTheme.bodySmall),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: FilledButton.icon(
@@ -291,13 +297,35 @@ class WidgetPreview extends StatelessWidget {
         );
 
     final companion = payload.companion;
+    // Same rule as PetArt.pose on the Android side.
     final hour = DateTime.now().hour;
     final petFrame = switch (day.petMood) {
       'comfort' => CompanionFrames.comfort0,
       'cozy' => CompanionFrames.cozy0,
-      _ => hour >= 22 || hour < 6 ? CompanionFrames.sleep0 : CompanionFrames.idle0,
+      _ when hour >= 22 || hour < 6 => CompanionFrames.sleep0,
+      _ when hour < 10 => CompanionFrames.happy0,
+      _ when hour >= 18 => CompanionFrames.tea0,
+      _ => CompanionFrames.idle0,
     };
-    Widget pet(double d) => CompanionFrame(companion: companion!, frame: petFrame, size: d);
+    final accessory = Accessory.byName(day.petAccessory) ?? payload.accessory;
+    Widget pet(double d, [Companion? c]) =>
+        CompanionFrame(companion: c ?? companion!, frame: petFrame, size: d, accessory: accessory);
+
+    if (size == WidgetSize.sticker) {
+      final sticker = payload.sticker;
+      return Container(
+        width: 160,
+        height: 160,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          gradient: const LinearGradient(colors: [Color(0xFF3A3F5C), Color(0xFF6B5B95)]),
+        ),
+        child: sticker != null
+            ? pet(144, sticker)
+            : Icon(payload.neutral ? Icons.event_note : Icons.pets, size: 64, color: Colors.white70),
+      );
+    }
 
     final Widget child = switch (size) {
       WidgetSize.small => Stack(children: [
@@ -337,12 +365,14 @@ class WidgetPreview extends StatelessWidget {
             ]),
           ),
         ]),
+      WidgetSize.sticker => const SizedBox.shrink(),
     };
 
     final (w, h) = switch (size) {
       WidgetSize.small => (160.0, 160.0),
       WidgetSize.medium => (330.0, 160.0),
       WidgetSize.large => (330.0, 300.0),
+      WidgetSize.sticker => (160.0, 160.0),
     };
     return Container(
       width: w,

@@ -1920,7 +1920,7 @@
     "@privacy_discreteSubtitle": {
         "description": "Toggle subtitle"
     },
-    "privacy_discreteOn": "Discrete mode is on. The launcher icon may take a few seconds to update.",
+    "privacy_discreteOn": "Discrete mode is on. The icon on your home screen changes when you leave the app.",
     "@privacy_discreteOn": {
         "description": "Snackbar"
     },
@@ -2437,5 +2437,575 @@
     "widgetSettings_companionNote": "On the medium and large widgets. Cozy on period days, sleepy at night.",
     "@widgetSettings_companionNote": {
         "description": "Subtitle of the companion switch in widget settings"
+    },
+    "appearance_stylePack": "Look",
+    "@appearance_stylePack": {
+        "description": "Section title: choose a look-and-feel pack (colours, fonts, shapes together)"
+    },
+    "appearance_stylePackHint": "Each look changes colours, fonts and shapes together. In discrete mode the app always uses the plain Agenda look.",
+    "@appearance_stylePackHint": {
+        "description": "Hint under the look picker"
+    },
+    "style_piksel": "Pixel Dream",
+    "@style_piksel": {
+        "description": "Name of the pixel-art look (chunky frames, pixel headings)"
+    },
+    "style_pikselAbout": "Chunky frames and pixel headings, like the companions",
+    "@style_pikselAbout": {
+        "description": "Look description"
+    },
+    "style_ay": "Moon",
+    "@style_ay": {
+        "description": "Name of the lavender/indigo look"
+    },
+    "style_ayAbout": "Lavender and indigo",
+    "@style_ayAbout": {
+        "description": "Look description"
+    },
+    "style_bahce": "Garden",
+    "@style_bahce": {
+        "description": "Name of the cream/mint look"
+    },
+    "style_bahceAbout": "Cream and mint",
+    "@style_bahceAbout": {
+        "description": "Look description"
+    },
+    "style_seker": "Candy",
+    "@style_seker": {
+        "description": "Name of the bright playful look"
+    },
+    "style_sekerAbout": "Bright and playful",
+    "@style_sekerAbout": {
+        "description": "Look description"
+    },
+    "style_lale": "Tulip",
+    "@style_lale": {
+        "description": "Name of the tulip red/turquoise look"
+    },
+    "style_laleAbout": "Tulip red and turquoise",
+    "@style_laleAbout": {
+        "description": "Look description"
+    },
+    "style_klasik": "Classic",
+    "@style_klasik": {
+        "description": "Name of the old plain look with a single colour"
+    },
+    "style_klasikAbout": "The earlier plain look with your own colour",
+    "@style_klasikAbout": {
+        "description": "Look description"
+    },
+    "companion_lineTea1": "Tea time. Want to sit with me?",
+    "@companion_lineTea1": {
+        "description": "Companion speech bubble in the evening (it holds a mug of tea)"
+    },
+    "companion_lineTea2": "The evening is ours.",
+    "@companion_lineTea2": {
+        "description": "Companion speech bubble in the evening"
+    },
+    "accessory_none": "Nothing",
+    "@accessory_none": {
+        "description": "Wardrobe option: the companion wears nothing"
+    },
+    "accessory_bow": "Bow",
+    "@accessory_bow": {
+        "description": "Accessory name"
+    },
+    "accessory_daisy": "Flower crown",
+    "@accessory_daisy": {
+        "description": "Accessory name"
+    },
+    "accessory_beanie": "Beanie",
+    "@accessory_beanie": {
+        "description": "Accessory name (knitted hat)"
+    },
+    "accessory_scarf": "Scarf",
+    "@accessory_scarf": {
+        "description": "Accessory name"
+    },
+    "accessory_flower": "Flower clip",
+    "@accessory_flower": {
+        "description": "Accessory name"
+    },
+    "accessory_party": "Party hat",
+    "@accessory_party": {
+        "description": "Accessory name"
+    },
+    "accessory_partyHint": "Arrives on your birthday or your first anniversary together",
+    "@accessory_partyHint": {
+        "description": "Hint under the locked party hat"
+    },
+    "room_slotWindow": "Window",
+    "@room_slotWindow": {
+        "description": "Room slot name"
+    },
+    "room_slotWall": "Wall",
+    "@room_slotWall": {
+        "description": "Room slot name"
+    },
+    "room_slotLight": "Light",
+    "@room_slotLight": {
+        "description": "Room slot name"
+    },
+    "room_slotPlant": "Plant",
+    "@room_slotPlant": {
+        "description": "Room slot name"
+    },
+    "room_slotRug": "Rug",
+    "@room_slotRug": {
+        "description": "Room slot name"
+    },
+    "room_slotCushion": "Cushion",
+    "@room_slotCushion": {
+        "description": "Room slot name"
+    },
+    "room_empty": "Empty",
+    "@room_empty": {
+        "description": "Room option: leave this place empty"
+    },
+    "room_tab": "Room",
+    "@room_tab": {
+        "description": "Tab title: the companions' room"
+    },
+    "wardrobe_tab": "Wardrobe",
+    "@wardrobe_tab": {
+        "description": "Tab title: accessories for companions"
+    },
+    "album_tab": "Album",
+    "@album_tab": {
+        "description": "Tab title: all companions"
+    },
+    "room_intro": "Each place holds one thing. New things arrive as days pass.",
+    "@room_intro": {
+        "description": "Intro of the room tab"
+    },
+    "room_together": "Everyone together",
+    "@room_together": {
+        "description": "Switch: show all arrived companions in the room instead of only the chosen one"
+    },
+    "room_togetherHint": "Show all your friends in the room",
+    "@room_togetherHint": {
+        "description": "Subtitle of the everyone-together switch"
+    },
+    "unlock_inDays": "{count, plural, =1{Tomorrow} other{In {count} days}}",
+    "@unlock_inDays": {
+        "description": "When a locked item or accessory arrives",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "hide_play": "Play hide and seek",
+    "@hide_play": {
+        "description": "Button that starts a hide-and-seek round with the companion"
+    },
+    "hide_where": "Where is {name}?",
+    "@hide_where": {
+        "description": "Hide-and-seek prompt",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "hide_notHere": "Not here. Try another spot.",
+    "@hide_notHere": {
+        "description": "Hide and seek: wrong spot"
+    },
+    "hide_found": "You found me!",
+    "@hide_found": {
+        "description": "Hide and seek: found, said by the companion"
+    },
+    "hide_stop": "Come out",
+    "@hide_stop": {
+        "description": "Button that ends the hide-and-seek round"
+    },
+    "wardrobe_intro": "Pick who to dress, then what they wear. It shows on Today and on the widget too.",
+    "@wardrobe_intro": {
+        "description": "Intro of the wardrobe tab"
+    },
+    "card_trait": "Nature",
+    "@card_trait": {
+        "description": "Companion card row label: personality"
+    },
+    "card_likes": "Likes",
+    "@card_likes": {
+        "description": "Companion card row label: favourite thing"
+    },
+    "card_arrived": "Arrived",
+    "@card_arrived": {
+        "description": "Companion card row label: the day it arrived"
+    },
+    "card_arrivedDay": "{count, plural, =0{First day} other{Day {count}}}",
+    "@card_arrivedDay": {
+        "description": "Value of the arrived row",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "card_flip": "Tap to turn the card",
+    "@card_flip": {
+        "description": "Hint under a companion card"
+    },
+    "card_number": "No. {n}",
+    "@card_number": {
+        "description": "Card number in the collection",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "companion_pamukTrait": "Sleepy",
+    "@companion_pamukTrait": {
+        "description": "Personality of the cloud cat"
+    },
+    "companion_pamukLikes": "Sunny windowsills",
+    "@companion_pamukLikes": {
+        "description": "Favourite thing of the cloud cat"
+    },
+    "companion_pamukStory": "Pamuk was born inside a cloud. One day it rained and she landed softly on your windowsill. She has napped there ever since.",
+    "@companion_pamukStory": {
+        "description": "Short story on the back of the cloud cat's card. Keep the pet's name as translated in companion_pamuk."
+    },
+    "companion_fistikTrait": "Curious",
+    "@companion_fistikTrait": {
+        "description": "Personality of the squirrel"
+    },
+    "companion_fistikLikes": "Acorns",
+    "@companion_fistikLikes": {
+        "description": "Favourite thing of the squirrel"
+    },
+    "companion_fistikStory": "Fıstık has explored every tree in the park. He saves the best acorn of each day, and he saves it for you.",
+    "@companion_fistikStory": {
+        "description": "Short story on the back of the squirrel's card. Use the name from companion_fistik."
+    },
+    "companion_tarcinTrait": "Warm-hearted",
+    "@companion_tarcinTrait": {
+        "description": "Personality of the fox kit"
+    },
+    "companion_tarcinLikes": "Apples",
+    "@companion_tarcinLikes": {
+        "description": "Favourite thing of the fox kit"
+    },
+    "companion_tarcinStory": "Tarçın smells of autumn. When someone has a hard day she sits beside them and says nothing, and somehow that is enough.",
+    "@companion_tarcinStory": {
+        "description": "Short story on the back of the fox's card. Use the name from companion_tarcin."
+    },
+    "companion_lokumTrait": "Playful",
+    "@companion_lokumTrait": {
+        "description": "Personality of the pink bunny"
+    },
+    "companion_lokumLikes": "Rose jam",
+    "@companion_lokumLikes": {
+        "description": "Favourite thing of the pink bunny"
+    },
+    "companion_lokumStory": "Lokum fell asleep in a sweet shop and woke up dusted with sugar. She has been hopping ever since to shake it off, and it never quite goes.",
+    "@companion_lokumStory": {
+        "description": "Short story on the back of the bunny's card. Use the name from companion_lokum."
+    },
+    "companion_mehtapTrait": "Wise",
+    "@companion_mehtapTrait": {
+        "description": "Personality of the owl"
+    },
+    "companion_mehtapLikes": "Counting stars",
+    "@companion_mehtapLikes": {
+        "description": "Favourite thing of the owl"
+    },
+    "companion_mehtapStory": "Mehtap has counted the stars every night for as long as she remembers. She loses count each time and does not mind at all.",
+    "@companion_mehtapStory": {
+        "description": "Short story on the back of the owl's card. Use the name from companion_mehtap."
+    },
+    "companion_boncukTrait": "Patient",
+    "@companion_boncukTrait": {
+        "description": "Personality of the turtle"
+    },
+    "companion_boncukLikes": "Long walks",
+    "@companion_boncukLikes": {
+        "description": "Favourite thing of the turtle"
+    },
+    "companion_boncukStory": "Boncuk set out to see the sea a year ago. He is in no hurry, and every bead on his shell is a place he stopped to rest.",
+    "@companion_boncukStory": {
+        "description": "Short story on the back of the turtle's card. Use the name from companion_boncuk."
+    },
+    "special_birthdayTitle": "Happy birthday!",
+    "@special_birthdayTitle": {
+        "description": "Title on the user's birthday"
+    },
+    "special_birthdayBody": "{name} put on a party hat for you.",
+    "@special_birthdayBody": {
+        "description": "Body on the user's birthday",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "special_anniversaryTitle": "{count, plural, =1{One year together} other{{count} years together}}",
+    "@special_anniversaryTitle": {
+        "description": "Title on the anniversary of the first day",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "special_anniversaryBody": "{name} left you a little present.",
+    "@special_anniversaryBody": {
+        "description": "Body on the anniversary",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "special_gift": "A party hat joined the wardrobe.",
+    "@special_gift": {
+        "description": "Line telling the user what the present was"
+    },
+    "special_open": "Lovely",
+    "@special_open": {
+        "description": "Button closing the special-day dialog"
+    },
+    "feedback_title": "Sound and vibration",
+    "@feedback_title": {
+        "description": "Settings section title"
+    },
+    "feedback_haptics": "Vibration",
+    "@feedback_haptics": {
+        "description": "Switch: light vibration feedback"
+    },
+    "feedback_hapticsHint": "A light tap when you save, select or celebrate",
+    "@feedback_hapticsHint": {
+        "description": "Subtitle of the vibration switch"
+    },
+    "feedback_sounds": "Interface sounds",
+    "@feedback_sounds": {
+        "description": "Switch: small UI sounds"
+    },
+    "feedback_soundsHint": "Soft sounds. Off by default so the phone stays quiet.",
+    "@feedback_soundsHint": {
+        "description": "Subtitle of the interface sounds switch"
+    },
+    "feedback_petSounds": "Companion sounds",
+    "@feedback_petSounds": {
+        "description": "Switch: sound when the companion is petted"
+    },
+    "feedback_petSoundsHint": "A small purr when you pet your companion",
+    "@feedback_petSoundsHint": {
+        "description": "Subtitle of the companion sounds switch"
+    },
+    "feedback_try": "Try:",
+    "@feedback_try": {
+        "description": "Label before the three preview buttons"
+    },
+    "feedback_trySave": "Save",
+    "@feedback_trySave": {
+        "description": "Preview button: the save feedback"
+    },
+    "feedback_trySelect": "Select",
+    "@feedback_trySelect": {
+        "description": "Preview button: the select feedback"
+    },
+    "feedback_tryCelebrate": "Celebrate",
+    "@feedback_tryCelebrate": {
+        "description": "Preview button: the celebrate feedback"
+    },
+    "pattern_title": "What we noticed",
+    "@pattern_title": {
+        "description": "Title of the pattern cards section (things that repeat in the user's own logs)"
+    },
+    "pattern_subtitle": "From your own logs, only on this phone",
+    "@pattern_subtitle": {
+        "description": "Subtitle of the pattern section"
+    },
+    "pattern_note": "These are observations, not a diagnosis or advice.",
+    "@pattern_note": {
+        "description": "Disclaimer under the pattern cards"
+    },
+    "pattern_empty": "Once you have logged three cycles, things that repeat will show up here.",
+    "@pattern_empty": {
+        "description": "Shown when there is not enough data for patterns"
+    },
+    "pattern_none": "Nothing has repeated clearly so far.",
+    "@pattern_none": {
+        "description": "Shown when there is enough data but no pattern"
+    },
+    "pattern_pain": "moderate or strong pain",
+    "@pattern_pain": {
+        "description": "Used inside pattern sentences in place of a symptom name"
+    },
+    "pattern_titleDay": "{name} on day {day}",
+    "@pattern_titleDay": {
+        "description": "Pattern card title: a symptom on a given day of the period",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+    "pattern_titleBefore": "{name} before your period",
+    "@pattern_titleBefore": {
+        "description": "Pattern card title: a symptom or mood in the days before a period",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "pattern_daySentence": "You logged {name} on day {day} of your period in {hits} of your last {cycles} cycles.",
+    "@pattern_daySentence": {
+        "description": "Pattern sentence. Keep the name at the end where possible so it needs no grammatical suffix.",
+        "placeholders": {
+            "cycles": {
+                "type": "int"
+            },
+            "hits": {
+                "type": "int"
+            },
+            "day": {
+                "type": "int"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "pattern_beforeSentence": "In {hits} of your last {cycles} cycles you logged this in the 3 days before your period: {name}.",
+    "@pattern_beforeSentence": {
+        "description": "Pattern sentence. Keep the name at the end so it needs no grammatical suffix.",
+        "placeholders": {
+            "cycles": {
+                "type": "int"
+            },
+            "hits": {
+                "type": "int"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "pattern_seeAll": "See all",
+    "@pattern_seeAll": {
+        "description": "Link from the Today pattern tile to the insights"
+    },
+    "bag_title": "My bag",
+    "@bag_title": {
+        "description": "Title of the period-bag checklist"
+    },
+    "bag_ready": "{done} of {total} packed",
+    "@bag_ready": {
+        "description": "Checklist progress",
+        "placeholders": {
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bag_soon": "{count, plural, =0{Your period may start today} =1{About 1 day to your period} other{About {count} days to your period}}",
+    "@bag_soon": {
+        "description": "Shown on the bag when the period is near (estimate)",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "bag_hint": "A little list for the days before your period. It clears itself each cycle.",
+    "@bag_hint": {
+        "description": "Intro of the bag screen"
+    },
+    "bag_add": "Add item",
+    "@bag_add": {
+        "description": "Button/field label to add a checklist item"
+    },
+    "bag_itemPads": "Pads or tampons",
+    "@bag_itemPads": {
+        "description": "Default checklist item"
+    },
+    "bag_itemUnderwear": "Spare underwear",
+    "@bag_itemUnderwear": {
+        "description": "Default checklist item"
+    },
+    "bag_itemPainkiller": "Painkiller",
+    "@bag_itemPainkiller": {
+        "description": "Default checklist item"
+    },
+    "bag_itemWipes": "Wet wipes",
+    "@bag_itemWipes": {
+        "description": "Default checklist item"
+    },
+    "bag_itemChocolate": "Chocolate",
+    "@bag_itemChocolate": {
+        "description": "Default checklist item"
+    },
+    "bag_allSet": "All packed. Nice.",
+    "@bag_allSet": {
+        "description": "Shown when every item is checked"
+    },
+    "today_customize": "Arrange Today",
+    "@today_customize": {
+        "description": "Settings entry and screen title: reorder and hide the Today tiles"
+    },
+    "today_customizeHint": "Drag to reorder. Switch off what you do not use.",
+    "@today_customizeHint": {
+        "description": "Hint on the arrange-Today screen"
+    },
+    "tile_companion": "Companion and room",
+    "@tile_companion": {
+        "description": "Today tile name"
+    },
+    "tile_countdown": "Countdown",
+    "@tile_countdown": {
+        "description": "Today tile name"
+    },
+    "tile_phase": "Phase",
+    "@tile_phase": {
+        "description": "Today tile name"
+    },
+    "tile_bag": "My bag",
+    "@tile_bag": {
+        "description": "Today tile name"
+    },
+    "tile_mood": "Mood",
+    "@tile_mood": {
+        "description": "Today tile name"
+    },
+    "tile_pattern": "What we noticed",
+    "@tile_pattern": {
+        "description": "Today tile name"
+    },
+    "tile_quickLog": "Quick log",
+    "@tile_quickLog": {
+        "description": "Today tile name"
+    },
+    "appIcon_title": "App icon",
+    "@appIcon_title": {
+        "description": "Settings section title: choose the launcher icon"
+    },
+    "appIcon_hint": "How RUYA looks on your home screen. The icon changes when you leave the app. If the shortcut on your home screen disappears, add it again from the app list.",
+    "@appIcon_hint": {
+        "description": "Hint under the app icon choices"
+    },
+    "appIcon_discreteNote": "While discrete mode is on, the icon stays neutral. Your choice comes back when you turn it off.",
+    "@appIcon_discreteNote": {
+        "description": "Shown instead of the hint when discrete mode is on"
+    },
+    "widgetSize_sticker": "Sticker\n2×2",
+    "@widgetSize_sticker": {
+        "description": "Widget size option: a widget that shows only the companion, like a sticker. Keep the line break and 2×2."
+    },
+    "widgetSettings_stickerNote": "Only your companion: no text, no numbers, no frame. The pose changes with the time of day.",
+    "@widgetSettings_stickerNote": {
+        "description": "Note under the preview of the sticker widget"
     }
 }

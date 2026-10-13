@@ -9,4 +9,6 @@
     <string name="widget_desc_small">Countdown to your period with a ring</string>
     <string name="widget_desc_medium">Countdown, phase and expected date</string>
     <string name="widget_desc_large">Countdown, ring and every detail you choose</string>
+    <string name="widget_label_sticker">Sticker</string>
+    <string name="widget_desc_sticker">Just your companion, no text</string>
 </resources>

@@ -12,7 +12,10 @@ enum WidgetSize {
   medium('com.burakaydogmus.ruya.RuyaWidgetMedium'),
 
   /// 4×3: header, large ring and every enabled line.
-  large('com.burakaydogmus.ruya.RuyaWidgetLarge');
+  large('com.burakaydogmus.ruya.RuyaWidgetLarge'),
+
+  /// 2×2 (resizable down to 1×1): only the companion, no text, no frame.
+  sticker('com.burakaydogmus.ruya.RuyaWidgetSticker');
 
   const WidgetSize(this.provider);
 
@@ -30,6 +33,9 @@ class WidgetController {
   static const String ringKey = 'ruya_w_ring';
   static const String quickLogKey = 'ruya_w_quick';
   static const String petKey = 'ruya_w_pet';
+  static const String stickerKey = 'ruya_w_sticker';
+  static const String accessoryKey = 'ruya_w_acc';
+  static const String neutralKey = 'ruya_w_neutral';
 
   WidgetPayload? _last;
 
@@ -46,6 +52,9 @@ class WidgetController {
       await HomeWidget.saveWidgetData<bool>(ringKey, payload.showRing);
       await HomeWidget.saveWidgetData<bool>(quickLogKey, payload.showQuickLog);
       await HomeWidget.saveWidgetData<String>(petKey, payload.companion?.name ?? '');
+      await HomeWidget.saveWidgetData<String>(stickerKey, payload.sticker?.name ?? '');
+      await HomeWidget.saveWidgetData<String>(accessoryKey, payload.accessory?.name ?? '');
+      await HomeWidget.saveWidgetData<bool>(neutralKey, payload.neutral);
       for (final size in WidgetSize.values) {
         await HomeWidget.updateWidget(qualifiedAndroidName: size.provider);
       }

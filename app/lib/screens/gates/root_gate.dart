@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ruya/screens/gates/auth_gate.dart';
+import 'package:ruya/screens/gates/splash_gate.dart';
 import 'package:ruya/screens/onboarding/onboarding_screen.dart';
 import 'package:ruya/services/user_service.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,6 @@ class RootGate extends StatelessWidget {
     if (userService.user == null) {
       return const OnboardingScreen();
     }
-    return const AuthGate(); 
+    return const SplashGate(child: AuthGate());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:ruya/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:ruya/models/app/user_goal_types_enum.dart';
 import 'package:ruya/cycle/life_stage.dart';
@@ -14,6 +15,21 @@ enum PeriodHistoryView { list, journal }
 enum WidgetTheme { system, light, dark, transparent }
 
 /// What the home screen widgets show (shared by every widget size).
+/// Tiles of the Today screen, in their default order. Half tiles pair up side by side.
+enum TodayTile {
+  companion,
+  countdown,
+  phase(half: true),
+  bag(half: true),
+  mood,
+  pattern,
+  quickLog;
+
+  const TodayTile({this.half = false});
+
+  final bool half;
+}
+
 class HomeWidgetOptions {
   const HomeWidgetOptions({
     this.showRing = true,
@@ -72,6 +88,13 @@ class SettingsService extends ChangeNotifier {
   bool _dynamicColorEnabled = kDefaultDynamicColorEnabled;
   Color _themeColor = kDefaultThemeColor;
   AppThemeMode _themeMode = kDefaultThemeMode;
+  AppStyle _appStyle = AppStyle.piksel;
+  String _appIcon = 'ruya';
+  List<TodayTile> _todayTiles = List.of(TodayTile.values);
+  Set<TodayTile> _hiddenTodayTiles = {};
+  bool _haptics = true;
+  bool _uiSounds = false;
+  bool _petSounds = false;
   String _startingDayOfWeek = kDefaultStartingDayOfWeek;
   PeriodHistoryView _historyView = kDefaultHistoryView;
 
@@ -132,6 +155,23 @@ class SettingsService extends ChangeNotifier {
   Color get themeColor => _themeColor;
   /// The app's theme mode (Light, Dark, or System).
   AppThemeMode get themeMode => _themeMode;
+
+  /// Look-and-feel pack (colours, fonts and shapes together).
+  AppStyle get appStyle => _appStyle;
+
+  /// Name of the chosen launcher icon (see AppIcon in discrete_mode.dart).
+  String get appIcon => _appIcon;
+
+  /// Every Today tile in the user's order (hidden ones included).
+  List<TodayTile> get todayTiles => List.unmodifiable(_todayTiles);
+  Set<TodayTile> get hiddenTodayTiles => Set.unmodifiable(_hiddenTodayTiles);
+
+  /// Light vibration on save, select and celebrate.
+  bool get areHapticsEnabled => _haptics;
+
+  /// Soft interface sounds. Off by default: a sound can give the app away.
+  bool get areUiSoundsEnabled => _uiSounds;
+  bool get arePetSoundsEnabled => _petSounds;
   /// The starting day of the week for calendars
   String get startingDayOfWeek => _startingDayOfWeek;
   /// The user's preferred view for the period history (list vs. journal).
@@ -263,6 +303,20 @@ class SettingsService extends ChangeNotifier {
     _dynamicColorEnabled = _loadBool(dynamicColorKey, kDefaultDynamicColorEnabled);
     _themeColor = _loadThemeColor();
     _themeMode = _loadThemeMode();
+    _appStyle = AppStyle.byName(_prefs.getString(appStyleKey));
+    _appIcon = _prefs.getString(appIconKey) ?? 'ruya';
+    final order = [
+      for (final n in _prefs.getStringList(todayTilesKey) ?? const <String>[])
+        ...TodayTile.values.where((t) => t.name == n),
+    ];
+    _todayTiles = [...order, ...TodayTile.values.where((t) => !order.contains(t))];
+    _hiddenTodayTiles = {
+      for (final n in _prefs.getStringList(todayHiddenTilesKey) ?? const <String>[])
+        ...TodayTile.values.where((t) => t.name == n),
+    };
+    _haptics = _loadBool(feedbackHapticsKey, true);
+    _uiSounds = _loadBool(feedbackSoundsKey, false);
+    _petSounds = _loadBool(feedbackPetSoundsKey, false);
     _startingDayOfWeek = _loadString(startingDayOfWeekKey, kDefaultStartingDayOfWeek);
     _historyView = _loadHistoryView();
 
@@ -592,6 +646,44 @@ class SettingsService extends ChangeNotifier {
   Future<void> setThemeColor(Color color) async {
     _themeColor = color;
     await _prefs.setInt(themeColorKey, color.toARGB32());
+    notifyListeners();
+  }
+
+  Future<void> setAppIcon(String name) async {
+    _appIcon = name;
+    await _prefs.setString(appIconKey, name);
+    notifyListeners();
+  }
+
+  Future<void> setTodayTiles(List<TodayTile> order, Set<TodayTile> hidden) async {
+    _todayTiles = [...order, ...TodayTile.values.where((t) => !order.contains(t))];
+    _hiddenTodayTiles = Set.of(hidden);
+    await _prefs.setStringList(todayTilesKey, [for (final t in _todayTiles) t.name]);
+    await _prefs.setStringList(todayHiddenTilesKey, [for (final t in _hiddenTodayTiles) t.name]);
+    notifyListeners();
+  }
+
+  Future<void> setHapticsEnabled(bool v) async {
+    _haptics = v;
+    await _prefs.setBool(feedbackHapticsKey, v);
+    notifyListeners();
+  }
+
+  Future<void> setUiSoundsEnabled(bool v) async {
+    _uiSounds = v;
+    await _prefs.setBool(feedbackSoundsKey, v);
+    notifyListeners();
+  }
+
+  Future<void> setPetSoundsEnabled(bool v) async {
+    _petSounds = v;
+    await _prefs.setBool(feedbackPetSoundsKey, v);
+    notifyListeners();
+  }
+
+  Future<void> setAppStyle(AppStyle style) async {
+    _appStyle = style;
+    await _prefs.setString(appStyleKey, style.name);
     notifyListeners();
   }
 

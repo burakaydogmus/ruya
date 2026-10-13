@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Countdown bis zur Periode mit Ring</string>
     <string name="widget_desc_medium">Countdown, Phase und erwartetes Datum</string>
     <string name="widget_desc_large">Countdown, Ring und alle gewählten Details</string>
+    <string name="widget_label_sticker">Sticker</string>
+    <string name="widget_desc_sticker">Nur dein Begleiter, kein Text</string>
 </resources>

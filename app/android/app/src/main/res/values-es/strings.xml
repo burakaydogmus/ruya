@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Cuenta atrás hasta la regla con anillo</string>
     <string name="widget_desc_medium">Cuenta atrás, fase y fecha prevista</string>
     <string name="widget_desc_large">Cuenta atrás, anillo y todos los detalles que elijas</string>
+    <string name="widget_label_sticker">Pegatina</string>
+    <string name="widget_desc_sticker">Solo tu compañero, sin texto</string>
 </resources>

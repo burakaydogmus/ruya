@@ -7,4 +7,6 @@
     <string name="widget_desc_small">Odliczanie do miesiączki z pierścieniem</string>
     <string name="widget_desc_medium">Odliczanie, faza i spodziewana data</string>
     <string name="widget_desc_large">Odliczanie, pierścień i wszystkie wybrane szczegóły</string>
+    <string name="widget_label_sticker">Naklejka</string>
+    <string name="widget_desc_sticker">Tylko twój przyjaciel, bez tekstu</string>
 </resources>
